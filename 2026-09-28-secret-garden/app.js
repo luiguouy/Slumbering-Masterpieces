@@ -181,6 +181,168 @@
             quote: '“Every day I discover even more beautiful things. It is intoxicating me, and I want to paint it all.”',
             quoteAuthor: '— Claude Monet'
         },
+        {
+            id: 'monet_impression_sunrise',
+            title: '日出·印象 (1872)',
+            enTitle: 'Impression, Sunrise',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_impression_sunrise.jpg?v=3.5.0',
+            quote: '“A landscape is only an impression, instantaneous, hence the label they\'ve given us.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_woman_with_parasol',
+            title: '撑阳伞的女人 · 散步 (1875)',
+            enTitle: 'Woman with a Parasol - Madame Monet and Her Son',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_woman_with_parasol.jpg?v=3.5.0',
+            quote: '“I am working on figures outdoors as I want, done like landscapes... It is an old dream that always torments me.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_water_lilies_1906',
+            title: '睡莲系列 · 碧波浮萍 (1906)',
+            enTitle: 'Water Lilies (Nymphéas)',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_water_lilies_1906.jpg?v=3.5.0',
+            quote: '“These water landscapes have become an obsession. They are beyond my powers as an old man, and yet I want to succeed in expressing what I feel.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_haystacks_snow',
+            title: '干草堆系列 · 雪景晨光 (1891)',
+            enTitle: 'Wheatstacks (Snow Effect, Morning)',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_haystacks_snow.jpg?v=3.5.0',
+            quote: '“The further I go, the more I see that a lot of work is needed to succeed in rendering what I want to render: \'instantaneity\'.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_rouen_cathedral',
+            title: '鲁昂大教堂系列 · 阳光下的西正面 (1894)',
+            enTitle: 'Rouen Cathedral, West Façade, Sunlight',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_rouen_cathedral.jpg?v=3.5.0',
+            quote: '“Everything changes, even stone... Colour is vibration just like music.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_saint_lazare',
+            title: '圣拉扎尔火车站 (1877)',
+            enTitle: 'Gare Saint-Lazare, Arrival of a Train',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_saint_lazare.jpg?v=3.5.0',
+            quote: '“I am following nature without being able to grasp her... and then there is the light that refuses to stay still.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_camille_green_dress',
+            title: '绿衣女子 · 卡米尔 (1866)',
+            enTitle: 'The Woman in the Green Dress (Camille)',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_camille_green_dress.jpg?v=3.5.0',
+            quote: '“My heart goes out to the light and the beauty that walks among us.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_dejeuner_sur_l_herbe',
+            title: '草地上的午餐 (1866)',
+            enTitle: 'Le Déjeuner sur l\'herbe',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_dejeuner_sur_l_herbe.jpg?v=3.5.0',
+            quote: '“I want to paint the air in which the bridge, the house, and the boat are situated, the beauty of the air around them.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_women_in_garden',
+            title: '花园里的女人 (1866)',
+            enTitle: 'Women in the Garden (Femmes au jardin)',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_women_in_garden.jpg?v=3.5.0',
+            quote: '“I paint directly from nature, outdoors, trying to catch the freshness of sunlight on the flowers and fabrics.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_la_grenouillere',
+            title: '蛙塘岛水上浴场 (1869)',
+            enTitle: 'Bathers at La Grenouillère',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_la_grenouillere.jpg?v=3.5.0',
+            quote: '“I have a dream of a picture of the waters of La Grenouillère... sparkling with life and ripples.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_argenteuil_basin',
+            title: '阿让特伊盆地帆船 (1872)',
+            enTitle: 'The Basin at Argenteuil',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_argenteuil_basin.jpg?v=3.5.0',
+            quote: '“Water is the mirror of the sky, reflecting every fleeting cloud and beam of shimmer.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_boulevard_capucines',
+            title: '卡普辛大道 · 冬日熙攘 (1873)',
+            enTitle: 'Boulevard des Capucines',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_boulevard_capucines.jpg?v=3.5.0',
+            quote: '“To capture the pulse of the boulevard, the bustle of carriages and pedestrians disappearing into winter haze.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_rue_saint_denis',
+            title: '圣丹尼斯街的节日 (1878)',
+            enTitle: 'Rue Saint-Denis, Celebration of June 30, 1878',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_rue_saint_denis.jpg?v=3.5.0',
+            quote: '“I was enchanted by the flags... thousands of banners billowing in the Parisian breeze like fields of flowers.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_poplars',
+            title: '埃普特河畔的白杨树系列 (1891)',
+            enTitle: 'Poplars on the Epte',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_poplars.jpg?v=3.5.0',
+            quote: '“Nature does not stand still. Every hour brings a new vibration through the slender poplars against the sky.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_etretat_cliff',
+            title: '普尔维尔峭壁漫步 (1882)',
+            enTitle: 'The Cliff Walk at Pourville',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_etretat_cliff.jpg?v=3.5.0',
+            quote: '“The sea is an incredible spectacle, changing colour and grandeur with every passing hour.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_parliament',
+            title: '伦敦国会大厦系列 · 雾中夕阳 (1903)',
+            enTitle: 'The Houses of Parliament, Sunset',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_parliament.jpg?v=3.5.0',
+            quote: '“Without the fog, London would not be a beautiful city. It is the fog that gives it its magnificent amplitude.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_waterloo_bridge',
+            title: '滑铁卢桥系列 · 晨曦日光效应 (1903)',
+            enTitle: 'Waterloo Bridge, Sunlight Effect',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_waterloo_bridge.jpg?v=3.5.0',
+            quote: '“I cannot paint the bridge, I paint only the atmosphere, the light, the fleeting mist upon the Thames.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_venice_grand_canal',
+            title: '威尼斯大运河与安康圣母圣殿 (1908)',
+            enTitle: 'The Grand Canal, Venice',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_venice_grand_canal.jpg?v=3.5.0',
+            quote: '“The light of Venice is so exquisite, like molten jewels floating upon the undulating waves.”',
+            quoteAuthor: '— Claude Monet'
+        },
         // ======= 🎨 印象派与古典大师杰作 (Impressionist Masters) =======
         {
             id: 'renoir_wargemont',
@@ -849,17 +1011,20 @@
 
         masterpieceSelect.innerHTML = '';
 
+        const monetList = masterpieces.filter(a => a.id.startsWith('monet_') || a.id === 'garden');
+        const mastersList = masterpieces.filter(a => !(a.id.startsWith('monet_') || a.id === 'garden'));
+
         const monetGroup = document.createElement('optgroup');
-        monetGroup.label = '🌟 克劳德·莫奈专栏 (Monet Collection · 9幅)';
+        monetGroup.label = `🌟 克劳德·莫奈专栏 (Monet Collection · ${monetList.length}幅)`;
 
         const mastersGroup = document.createElement('optgroup');
-        mastersGroup.label = '🎨 印象派大师杰作 (Masters Collection · 6幅)';
+        mastersGroup.label = `🎨 印象派与古典大师杰作 (Masters Collection · ${mastersList.length}幅)`;
 
         masterpieces.forEach((art, idx) => {
             const opt = document.createElement('option');
             opt.value = idx;
             opt.textContent = `${idx + 1}. ${art.title} · ${art.artist}`;
-            if (idx < 9) {
+            if (art.id.startsWith('monet_') || art.id === 'garden') {
                 monetGroup.appendChild(opt);
             } else {
                 mastersGroup.appendChild(opt);
