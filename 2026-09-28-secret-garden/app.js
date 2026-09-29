@@ -164,21 +164,21 @@
             quoteAuthor: '— Claude Monet'
         },
         {
-            id: 'monet_giverny_morning',
-            title: '晨曦繁花 · 吉维尼花境',
-            enTitle: 'Giverny Garden in Morning Light',
-            artist: 'Claude Monet (莫奈风格)',
-            src: 'assets/images/garden_refined.jpg?v=3.4.0',
-            quote: '“The light constantly changes, and that alters the atmosphere and beauty of things every minute.”',
+            id: 'monet_water_lilies_bridge',
+            title: '睡莲池与日本桥 (1899)',
+            enTitle: 'Water Lilies and Japanese Bridge',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_japanese_bridge.jpg?v=3.5.0',
+            quote: '“It took me time to understand my water lilies... I planted them without thinking of painting them.”',
             quoteAuthor: '— Claude Monet'
         },
         {
-            id: 'monet_summer_estate',
-            title: '吉维尼夏日庄园 · 繁花满园',
-            enTitle: 'Summer Estate at Giverny',
-            artist: 'Claude Monet (莫奈风格)',
-            src: 'assets/images/garden_masterpiece_v2.jpg?v=3.4.0',
-            quote: '“My heart is forever bound to Giverny.”',
+            id: 'monet_poppy_field',
+            title: '阿让特伊的虞美人花田 (1873)',
+            enTitle: 'Poppy Field at Argenteuil',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_poppy_field.jpg?v=3.5.0',
+            quote: '“Every day I discover even more beautiful things. It is intoxicating me, and I want to paint it all.”',
             quoteAuthor: '— Claude Monet'
         },
         // ======= 🎨 印象派与古典大师杰作 (Impressionist Masters) =======
@@ -284,10 +284,10 @@
 
         let effectiveMode = config.fitMode;
         if (effectiveMode === 'auto') {
-            // 智能判定：横屏遇到竖幅名画自动采用完整呈现 (Contain)，避免被裁剪丢掉大半花卉内容！
-            if (screenAspect > 1.15 && imgAspect < 0.95) {
+            // 智能判定：横屏遇到竖幅或方幅名画 (如 1:1 的日本桥) 自动采用完整呈现 (Contain)，避免上下重要画面被剧烈裁剪！
+            if (screenAspect > 1.2 && imgAspect < 1.22) {
                 effectiveMode = 'contain';
-            } else if (screenAspect < 0.85 && imgAspect > 1.15) {
+            } else if (screenAspect < 0.88 && imgAspect > 1.1) {
                 effectiveMode = 'contain';
             } else {
                 effectiveMode = 'cover';
