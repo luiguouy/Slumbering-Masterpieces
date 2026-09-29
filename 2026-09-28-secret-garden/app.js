@@ -97,308 +97,8 @@
     let isInitialized = false;
     let isFullColorLocked = false;
 
-    // 传世花卉与风景油画名作画廊 (大幅扩充莫奈名画专题，共 15 幅大师传世杰作)
-    const masterpieces = [
-        // ======= 🌟 克劳德·莫奈专属艺术画廊 (Monet Collection) =======
-        {
-            id: 'garden',
-            title: '莫奈的秘密花园 · 沉睡庄园',
-            enTitle: 'The Slumbering Garden',
-            artist: 'Claude Monet (莫奈风格)',
-            src: 'assets/images/garden.jpg?v=3.4.0',
-            quote: '“I must have flowers, always, and always.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_giverny_path',
-            title: '吉维尼的花园小径 (1902)',
-            enTitle: 'The Garden Path at Giverny',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/thumb_monet_giverny.jpg?v=3.4.0',
-            quote: '“Perhaps I owe having become a painter to flowers.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_argenteuil',
-            title: '阿让特伊的艺术家花园 (1873)',
-            enTitle: "The Artist's Garden at Argenteuil",
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/thumb_monet_argenteuil.jpg?v=3.4.0',
-            quote: '“My garden is my most beautiful masterpiece.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_met_irises',
-            title: '大都会的鸢尾花丛 (1890)',
-            enTitle: 'Irises in the Garden',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_met_irises.jpg?v=3.4.0',
-            quote: '“Colour is my day-long obsession, joy and torment.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_vetheuil',
-            title: '维特伊的艺术家花园 (1880)',
-            enTitle: "The Artist's Garden at Vétheuil",
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_nga_vetheuil.jpg?v=3.4.0',
-            quote: '“The richness I achieve comes from nature, the source of my inspiration.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_sainte_adresse',
-            title: '圣阿德雷斯的露台花园 (1867)',
-            enTitle: 'Garden at Sainte-Adresse',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/preview_sainte_adresse.jpg?v=3.4.0',
-            quote: '“Everyone discusses my art and pretends to understand, when it is simply necessary to love.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_gladiolus',
-            title: '剑兰花境 (1876)',
-            enTitle: 'Gladioli in the Garden',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/thumb_monet_gladiolus.jpg?v=3.4.0',
-            quote: '“I would like to paint the way a bird sings.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_water_lilies_bridge',
-            title: '睡莲池与日本桥 (1899)',
-            enTitle: 'Water Lilies and Japanese Bridge',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_japanese_bridge.jpg?v=3.5.0',
-            quote: '“It took me time to understand my water lilies... I planted them without thinking of painting them.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_poppy_field',
-            title: '阿让特伊的虞美人花田 (1873)',
-            enTitle: 'Poppy Field at Argenteuil',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_poppy_field.jpg?v=3.5.0',
-            quote: '“Every day I discover even more beautiful things. It is intoxicating me, and I want to paint it all.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_impression_sunrise',
-            title: '日出·印象 (1872)',
-            enTitle: 'Impression, Sunrise',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_impression_sunrise.jpg?v=3.5.0',
-            quote: '“A landscape is only an impression, instantaneous, hence the label they\'ve given us.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_woman_with_parasol',
-            title: '撑阳伞的女人 · 散步 (1875)',
-            enTitle: 'Woman with a Parasol - Madame Monet and Her Son',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_woman_with_parasol.jpg?v=3.5.0',
-            quote: '“I am working on figures outdoors as I want, done like landscapes... It is an old dream that always torments me.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_water_lilies_1906',
-            title: '睡莲系列 · 碧波浮萍 (1906)',
-            enTitle: 'Water Lilies (Nymphéas)',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_water_lilies_1906.jpg?v=3.5.0',
-            quote: '“These water landscapes have become an obsession. They are beyond my powers as an old man, and yet I want to succeed in expressing what I feel.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_haystacks_snow',
-            title: '干草堆系列 · 雪景晨光 (1891)',
-            enTitle: 'Wheatstacks (Snow Effect, Morning)',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_haystacks_snow.jpg?v=3.5.0',
-            quote: '“The further I go, the more I see that a lot of work is needed to succeed in rendering what I want to render: \'instantaneity\'.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_rouen_cathedral',
-            title: '鲁昂大教堂系列 · 阳光下的西正面 (1894)',
-            enTitle: 'Rouen Cathedral, West Façade, Sunlight',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_rouen_cathedral.jpg?v=3.5.0',
-            quote: '“Everything changes, even stone... Colour is vibration just like music.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_saint_lazare',
-            title: '圣拉扎尔火车站 (1877)',
-            enTitle: 'Gare Saint-Lazare, Arrival of a Train',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_saint_lazare.jpg?v=3.5.0',
-            quote: '“I am following nature without being able to grasp her... and then there is the light that refuses to stay still.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_camille_green_dress',
-            title: '绿衣女子 · 卡米尔 (1866)',
-            enTitle: 'The Woman in the Green Dress (Camille)',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_camille_green_dress.jpg?v=3.5.0',
-            quote: '“My heart goes out to the light and the beauty that walks among us.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_dejeuner_sur_l_herbe',
-            title: '草地上的午餐 (1866)',
-            enTitle: 'Le Déjeuner sur l\'herbe',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_dejeuner_sur_l_herbe.jpg?v=3.5.0',
-            quote: '“I want to paint the air in which the bridge, the house, and the boat are situated, the beauty of the air around them.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_women_in_garden',
-            title: '花园里的女人 (1866)',
-            enTitle: 'Women in the Garden (Femmes au jardin)',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_women_in_garden.jpg?v=3.5.0',
-            quote: '“I paint directly from nature, outdoors, trying to catch the freshness of sunlight on the flowers and fabrics.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_la_grenouillere',
-            title: '蛙塘岛水上浴场 (1869)',
-            enTitle: 'Bathers at La Grenouillère',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_la_grenouillere.jpg?v=3.5.0',
-            quote: '“I have a dream of a picture of the waters of La Grenouillère... sparkling with life and ripples.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_argenteuil_basin',
-            title: '阿让特伊盆地帆船 (1872)',
-            enTitle: 'The Basin at Argenteuil',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_argenteuil_basin.jpg?v=3.5.0',
-            quote: '“Water is the mirror of the sky, reflecting every fleeting cloud and beam of shimmer.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_boulevard_capucines',
-            title: '卡普辛大道 · 冬日熙攘 (1873)',
-            enTitle: 'Boulevard des Capucines',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_boulevard_capucines.jpg?v=3.5.0',
-            quote: '“To capture the pulse of the boulevard, the bustle of carriages and pedestrians disappearing into winter haze.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_rue_saint_denis',
-            title: '圣丹尼斯街的节日 (1878)',
-            enTitle: 'Rue Saint-Denis, Celebration of June 30, 1878',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_rue_saint_denis.jpg?v=3.5.0',
-            quote: '“I was enchanted by the flags... thousands of banners billowing in the Parisian breeze like fields of flowers.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_poplars',
-            title: '埃普特河畔的白杨树系列 (1891)',
-            enTitle: 'Poplars on the Epte',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_poplars.jpg?v=3.5.0',
-            quote: '“Nature does not stand still. Every hour brings a new vibration through the slender poplars against the sky.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_etretat_cliff',
-            title: '普尔维尔峭壁漫步 (1882)',
-            enTitle: 'The Cliff Walk at Pourville',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_etretat_cliff.jpg?v=3.5.0',
-            quote: '“The sea is an incredible spectacle, changing colour and grandeur with every passing hour.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_parliament',
-            title: '伦敦国会大厦系列 · 雾中夕阳 (1903)',
-            enTitle: 'The Houses of Parliament, Sunset',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_parliament.jpg?v=3.5.0',
-            quote: '“Without the fog, London would not be a beautiful city. It is the fog that gives it its magnificent amplitude.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_waterloo_bridge',
-            title: '滑铁卢桥系列 · 晨曦日光效应 (1903)',
-            enTitle: 'Waterloo Bridge, Sunlight Effect',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_waterloo_bridge.jpg?v=3.5.0',
-            quote: '“I cannot paint the bridge, I paint only the atmosphere, the light, the fleeting mist upon the Thames.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        {
-            id: 'monet_venice_grand_canal',
-            title: '威尼斯大运河与安康圣母圣殿 (1908)',
-            enTitle: 'The Grand Canal, Venice',
-            artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_venice_grand_canal.jpg?v=3.5.0',
-            quote: '“The light of Venice is so exquisite, like molten jewels floating upon the undulating waves.”',
-            quoteAuthor: '— Claude Monet'
-        },
-        // ======= 🎨 印象派与古典大师杰作 (Impressionist Masters) =======
-        {
-            id: 'renoir_wargemont',
-            title: '瓦日蒙玫瑰花海 (1879)',
-            enTitle: 'A Garden at Wargemont',
-            artist: 'Pierre-Auguste Renoir (雷诺阿)',
-            src: 'assets/images/renoir_wargemont.jpg?v=3.4.0',
-            quote: '“The pain passes, but the beauty remains.”',
-            quoteAuthor: '— Pierre-Auguste Renoir'
-        },
-        {
-            id: 'caillebotte_dahlias',
-            title: '大丽花与小热讷维利耶花园 (1893)',
-            enTitle: 'Dahlias in the Garden',
-            artist: 'Gustave Caillebotte (卡耶博特)',
-            src: 'assets/images/caillebotte_nga_dahlias.jpg?v=3.4.0',
-            quote: '“To paint nature as it is, pure and untamed.”',
-            quoteAuthor: '— Gustave Caillebotte'
-        },
-        {
-            id: 'sorolla_garden',
-            title: '索罗拉故居庭院 (1919)',
-            enTitle: 'Garden of the Sorolla House',
-            artist: 'Joaquín Sorolla (索罗拉)',
-            src: 'assets/images/sorolla_garden.jpg?v=3.4.0',
-            quote: '“Art has no color without light.”',
-            quoteAuthor: '— Joaquín Sorolla'
-        },
-        {
-            id: 'hassam_celia',
-            title: '西莉亚的海岛盛开花园 (1890)',
-            enTitle: "Celia Thaxter's Island Garden",
-            artist: 'Childe Hassam (哈萨姆)',
-            src: 'assets/images/hassam_celia_garden.jpg?v=3.4.0',
-            quote: '“The portrait of a garden is the portrait of summer itself.”',
-            quoteAuthor: '— Childe Hassam'
-        },
-        {
-            id: 'nolde_flower_garden',
-            title: '盛放花境 (1908)',
-            enTitle: 'Flower Garden (Blumengarten)',
-            artist: 'Emil Nolde (诺尔德)',
-            src: 'assets/images/nolde_blumengarten.jpg?v=3.4.0',
-            quote: '“Color is life, for a world without color appears to us as dead.”',
-            quoteAuthor: '— Emil Nolde'
-        },
-        {
-            id: 'liebermann_terrace',
-            title: '万纳湖畔花境 (1915)',
-            enTitle: 'Flower Terrace at Wannsee',
-            artist: 'Max Liebermann (利伯曼)',
-            src: 'assets/images/liebermann_blumenstauden.jpg?v=3.4.0',
-            quote: '“Whenever I see something well painted, I am delighted.”',
-            quoteAuthor: '— Max Liebermann'
-        }
-    ];
+    // 传世名画博览馆数据库 (由 data/masterpieces.js 注入全量名作，具备完整 10 大艺术史展厅分类)
+    const masterpieces = (window.MASTERPIECES && window.MASTERPIECES.length) ? window.MASTERPIECES : [];
 
     let currentMasterpieceIndex = 0;
 
@@ -1011,28 +711,36 @@
 
         masterpieceSelect.innerHTML = '';
 
-        const monetList = masterpieces.filter(a => a.id.startsWith('monet_') || a.id === 'garden');
-        const mastersList = masterpieces.filter(a => !(a.id.startsWith('monet_') || a.id === 'garden'));
+        if (window.ART_CATEGORIES && window.ART_CATEGORIES.length) {
+            window.ART_CATEGORIES.forEach(cat => {
+                const group = document.createElement('optgroup');
+                group.label = cat.name;
+                const items = masterpieces
+                    .map((art, idx) => ({ art, idx }))
+                    .filter(item => item.art.category === cat.id);
 
-        const monetGroup = document.createElement('optgroup');
-        monetGroup.label = `🌟 克劳德·莫奈专栏 (Monet Collection · ${monetList.length}幅)`;
+                items.forEach(({ art, idx }) => {
+                    const opt = document.createElement('option');
+                    opt.value = idx;
+                    opt.textContent = `${idx + 1}. ${art.title} · ${art.artist}`;
+                    group.appendChild(opt);
+                });
 
-        const mastersGroup = document.createElement('optgroup');
-        mastersGroup.label = `🎨 印象派与古典大师杰作 (Masters Collection · ${mastersList.length}幅)`;
-
-        masterpieces.forEach((art, idx) => {
-            const opt = document.createElement('option');
-            opt.value = idx;
-            opt.textContent = `${idx + 1}. ${art.title} · ${art.artist}`;
-            if (art.id.startsWith('monet_') || art.id === 'garden') {
-                monetGroup.appendChild(opt);
-            } else {
-                mastersGroup.appendChild(opt);
-            }
-        });
-
-        masterpieceSelect.appendChild(monetGroup);
-        masterpieceSelect.appendChild(mastersGroup);
+                if (items.length > 0) {
+                    masterpieceSelect.appendChild(group);
+                }
+            });
+        } else {
+            const defaultGroup = document.createElement('optgroup');
+            defaultGroup.label = `🏛️ 传世名画博览馆 (${masterpieces.length}幅)`;
+            masterpieces.forEach((art, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.textContent = `${idx + 1}. ${art.title} · ${art.artist}`;
+                defaultGroup.appendChild(opt);
+            });
+            masterpieceSelect.appendChild(defaultGroup);
+        }
 
         masterpieceSelect.addEventListener('change', (e) => {
             switchMasterpiece(parseInt(e.target.value, 10));
