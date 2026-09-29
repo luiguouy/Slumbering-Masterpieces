@@ -70,6 +70,23 @@
                 </div>
                 <div class="brush-popup-divider"></div>
                 <div class="brush-popup-row">
+                    <span class="brush-label">画面规格</span>
+                    <span id="fit-mode-display" class="brush-badge">智能</span>
+                </div>
+                <div class="fit-mode-tabs">
+                    <button id="fit-auto-btn" class="fit-tab-btn active" type="button" title="智能识别横竖画作自动匹配最佳构图">智能</button>
+                    <button id="fit-contain-btn" class="fit-tab-btn" type="button" title="完整展示整幅画作，绝不裁剪任何花草">完整</button>
+                    <button id="fit-cover-btn" class="fit-tab-btn" type="button" title="居中铺满全屏，无边框全景沉浸">铺满</button>
+                </div>
+                <div class="brush-popup-row fit-scale-row">
+                    <span class="brush-label-sub">画面缩放</span>
+                    <span id="fit-scale-display" class="brush-value">100%</span>
+                </div>
+                <div class="brush-slider-container">
+                    <input type="range" id="fit-scale-slider" min="60" max="140" value="100" step="2">
+                </div>
+                <div class="brush-popup-divider"></div>
+                <div class="brush-popup-row">
                     <span class="brush-label">名画画廊</span>
                     <span id="masterpiece-index" class="brush-badge">1 / 10</span>
                 </div>

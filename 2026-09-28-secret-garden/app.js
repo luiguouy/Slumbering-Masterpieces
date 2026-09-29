@@ -33,6 +33,14 @@
     const toggleFullColorBtn = document.getElementById('toggle-full-color-btn');
     const fullColorBtnText = document.getElementById('full-color-btn-text');
 
+    // 画面规格与缩放控制 UI 元素
+    const fitAutoBtn = document.getElementById('fit-auto-btn');
+    const fitContainBtn = document.getElementById('fit-contain-btn');
+    const fitCoverBtn = document.getElementById('fit-cover-btn');
+    const fitModeDisplay = document.getElementById('fit-mode-display');
+    const fitScaleSlider = document.getElementById('fit-scale-slider');
+    const fitScaleDisplay = document.getElementById('fit-scale-display');
+
     // 名画画廊切换 UI 元素
     const masterpieceSelect = document.getElementById('masterpiece-select');
     const masterpieceIndexBadge = document.getElementById('masterpiece-index');
@@ -60,6 +68,8 @@
         solidDurationMs: 8500,       // 涂抹后 100% 彩色高光保持不褪色时长 (8.5 秒)
         fadeDurationMs: 3500,        // 保持期过后优雅平滑渐隐淡出时长 (3.5 秒)
         cellSize: 14,                // 空间衰减网格分辨率 (px)
+        fitMode: 'auto',             // 画面规格模式: 'auto' (智能) | 'contain' (完整) | 'cover' (铺满)
+        scale: 1.0,                  // 用户自定义缩放倍率 (0.6 ~ 1.4)
     };
 
     let viewportWidth = window.innerWidth;
@@ -216,7 +226,7 @@
     }
 
     /**
-     * 计算名画在视口中的 Cover 居中对齐参数
+     * 计算名画在视口中的几何布局参数 (支持智能自适应/完整呈现/居中铺满与无级缩放)
      */
     function computeImageBounds() {
         if (!isImageLoaded) return;
@@ -225,20 +235,66 @@
         const imgAspect = imgW / imgH;
         const screenAspect = viewportWidth / viewportHeight;
 
-        let drawW, drawH, drawX, drawY;
-        if (screenAspect > imgAspect) {
-            drawW = viewportWidth;
-            drawH = viewportWidth / imgAspect;
-            drawX = 0;
-            drawY = 0;
-        } else {
-            drawH = viewportHeight;
-            drawW = viewportHeight * imgAspect;
-            drawX = (viewportWidth - drawW) / 2;
-            drawY = 0;
+        let effectiveMode = config.fitMode;
+        if (effectiveMode === 'auto') {
+            // 智能判定：横屏遇到竖幅名画自动采用完整呈现 (Contain)，避免被裁剪丢掉大半花卉内容！
+            if (screenAspect > 1.15 && imgAspect < 0.95) {
+                effectiveMode = 'contain';
+            } else if (screenAspect < 0.85 && imgAspect > 1.15) {
+                effectiveMode = 'contain';
+            } else {
+                effectiveMode = 'cover';
+            }
         }
 
-        imageBounds = { x: drawX, y: drawY, w: drawW, h: drawH };
+        let drawW, drawH;
+        if (effectiveMode === 'contain') {
+            // 完整呈现模式：整幅名画 100% 完整容纳于视口内，四周留有雅致古典画廊留白
+            if (screenAspect > imgAspect) {
+                drawH = viewportHeight * 0.94;
+                drawW = drawH * imgAspect;
+            } else {
+                drawW = viewportWidth * 0.94;
+                drawH = drawW / imgAspect;
+            }
+        } else {
+            // 居中铺满模式：无黑边充满视口，且真正绝对居中锚定
+            if (screenAspect > imgAspect) {
+                drawW = viewportWidth;
+                drawH = viewportWidth / imgAspect;
+            } else {
+                drawH = viewportHeight;
+                drawW = viewportHeight * imgAspect;
+            }
+        }
+
+        // 应用用户自定义缩放倍率
+        drawW *= config.scale;
+        drawH *= config.scale;
+
+        // 视口绝对中心对称对齐
+        const drawX = (viewportWidth - drawW) / 2;
+        const drawY = (viewportHeight - drawH) / 2;
+
+        imageBounds = { x: drawX, y: drawY, w: drawW, h: drawH, effectiveMode: effectiveMode };
+    }
+
+    /**
+     * 刷新视口布局与底图重绘
+     */
+    function refreshLayout() {
+        computeImageBounds();
+        renderGrayscaleBackground();
+        if (isFullColorLocked) {
+            revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
+            revealCtx.drawImage(
+                gardenImage,
+                imageBounds.x,
+                imageBounds.y,
+                imageBounds.w,
+                imageBounds.h
+            );
+        }
     }
 
     /**
@@ -541,6 +597,42 @@
     }
 
     /**
+     * 设置画面规格模式 ('auto' | 'contain' | 'cover')
+     */
+    function setFitMode(mode) {
+        if (!['auto', 'contain', 'cover'].includes(mode)) return;
+        config.fitMode = mode;
+
+        // 更新 UI 标签与选项卡高亮
+        if (fitAutoBtn) fitAutoBtn.classList.toggle('active', mode === 'auto');
+        if (fitContainBtn) fitContainBtn.classList.toggle('active', mode === 'contain');
+        if (fitCoverBtn) fitCoverBtn.classList.toggle('active', mode === 'cover');
+
+        if (fitModeDisplay) {
+            const labels = { auto: '智能', contain: '完整', cover: '铺满' };
+            fitModeDisplay.textContent = labels[mode] || mode;
+        }
+
+        refreshLayout();
+    }
+
+    /**
+     * 设置画面手动缩放倍率 (0.6 ~ 1.4)
+     */
+    function setScale(scaleVal) {
+        config.scale = Math.max(0.6, Math.min(1.4, scaleVal));
+
+        if (fitScaleSlider) {
+            fitScaleSlider.value = Math.round(config.scale * 100);
+        }
+        if (fitScaleDisplay) {
+            fitScaleDisplay.textContent = `${Math.round(config.scale * 100)}%`;
+        }
+
+        refreshLayout();
+    }
+
+    /**
      * 绑定画笔控制面板事件
      */
     function setupBrushUI() {
@@ -569,15 +661,6 @@
             brushDurationSlider.addEventListener('click', (e) => e.stopPropagation());
         }
 
-        // 点击外部空白区域自动收起调节弹窗
-        window.addEventListener('click', (e) => {
-            if (!brushPopup.contains(e.target) && !brushToggleBtn.contains(e.target)) {
-                brushPopup.classList.remove('open');
-                brushToggleBtn.classList.remove('active');
-            }
-        });
-
-        // 鼠标移入控件区域时，确保交互响应灵敏
         // 绑定一键全彩盛放按钮
         if (toggleFullColorBtn) {
             toggleFullColorBtn.addEventListener('click', (e) => {
@@ -586,9 +669,51 @@
             });
         }
 
-        // 初始化画笔大小、留存时间与预览
+        // 绑定画面规格模式选项卡
+        if (fitAutoBtn) {
+            fitAutoBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                setFitMode('auto');
+            });
+        }
+        if (fitContainBtn) {
+            fitContainBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                setFitMode('contain');
+            });
+        }
+        if (fitCoverBtn) {
+            fitCoverBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                setFitMode('cover');
+            });
+        }
+
+        // 绑定画面缩放滑块
+        if (fitScaleSlider) {
+            fitScaleSlider.addEventListener('input', (e) => {
+                setScale(parseInt(e.target.value, 10) / 100);
+            });
+            fitScaleSlider.addEventListener('click', (e) => e.stopPropagation());
+        }
+
+        // 点击外部空白区域自动收起调节弹窗
+        window.addEventListener('click', (e) => {
+            if (!brushPopup.contains(e.target) && !brushToggleBtn.contains(e.target)) {
+                brushPopup.classList.remove('open');
+                brushToggleBtn.classList.remove('active');
+            }
+        });
+
+        // 阻止弹窗内部鼠标移动冒泡触发画布笔刷
+        brushPopup.addEventListener('mousemove', (e) => e.stopPropagation());
+        brushToggleBtn.addEventListener('mousemove', (e) => e.stopPropagation());
+
+        // 初始化画笔大小、留存时间、规格模式与缩放
         updateBrushSize(config.brushRadius);
         updateDuration(config.totalDurationSeconds);
+        setFitMode(config.fitMode);
+        setScale(config.scale);
     }
 
     /**
@@ -866,6 +991,11 @@
         getMasterpieces: () => masterpieces,
         getCurrentIndex: () => currentMasterpieceIndex,
         setMasterpiece: switchMasterpiece,
+        setFitMode: setFitMode,
+        getFitMode: () => config.fitMode,
+        setScale: setScale,
+        getScale: () => config.scale,
+        getBounds: () => imageBounds,
         toggleFullColor: toggleFullColor,
         isFullColor: () => isFullColorLocked,
         stroke: (x1, y1, x2, y2) => {

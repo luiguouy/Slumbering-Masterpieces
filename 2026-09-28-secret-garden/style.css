@@ -197,8 +197,11 @@ html, body {
 .brush-popup {
     margin-top: 10px;
     width: 234px;
+    max-height: 86vh;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 16px 18px;
-    background: rgba(15, 18, 24, 0.86);
+    background: rgba(15, 18, 24, 0.88);
     border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 12px;
     backdrop-filter: blur(16px);
@@ -211,6 +214,15 @@ html, body {
     pointer-events: none;
     transform: translateY(-8px) scale(0.96);
     transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brush-popup::-webkit-scrollbar {
+    width: 4px;
+}
+
+.brush-popup::-webkit-scrollbar-thumb {
+    background: rgba(238, 214, 170, 0.25);
+    border-radius: 2px;
 }
 
 .brush-popup.open {
@@ -429,4 +441,54 @@ html, body {
 
 .full-color-btn:hover .full-color-icon {
     transform: rotate(20deg) scale(1.15);
+}
+
+/* ==========================================================================
+   画面规格选项卡与缩放控制 (Aspect Ratio Fit Modes & Scaling)
+   ========================================================================== */
+.fit-mode-tabs {
+    display: flex;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    padding: 2px;
+    gap: 3px;
+    width: 100%;
+}
+
+.fit-tab-btn {
+    flex: 1;
+    padding: 5px 0;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.65);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.fit-tab-btn:hover {
+    color: #eed6aa;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.fit-tab-btn.active {
+    background: rgba(238, 214, 170, 0.2);
+    border-color: rgba(238, 214, 170, 0.55);
+    color: #eed6aa;
+    font-weight: 500;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+}
+
+.fit-scale-row {
+    margin-top: -2px;
+}
+
+.brush-label-sub {
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.65);
 }
