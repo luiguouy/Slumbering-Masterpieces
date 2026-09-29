@@ -17,6 +17,8 @@
     const bgCanvas = document.getElementById('bg-canvas');
     const revealCanvas = document.getElementById('reveal-canvas');
     const artQuote = document.getElementById('art-quote');
+    const quoteTextEl = artQuote ? artQuote.querySelector('.quote-text') : null;
+    const quoteAuthorEl = artQuote ? artQuote.querySelector('.quote-author') : null;
     const cursor = document.getElementById('custom-cursor');
     const cursorRing = cursor ? cursor.querySelector('.cursor-ring') : null;
 
@@ -28,6 +30,12 @@
     const brushPreviewDot = document.getElementById('brush-preview-dot');
     const brushDurationSlider = document.getElementById('brush-duration-slider');
     const brushDurationDisplay = document.getElementById('brush-duration-display');
+
+    // 名画画廊切换 UI 元素
+    const masterpieceSelect = document.getElementById('masterpiece-select');
+    const masterpieceIndexBadge = document.getElementById('masterpiece-index');
+    const prevArtBtn = document.getElementById('prev-art-btn');
+    const nextArtBtn = document.getElementById('next-art-btn');
 
     const bgCtx = bgCanvas.getContext('2d');
     const revealCtx = revealCanvas.getContext('2d');
@@ -75,6 +83,102 @@
     let strokeMoveDistance = 0;
     let lastMoveVector = { x: 0, y: 0 };
     let isInitialized = false;
+
+    // 传世花卉与风景油画名作画廊 (精选全球最富盛名的 10 幅大师杰作)
+    const masterpieces = [
+        {
+            id: 'garden',
+            title: '莫奈的秘密花园',
+            enTitle: 'The Slumbering Garden',
+            artist: 'Claude Monet 风格',
+            src: 'assets/images/garden.jpg?v=3.3.0',
+            quote: '“I must have flowers, always, and always.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_vetheuil',
+            title: '维特伊的艺术家花园',
+            enTitle: "The Artist's Garden at Vétheuil",
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_nga_vetheuil.jpg?v=3.3.0',
+            quote: '“The richness I achieve comes from nature, the source of my inspiration.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_irises',
+            title: '大都会的鸢尾花丛',
+            enTitle: 'Irises in the Garden',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_met_irises.jpg?v=3.3.0',
+            quote: '“Colour is my day-long obsession, joy and torment.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'renoir_wargemont',
+            title: '瓦日蒙玫瑰花海',
+            enTitle: 'A Garden at Wargemont',
+            artist: 'Pierre-Auguste Renoir (雷诺阿)',
+            src: 'assets/images/renoir_wargemont.jpg?v=3.3.0',
+            quote: '“The pain passes, but the beauty remains.”',
+            quoteAuthor: '— Pierre-Auguste Renoir'
+        },
+        {
+            id: 'caillebotte_dahlias',
+            title: '大丽花与花园',
+            enTitle: 'Dahlias in the Garden',
+            artist: 'Gustave Caillebotte (卡耶博特)',
+            src: 'assets/images/caillebotte_nga_dahlias.jpg?v=3.3.0',
+            quote: '“To paint nature as it is, pure and untamed.”',
+            quoteAuthor: '— Gustave Caillebotte'
+        },
+        {
+            id: 'sorolla_garden',
+            title: '索罗拉故居庭院',
+            enTitle: 'Garden of the Sorolla House',
+            artist: 'Joaquín Sorolla (索罗拉)',
+            src: 'assets/images/sorolla_garden.jpg?v=3.3.0',
+            quote: '“Art has no color without light.”',
+            quoteAuthor: '— Joaquín Sorolla'
+        },
+        {
+            id: 'hassam_celia',
+            title: '西莉亚的海岛盛开花园',
+            enTitle: "Celia Thaxter's Island Garden",
+            artist: 'Childe Hassam (哈萨姆)',
+            src: 'assets/images/hassam_celia_garden.jpg?v=3.3.0',
+            quote: '“The portrait of a garden is the portrait of summer itself.”',
+            quoteAuthor: '— Childe Hassam'
+        },
+        {
+            id: 'nolde_flower_garden',
+            title: '盛放花境',
+            enTitle: 'Flower Garden (Blumengarten)',
+            artist: 'Emil Nolde (诺尔德)',
+            src: 'assets/images/nolde_blumengarten.jpg?v=3.3.0',
+            quote: '“Color is life, for a world without color appears to us as dead.”',
+            quoteAuthor: '— Emil Nolde'
+        },
+        {
+            id: 'liebermann_terrace',
+            title: '万纳湖畔花境',
+            enTitle: 'Flower Terrace at Wannsee',
+            artist: 'Max Liebermann (利伯曼)',
+            src: 'assets/images/liebermann_blumenstauden.jpg?v=3.3.0',
+            quote: '“Whenever I see something well painted, I am delighted.”',
+            quoteAuthor: '— Max Liebermann'
+        },
+        {
+            id: 'knight_roses',
+            title: '溪畔盛放的玫瑰花丛',
+            enTitle: 'Roses by the Riverbank',
+            artist: 'Daniel Ridgway Knight (奈特)',
+            src: 'assets/images/knight_le_rose.jpg?v=3.3.0',
+            quote: '“Nature in her morning gown is the greatest muse of all.”',
+            quoteAuthor: '— Daniel Ridgway Knight'
+        }
+    ];
+
+    let currentMasterpieceIndex = 0;
 
     // 名画原图加载与几何参数
     const gardenImage = new Image();
@@ -472,6 +576,81 @@
     }
 
     /**
+     * 切换当前激活的名画
+     * @param {number} index 画作索引 (0 ~ masterpieces.length - 1)
+     */
+    function switchMasterpiece(index) {
+        if (index < 0 || index >= masterpieces.length) return;
+        currentMasterpieceIndex = index;
+        const art = masterpieces[index];
+
+        // 1. 重置显色状态网格与离屏采样遮罩
+        if (gridAlpha) gridAlpha.fill(0);
+        if (gridLastStroke) gridLastStroke.fill(0);
+        if (maskSmallImageData) {
+            const d = maskSmallImageData.data;
+            for (let i = 0; i < totalCells; i++) {
+                d[i * 4 + 3] = 0;
+            }
+        }
+
+        // 2. 清理顶层彩色画布
+        revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
+
+        // 3. 更新诗意名言与作者署名
+        if (quoteTextEl) quoteTextEl.textContent = art.quote;
+        if (quoteAuthorEl) quoteAuthorEl.textContent = art.quoteAuthor;
+
+        // 4. 更新控制面板下拉菜单与画作编号徽章
+        if (masterpieceSelect) masterpieceSelect.value = index;
+        if (masterpieceIndexBadge) masterpieceIndexBadge.textContent = `${index + 1} / ${masterpieces.length}`;
+
+        // 5. 载入新名画原图并重新渲染古典灰阶底图
+        isImageLoaded = false;
+        gardenImage.src = art.src;
+    }
+
+    /**
+     * 初始化名画画廊选择器 UI
+     */
+    function setupGalleryUI() {
+        if (!masterpieceSelect) return;
+
+        masterpieceSelect.innerHTML = '';
+        masterpieces.forEach((art, idx) => {
+            const opt = document.createElement('option');
+            opt.value = idx;
+            opt.textContent = `${idx + 1}. ${art.title} · ${art.artist}`;
+            masterpieceSelect.appendChild(opt);
+        });
+
+        masterpieceSelect.addEventListener('change', (e) => {
+            switchMasterpiece(parseInt(e.target.value, 10));
+        });
+        masterpieceSelect.addEventListener('click', (e) => e.stopPropagation());
+
+        if (prevArtBtn) {
+            prevArtBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const nextIdx = (currentMasterpieceIndex - 1 + masterpieces.length) % masterpieces.length;
+                switchMasterpiece(nextIdx);
+            });
+        }
+
+        if (nextArtBtn) {
+            nextArtBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const nextIdx = (currentMasterpieceIndex + 1) % masterpieces.length;
+                switchMasterpiece(nextIdx);
+            });
+        }
+
+        // 初始选中第 1 幅
+        masterpieceSelect.value = 0;
+        if (masterpieceIndexBadge) masterpieceIndexBadge.textContent = `1 / ${masterpieces.length}`;
+    }
+
+    /**
      * 鼠标、触控与交互事件监听
      */
     function setupEvents() {
@@ -603,10 +782,8 @@
 
         handleResize();
         setupBrushUI();
+        setupGalleryUI();
         setupEvents();
-
-        // 载入高精合成名画原图
-        gardenImage.src = 'assets/images/garden.jpg?v=3.2.0';
 
         gardenImage.onload = () => {
             isImageLoaded = true;
@@ -614,11 +791,8 @@
             renderGrayscaleBackground();
         };
 
-        if (gardenImage.complete && gardenImage.naturalWidth > 0) {
-            isImageLoaded = true;
-            computeImageBounds();
-            renderGrayscaleBackground();
-        }
+        // 默认载入首幅传世名画
+        switchMasterpiece(0);
 
         requestAnimationFrame(renderLoop);
     }
@@ -630,6 +804,9 @@
         setBrushRadius: updateBrushSize,
         getDuration: () => config.totalDurationSeconds,
         setDuration: updateDuration,
+        getMasterpieces: () => masterpieces,
+        getCurrentIndex: () => currentMasterpieceIndex,
+        setMasterpiece: switchMasterpiece,
         stroke: (x1, y1, x2, y2) => {
             currentStrokeId++;
             strokeLine({ x: x1, y: y1 }, { x: x2, y: y2 }, currentStrokeId, performance.now());
