@@ -97,97 +97,144 @@
     let isInitialized = false;
     let isFullColorLocked = false;
 
-    // 传世花卉与风景油画名作画廊 (精选全球最富盛名的 10 幅大师杰作)
+    // 传世花卉与风景油画名作画廊 (大幅扩充莫奈名画专题，共 15 幅大师传世杰作)
     const masterpieces = [
+        // ======= 🌟 克劳德·莫奈专属艺术画廊 (Monet Collection) =======
         {
             id: 'garden',
-            title: '莫奈的秘密花园',
+            title: '莫奈的秘密花园 · 沉睡庄园',
             enTitle: 'The Slumbering Garden',
-            artist: 'Claude Monet 风格',
-            src: 'assets/images/garden.jpg?v=3.3.0',
+            artist: 'Claude Monet (莫奈风格)',
+            src: 'assets/images/garden.jpg?v=3.4.0',
             quote: '“I must have flowers, always, and always.”',
             quoteAuthor: '— Claude Monet'
         },
         {
-            id: 'monet_vetheuil',
-            title: '维特伊的艺术家花园',
-            enTitle: "The Artist's Garden at Vétheuil",
+            id: 'monet_giverny_path',
+            title: '吉维尼的花园小径 (1902)',
+            enTitle: 'The Garden Path at Giverny',
             artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_nga_vetheuil.jpg?v=3.3.0',
-            quote: '“The richness I achieve comes from nature, the source of my inspiration.”',
+            src: 'assets/images/thumb_monet_giverny.jpg?v=3.4.0',
+            quote: '“Perhaps I owe having become a painter to flowers.”',
             quoteAuthor: '— Claude Monet'
         },
         {
-            id: 'monet_irises',
-            title: '大都会的鸢尾花丛',
+            id: 'monet_argenteuil',
+            title: '阿让特伊的艺术家花园 (1873)',
+            enTitle: "The Artist's Garden at Argenteuil",
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/thumb_monet_argenteuil.jpg?v=3.4.0',
+            quote: '“My garden is my most beautiful masterpiece.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_met_irises',
+            title: '大都会的鸢尾花丛 (1890)',
             enTitle: 'Irises in the Garden',
             artist: 'Claude Monet (莫奈)',
-            src: 'assets/images/monet_met_irises.jpg?v=3.3.0',
+            src: 'assets/images/monet_met_irises.jpg?v=3.4.0',
             quote: '“Colour is my day-long obsession, joy and torment.”',
             quoteAuthor: '— Claude Monet'
         },
         {
+            id: 'monet_vetheuil',
+            title: '维特伊的艺术家花园 (1880)',
+            enTitle: "The Artist's Garden at Vétheuil",
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/monet_nga_vetheuil.jpg?v=3.4.0',
+            quote: '“The richness I achieve comes from nature, the source of my inspiration.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_sainte_adresse',
+            title: '圣阿德雷斯的露台花园 (1867)',
+            enTitle: 'Garden at Sainte-Adresse',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/preview_sainte_adresse.jpg?v=3.4.0',
+            quote: '“Everyone discusses my art and pretends to understand, when it is simply necessary to love.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_gladiolus',
+            title: '剑兰花境 (1876)',
+            enTitle: 'Gladioli in the Garden',
+            artist: 'Claude Monet (莫奈)',
+            src: 'assets/images/thumb_monet_gladiolus.jpg?v=3.4.0',
+            quote: '“I would like to paint the way a bird sings.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_giverny_morning',
+            title: '晨曦繁花 · 吉维尼花境',
+            enTitle: 'Giverny Garden in Morning Light',
+            artist: 'Claude Monet (莫奈风格)',
+            src: 'assets/images/garden_refined.jpg?v=3.4.0',
+            quote: '“The light constantly changes, and that alters the atmosphere and beauty of things every minute.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        {
+            id: 'monet_summer_estate',
+            title: '吉维尼夏日庄园 · 繁花满园',
+            enTitle: 'Summer Estate at Giverny',
+            artist: 'Claude Monet (莫奈风格)',
+            src: 'assets/images/garden_masterpiece_v2.jpg?v=3.4.0',
+            quote: '“My heart is forever bound to Giverny.”',
+            quoteAuthor: '— Claude Monet'
+        },
+        // ======= 🎨 印象派与古典大师杰作 (Impressionist Masters) =======
+        {
             id: 'renoir_wargemont',
-            title: '瓦日蒙玫瑰花海',
+            title: '瓦日蒙玫瑰花海 (1879)',
             enTitle: 'A Garden at Wargemont',
             artist: 'Pierre-Auguste Renoir (雷诺阿)',
-            src: 'assets/images/renoir_wargemont.jpg?v=3.3.0',
+            src: 'assets/images/renoir_wargemont.jpg?v=3.4.0',
             quote: '“The pain passes, but the beauty remains.”',
             quoteAuthor: '— Pierre-Auguste Renoir'
         },
         {
             id: 'caillebotte_dahlias',
-            title: '大丽花与花园',
+            title: '大丽花与小热讷维利耶花园 (1893)',
             enTitle: 'Dahlias in the Garden',
             artist: 'Gustave Caillebotte (卡耶博特)',
-            src: 'assets/images/caillebotte_nga_dahlias.jpg?v=3.3.0',
+            src: 'assets/images/caillebotte_nga_dahlias.jpg?v=3.4.0',
             quote: '“To paint nature as it is, pure and untamed.”',
             quoteAuthor: '— Gustave Caillebotte'
         },
         {
             id: 'sorolla_garden',
-            title: '索罗拉故居庭院',
+            title: '索罗拉故居庭院 (1919)',
             enTitle: 'Garden of the Sorolla House',
             artist: 'Joaquín Sorolla (索罗拉)',
-            src: 'assets/images/sorolla_garden.jpg?v=3.3.0',
+            src: 'assets/images/sorolla_garden.jpg?v=3.4.0',
             quote: '“Art has no color without light.”',
             quoteAuthor: '— Joaquín Sorolla'
         },
         {
             id: 'hassam_celia',
-            title: '西莉亚的海岛盛开花园',
+            title: '西莉亚的海岛盛开花园 (1890)',
             enTitle: "Celia Thaxter's Island Garden",
             artist: 'Childe Hassam (哈萨姆)',
-            src: 'assets/images/hassam_celia_garden.jpg?v=3.3.0',
+            src: 'assets/images/hassam_celia_garden.jpg?v=3.4.0',
             quote: '“The portrait of a garden is the portrait of summer itself.”',
             quoteAuthor: '— Childe Hassam'
         },
         {
             id: 'nolde_flower_garden',
-            title: '盛放花境',
+            title: '盛放花境 (1908)',
             enTitle: 'Flower Garden (Blumengarten)',
             artist: 'Emil Nolde (诺尔德)',
-            src: 'assets/images/nolde_blumengarten.jpg?v=3.3.0',
+            src: 'assets/images/nolde_blumengarten.jpg?v=3.4.0',
             quote: '“Color is life, for a world without color appears to us as dead.”',
             quoteAuthor: '— Emil Nolde'
         },
         {
             id: 'liebermann_terrace',
-            title: '万纳湖畔花境',
+            title: '万纳湖畔花境 (1915)',
             enTitle: 'Flower Terrace at Wannsee',
             artist: 'Max Liebermann (利伯曼)',
-            src: 'assets/images/liebermann_blumenstauden.jpg?v=3.3.0',
+            src: 'assets/images/liebermann_blumenstauden.jpg?v=3.4.0',
             quote: '“Whenever I see something well painted, I am delighted.”',
             quoteAuthor: '— Max Liebermann'
-        },
-        {
-            id: 'knight_roses',
-            title: '溪畔盛放的玫瑰花丛',
-            enTitle: 'Roses by the Riverbank',
-            artist: 'Daniel Ridgway Knight (奈特)',
-            src: 'assets/images/knight_le_rose.jpg?v=3.3.0',
-            quote: '“Nature in her morning gown is the greatest muse of all.”',
-            quoteAuthor: '— Daniel Ridgway Knight'
         }
     ];
 
@@ -801,12 +848,26 @@
         if (!masterpieceSelect) return;
 
         masterpieceSelect.innerHTML = '';
+
+        const monetGroup = document.createElement('optgroup');
+        monetGroup.label = '🌟 克劳德·莫奈专栏 (Monet Collection · 9幅)';
+
+        const mastersGroup = document.createElement('optgroup');
+        mastersGroup.label = '🎨 印象派大师杰作 (Masters Collection · 6幅)';
+
         masterpieces.forEach((art, idx) => {
             const opt = document.createElement('option');
             opt.value = idx;
             opt.textContent = `${idx + 1}. ${art.title} · ${art.artist}`;
-            masterpieceSelect.appendChild(opt);
+            if (idx < 9) {
+                monetGroup.appendChild(opt);
+            } else {
+                mastersGroup.appendChild(opt);
+            }
         });
+
+        masterpieceSelect.appendChild(monetGroup);
+        masterpieceSelect.appendChild(mastersGroup);
 
         masterpieceSelect.addEventListener('change', (e) => {
             switchMasterpiece(parseInt(e.target.value, 10));
