@@ -1,0 +1,296 @@
+/* ==========================================================================
+   Masterpiece Garden - Pure Fine Art Stylesheet (v3.0.0)
+   ========================================================================== */
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #0d0f12;
+    cursor: none; /* 统一使用极简艺术光标 */
+    user-select: none;
+    -webkit-user-select: none;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+#art-stage {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* 底层：古典灰阶花园 Canvas */
+#bg-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* 顶层：动态彩色唤醒 Canvas */
+#reveal-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* 画面中唯一切题的名人名言：悬浮于画面上方纯净天空，字迹沉静深邃 */
+.art-quote-container {
+    position: absolute;
+    top: 14%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    text-align: center;
+    pointer-events: none;
+    max-width: 860px;
+    padding: 12px 28px;
+    background: radial-gradient(ellipse at center, rgba(15, 18, 22, 0.40) 0%, rgba(15, 18, 22, 0) 75%);
+    border-radius: 8px;
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.quote-text {
+    font-size: clamp(1.4rem, 2.7vw, 2.4rem);
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    text-shadow: 
+        0 2px 12px rgba(0, 0, 0, 0.95),
+        0 0 24px rgba(0, 0, 0, 0.8),
+        0 1px 2px rgba(0, 0, 0, 1.0);
+    line-height: 1.45;
+    margin-bottom: 8px;
+}
+
+.quote-author {
+    display: block;
+    font-size: clamp(0.85rem, 1.15vw, 1.1rem);
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: #eed6aa;
+    text-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.95),
+        0 0 16px rgba(0, 0, 0, 0.8);
+}
+
+/* 交互时名言微弱隐退，让观者全神贯注于绘画本身，但依然温润可读 */
+.art-quote-container.subtle {
+    opacity: 0.60;
+    transform: translate(-50%, -52%) scale(0.99);
+}
+
+/* 极简典雅艺术光标 (纯净纤细白环，不遮挡与污染名画色彩) */
+#custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cursor-dot {
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+.cursor-ring {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+}
+
+#custom-cursor.active .cursor-ring {
+    transform: translate(-50%, -50%) scale(1.18);
+    border-color: rgba(255, 255, 255, 0.75);
+}
+
+@media (pointer: coarse) {
+    #custom-cursor {
+        display: none !important;
+    }
+    html, body {
+        cursor: auto;
+    }
+}
+
+/* ==========================================================================
+   画笔大小调节控件 (Artisan Brush Control)
+   ========================================================================== */
+.brush-control-panel {
+    position: absolute;
+    top: 24px;
+    right: 28px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    cursor: default;
+    user-select: none;
+}
+
+.brush-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(18, 22, 28, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brush-btn:hover {
+    background: rgba(28, 34, 44, 0.85);
+    border-color: rgba(238, 214, 170, 0.7);
+    color: #eed6aa;
+    transform: scale(1.06);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 12px rgba(238, 214, 170, 0.3);
+}
+
+.brush-btn.active {
+    background: rgba(35, 42, 54, 0.9);
+    border-color: #eed6aa;
+    color: #eed6aa;
+}
+
+.brush-popup {
+    margin-top: 10px;
+    width: 200px;
+    padding: 16px 18px;
+    background: rgba(15, 18, 24, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 12px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px) scale(0.96);
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brush-popup.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+}
+
+.brush-popup-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+    margin: 2px 0;
+}
+
+.brush-popup-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brush-label {
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.75);
+    text-transform: uppercase;
+}
+
+.brush-value {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #eed6aa;
+    font-family: monospace;
+}
+
+.brush-slider-container {
+    width: 100%;
+}
+
+.brush-slider-container input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
+.brush-slider-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #eed6aa;
+    box-shadow: 0 0 8px rgba(238, 214, 170, 0.6);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.brush-slider-container input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.25);
+}
+
+.brush-preview-wrap {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    overflow: hidden;
+}
+
+.brush-preview-dot {
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(238, 214, 170, 0.8) 0%, rgba(238, 214, 170, 0.25) 70%, transparent 100%);
+    border: 1px solid rgba(238, 214, 170, 0.6);
+    transition: width 0.1s ease, height 0.1s ease;
+}
