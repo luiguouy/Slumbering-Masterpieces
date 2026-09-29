@@ -30,6 +30,8 @@
     const brushPreviewDot = document.getElementById('brush-preview-dot');
     const brushDurationSlider = document.getElementById('brush-duration-slider');
     const brushDurationDisplay = document.getElementById('brush-duration-display');
+    const toggleFullColorBtn = document.getElementById('toggle-full-color-btn');
+    const fullColorBtnText = document.getElementById('full-color-btn-text');
 
     // 名画画廊切换 UI 元素
     const masterpieceSelect = document.getElementById('masterpiece-select');
@@ -83,6 +85,7 @@
     let strokeMoveDistance = 0;
     let lastMoveVector = { x: 0, y: 0 };
     let isInitialized = false;
+    let isFullColorLocked = false;
 
     // 传世花卉与风景油画名作画廊 (精选全球最富盛名的 10 幅大师杰作)
     const masterpieces = [
@@ -417,15 +420,22 @@
         let hasActiveColor = false;
 
         if (data && totalCells > 0) {
-            const solidMs = config.solidDurationMs;
-            const fadeMs = config.fadeDurationMs;
-
-            for (let i = 0; i < totalCells; i++) {
-                const alpha = gridAlpha[i];
-                if (alpha <= 0.001) {
-                    data[i * 4 + 3] = 0;
-                    continue;
+            if (isFullColorLocked) {
+                // 一键全彩模式：所有网格单元强制展现 100% 原画真彩
+                hasActiveColor = true;
+                for (let i = 0; i < totalCells; i++) {
+                    data[i * 4 + 3] = 255;
                 }
+            } else {
+                const solidMs = config.solidDurationMs;
+                const fadeMs = config.fadeDurationMs;
+
+                for (let i = 0; i < totalCells; i++) {
+                    const alpha = gridAlpha[i];
+                    if (alpha <= 0.001) {
+                        data[i * 4 + 3] = 0;
+                        continue;
+                    }
 
                 const elapsed = currentTime - gridLastTouch[i];
                 let currentAlpha = alpha;
@@ -453,6 +463,7 @@
                 }
             }
         }
+    }
 
         // 3. 将小尺寸网格遮罩通过 GPU 双线性平滑插值投射到全屏遮罩
         revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
@@ -567,12 +578,55 @@
         });
 
         // 鼠标移入控件区域时，确保交互响应灵敏
-        brushPopup.addEventListener('mousemove', (e) => e.stopPropagation());
-        brushToggleBtn.addEventListener('mousemove', (e) => e.stopPropagation());
+        // 绑定一键全彩盛放按钮
+        if (toggleFullColorBtn) {
+            toggleFullColorBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFullColor();
+            });
+        }
 
         // 初始化画笔大小、留存时间与预览
         updateBrushSize(config.brushRadius);
         updateDuration(config.totalDurationSeconds);
+    }
+
+    /**
+     * 切换一键全彩盛放状态 (还原为原始全彩 或 恢复沉睡黑白)
+     * @param {boolean} [forceState] 可选的强制布尔状态
+     */
+    function toggleFullColor(forceState) {
+        const targetState = (forceState !== undefined) ? forceState : !isFullColorLocked;
+        isFullColorLocked = targetState;
+
+        if (isFullColorLocked) {
+            // 瞬间将全网格充满至 100% 满彩
+            if (gridAlpha) gridAlpha.fill(1.0);
+            if (gridLastTouch) gridLastTouch.fill(performance.now());
+
+            if (fullColorBtnText) fullColorBtnText.textContent = '恢复黑白沉睡';
+            if (toggleFullColorBtn) {
+                toggleFullColorBtn.classList.add('active');
+                toggleFullColorBtn.title = '点击让画面重归静谧黑白素描';
+            }
+        } else {
+            // 清空全彩，重归沉睡灰阶
+            if (gridAlpha) gridAlpha.fill(0);
+            if (gridLastStroke) gridLastStroke.fill(0);
+            if (maskSmallImageData) {
+                const d = maskSmallImageData.data;
+                for (let i = 0; i < totalCells; i++) {
+                    d[i * 4 + 3] = 0;
+                }
+            }
+            revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
+
+            if (fullColorBtnText) fullColorBtnText.textContent = '一键全彩盛放';
+            if (toggleFullColorBtn) {
+                toggleFullColorBtn.classList.remove('active');
+                toggleFullColorBtn.title = '一键将整幅画还原为原始真彩';
+            }
+        }
     }
 
     /**
@@ -583,6 +637,11 @@
         if (index < 0 || index >= masterpieces.length) return;
         currentMasterpieceIndex = index;
         const art = masterpieces[index];
+
+        // 切换名画时复位全彩模式
+        if (isFullColorLocked) {
+            toggleFullColor(false);
+        }
 
         // 1. 重置显色状态网格与离屏采样遮罩
         if (gridAlpha) gridAlpha.fill(0);
@@ -807,6 +866,8 @@
         getMasterpieces: () => masterpieces,
         getCurrentIndex: () => currentMasterpieceIndex,
         setMasterpiece: switchMasterpiece,
+        toggleFullColor: toggleFullColor,
+        isFullColor: () => isFullColorLocked,
         stroke: (x1, y1, x2, y2) => {
             currentStrokeId++;
             strokeLine({ x: x1, y: y1 }, { x: x2, y: y2 }, currentStrokeId, performance.now());
