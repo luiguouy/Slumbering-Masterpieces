@@ -1,52 +1,56 @@
 # The Slumbering Garden (沉睡的花园)
 
-> **Fine Arts Digital Exhibition · An Interactive Chromatic Awakening**  
+> **Fine Arts Digital Exhibition · An Interactive Chromatic Awakening (v3.2.0)**  
+> *“I must have flowers, always, and always.” —— Claude Monet*  
 > *"Touch the dormant monochrome; breathe fleeting vividness into the petals."*
 
 ---
 
 ## 🎨 艺术理念 (Artistic Philosophy)
 
-《The Slumbering Garden》是一件融合古典油画美学与数字交互的参赛级网络艺术装置。
+《**The Slumbering Garden**》是一件融合古典油画美学与数字图形学交互的传世名画级网络艺术装置。
 整个画面以一座阳光沐浴下的欧洲古典庄园花园为主体——满园繁花（紫藤花廊、爬藤玫瑰、飞燕草、牡丹、绣球花丛与鸢尾花海）和透彻湛蓝的天空。
 
-未触碰时，整座花园宛如静止沉睡的古典灰阶版画，庄严素穆；  
-而当观者的鼠标或指尖轻抚画面，沉睡的生机在指尖被瞬间点亮——划过之处绽放真实的缤纷原彩，并伴随若隐若现的微光花粉；  
-当指尖离去，绚烂的色彩随时间如水波般静静退去，再度归于宁静的黑白。
+- **静止沉睡**：未触碰时，整座花园宛如静止沉睡的古典灰阶版画，庄严素穆；
+- **多层浸染唤醒**：随着观者的鼠标拂过画面，沉睡的生机在指尖被层层唤醒——必须在同一区域来回擦拭 3~4 次，才能从朦胧浅彩完全还原为灿烂真彩；
+- **停驻盛开**：鼠标停驻之处，沉睡的花海将在 0.4 秒内绚烂绽放，只要悬停便永恒盛开；
+- **优雅退隐**：当指尖离去，绚烂的色彩随时间如水波般静静退去，再度归于宁静的黑白。
 
 ---
 
-## ✨ 核心技术与交互特色 (Technical Highlights)
+## ✨ 核心功能与交互特性 (Core Features)
 
-1. **双缓冲像素级严格对齐 (Dual-Layer Pixel-Perfect Compositing)**：
-   - 底层为经过高级明暗对比与素描质感调色（CSS Grayscale & Contrast）的静态画卷；
-   - 顶层由高帧率 HTML5 Canvas 通过几何映射实时自适应视口尺寸（Cover Mode），确保色彩唤醒区域与底层素描背景 100.00% 严丝合缝重叠。
-2. **水彩柔焦羽化与轨迹插值算法 (Smooth Trajectory Interpolation & Radial Mask)**：
-   - 采用两点间直线插值补点算法，高速挥动光标也不会产生断点或齿状裂纹；
-   - 采用径向渐变柔和晕染（Radial Gradient），模拟水彩在宣纸上渗透的柔润光晕。
-3. **触碰悬停与衰减记忆机制 (Hover Persistence & Smooth Decay)**：
-   - 光标悬停在任意花朵或天空上时，该处持续保持灿烂绽放；
-   - 移动后的轨迹在设定的秒数（默认 2.8 秒，可自由调节）内按非线性平滑曲线自然淡隐。
-4. **金色光尘粒子系统 (Golden Pollen Sparkle Engine)**：
-   - 随笔触轻盈诞生，伴随向上微风与微弱辉光，赋予画面生命觉醒的灵性氛围。
-5. **典雅艺术排版与纯净模式 (Curator Typography & Pure Mode)**：
-   - 引入经典文艺复兴雕刻与衬线字体（Cinzel & Cormorant Garamond）；
-   - 在用户沉浸作画时，文字自动轻柔淡隐；
-   - 右下角提供半透明毛玻璃调控台（支持笔刷粗细、记忆时间微调、全彩保留模式、一键全屏纯净模式以及自定义本地画作更换）。
+1. **多层划动渐进显色机制 (Multi-Pass Accumulation)**：
+   - 告别单次轻划即完全全彩的生硬体验；
+   - 单次滑过仅透出约 25% 淡淡浅彩，需来回划动 3~4 次层层叠加至 100% 满彩原画。
+2. **焦点停驻充能机制 (Hover Focus Charge)**：
+   - 鼠标在原地停顿超过 40ms 即进入充能状态，约 0.4~0.5 秒完全绽放；
+   - 悬停之处时间戳持续刷新，永不衰减。
+3. **色彩留存与优雅退色 (Hold & Fade Decay)**：
+   - 涂抹出的彩色默认完整留存 **8.5 秒**不褪色；
+   - 随后在 **3.5 秒**内按非线性平滑曲线自然淡隐（默认总寿命 12.0 秒）。
+4. **典雅画笔与色彩留存调控台 (Artisan Control Panel)**：
+   - 右上角常驻典雅的羽毛画笔小图标；
+   - 点击展开高透磨砂玻璃面板，支持：
+     - **画笔大小**：35px ~ 160px 无级滑块，带动态圆圈微缩预览与视口光标圆环实时等比联动；
+     - **色彩留存**：4秒 ~ 30秒 自由定制，满足慢速欣赏或快速恢复等不同偏好；
+     - 点击空白处自动平滑折叠收起。
+5. **双线性平滑插值遮罩渲染 (Bilinear BILATERAL Smoothing)**：
+   - 采用空间状态衰减网格（Spatial Decay Grid）搭配 GPU 双线性硬件放大，边缘如水彩渗墨般柔和自然，杜绝任何锯齿和性能抖动。
 
 ---
 
-## 🚀 启动与预览方式 (Quick Start)
+## 🚀 启动与体验方式 (Quick Start)
 
 本项目为**零第三方依赖**的原生前端纯粹架构，任何现代浏览器均可直接运行：
 
 1. **直接双击打开**：
-   - 直接双击打开 `index.html` 即可在本地浏览器中体验。
+   - 双击打开 `index.html` 即可在本地浏览器中体验。
 2. **轻量静态服务器运行（推荐）**：
    - 在当前目录打开命令行执行：
      ```bash
-     npx serve .
-     # 或
      python -m http.server 8080
+     # 或
+     npx serve .
      ```
    - 浏览器访问 `http://localhost:8080` 获得最佳体验。
