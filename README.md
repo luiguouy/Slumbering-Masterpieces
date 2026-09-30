@@ -12,6 +12,33 @@
 
 ---
 
+## 🎬 效果演示 (Live Demonstrations)
+
+| 🌸 沉睡唤醒模式 (Dormant Awakening) | 🎲 随机漫游擦除模式 (Random Wander) |
+| :---: | :---: |
+| ![沉睡唤醒动态演示](assets/demo/demo-awakening.gif) | ![随机漫游擦除动态演示](assets/demo/demo-wander.gif) |
+| *触碰静谧灰阶素描，用指尖唤醒绚烂真彩* | *挥毫擦除顶层画作，达到阈值优雅展现下一幅* |
+| [▶️ 观看唤醒高清视频演示 (MP4)](assets/demo/demo-awakening.mp4) | [▶️ 观看漫游高清视频演示 (MP4)](assets/demo/demo-wander.mp4) |
+
+> 📹 **全流程高清演示视频**：[assets/demo/demo-full-showcase.mp4](assets/demo/demo-full-showcase.mp4)  
+> 完整收录：双模式一键切换、画笔轨迹渐进色彩唤醒、焦点停驻充能绽放、画笔大小调节、随机漫游画作擦除、达到 85% 阈值平滑展开新画的全流程交互。
+
+<details>
+<summary><b>📸 点击展开查看高分辨率静止效果截图与控制面板</b></summary>
+<br>
+
+| 1. 初始古典静谧灰阶素描 | 2. 唤醒盛放效果对比 |
+| :---: | :---: |
+| ![初始素描](assets/demo/preview-initial-dormant.png) | ![唤醒效果](assets/demo/preview-dormant-awakening.png) |
+
+| 3. 随机漫游双画擦除交错 (实时 HUD 进度) | 4. 典雅香槟金控制抽屉与 315 幅名画展厅 |
+| :---: | :---: |
+| ![随机漫游擦除](assets/demo/preview-random-wander.png) | ![控制面板](assets/demo/preview-controls.png) |
+
+</details>
+
+---
+
 ## 🖼️ 艺术理念 (Artistic Philosophy)
 
 《**Slumbering Masterpieces · 沉睡的名画**》是一件融合欧洲古典油画美学、空间状态衰减网格与数字图形学交互的传世名画级网络艺术装置。现已升级为**双重交互体验**：
@@ -115,12 +142,14 @@ Slumbering-Masterpieces/
 ├── app.js                          # 核心双模式图形物理引擎
 ├── data/
 │   └── masterpieces.js             # 传世油画名作博览馆核心数据库 (315幅)
-├── assets/                         # 艺术资源目录
-│   └── images/                     # 315 幅高清油画原图资产库
+├── assets/                         # 艺术与演示资源目录
+│   ├── demo/                       # 🎬 交互演示动图、高清截图与演示视频 (GIF / MP4 / PNG)
+│   └── images/                     # 🖼️ 315 幅传世高清油画原图资产库
 ├── docs/                           # 官方规范与标准文档
 │   ├── ART_SELECTION_SPEC.md       # 🏛️ 传世名画博览馆油画收录与准入规范 (v1.0.0)
 │   └── COLLECTED_ARTWORKS.md       # 📋 传世著名油画已收录台账总览表 (315幅全量台账)
-└── scripts/                        # 艺术资产抓取、清洗与台账同步脚本
+└── scripts/                        # 资产抓取、清洗与自动化演示生成工具脚本
+    └── generate_demos.py           # 自动化 Playwright + FFmpeg 演示录制脚本
 ```
 
 ---
