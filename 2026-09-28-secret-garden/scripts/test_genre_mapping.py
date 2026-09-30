@@ -1,0 +1,181 @@
+import json
+import re
+
+# 加载 masterpieces.js
+with open('data/masterpieces.js', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+match = re.search(r'window\.MASTERPIECES\s*=\s*(\[.*?\]);', content, re.DOTALL)
+data = json.loads(match.group(1))
+
+# 定义 6 大经典画种类别
+# 1. 🏛️ 神话宗教
+# 2. ⚔️ 历史故事
+# 3. 👥 风俗生活
+# 4. 👤 人物肖像
+# 5. 🌿 自然风景
+# 6. 💐 静物花卉
+
+# 定义 ID 映射表
+GENRE_MAP = {
+    # 静物花卉 (Still Life & Floral)
+    'cezanne_basket_of_apples': '💐 静物花卉',
+    'vangogh_sunflowers': '💐 静物花卉',
+    'vangogh_irises': '💐 静物花卉',
+    'vangogh_almond_blossom': '💐 静物花卉',
+    'vangogh_bedroom_in_arles': '💐 静物花卉', # 卧室陈设与静物空间
+    'monet_gladiolus': '💐 静物花卉',       # 剑兰花卉
+    'monet_yellow_irises': '💐 静物花卉',   # 黄色鸢尾花
+    'monet_met_irises': '💐 静物花卉',      # 鸢尾花丛
+    'monet_the_rose_arches': '💐 静物花卉', # 玫瑰拱门花卉
+
+    # 风俗生活 (Daily Life & Genre Scenes)
+    'bruegel_the_peasant_wedding': '👥 风俗生活',
+    'rembrandt_anatomy_lesson': '👥 风俗生活',
+    'rembrandt_night_watch': '👥 风俗生活',
+    'millet_the_gleaners': '👥 风俗生活',
+    'millet_the_angelus': '👥 风俗生活',
+    'repin_barge_haulers_on_the_volga': '👥 风俗生活',
+    'courbet_the_painters_studio': '👥 风俗生活',
+    'bazille_studio_rue_condamine': '👥 风俗生活',
+    'degas_cotton_office_new_orleans': '👥 风俗生活',
+    'degas_orchestra_of_the_opera': '👥 风俗生活',
+    'degas_racehorses_before_stands': '👥 风俗生活',
+    'degas_the_dance_class': '👥 风俗生活',
+    'degas_ballet_rehearsal_on_stage': '👥 风俗生活',
+    'degas_rehearsal_on_stage': '👥 风俗生活',
+    'degas_blue_dancers': '👥 风俗生活',
+    'degas_dancer_tilting': '👥 风俗生活',
+    'degas_dancers_at_the_barre': '👥 风俗生活',
+    'degas_l_absinthe': '👥 风俗生活',
+    'degas_women_ironing': '👥 风俗生活',
+    'degas_the_tub': '👥 风俗生活',
+    'vermeer_the_milkmaid': '👥 风俗生活',
+    'vermeer_woman_holding_a_balance': '👥 风俗生活',
+    'vermeer_woman_reading_a_letter': '👥 风俗生活',
+    'vermeer_the_astronomer': '👥 风俗生活',
+    'vermeer_the_geographer': '👥 风俗生活',
+    'fragonard_the_swing': '👥 风俗生活',
+    'fragonard_young_girl_reading': '👥 风俗生活',
+    'watteau_the_embarkation_for_cythera': '👥 风俗生活',
+    'velazquez_the_spinners': '👥 风俗生活',
+    'manet_a_bar_at_the_folies_bergere': '👥 风俗生活',
+    'manet_dejeuner_sur_l_herbe': '👥 风俗生活',
+    'manet_the_balcony': '👥 风俗生活',
+    'manet_the_fifer': '👥 风俗生活',
+    'manet_in_the_conservatory': '👥 风俗生活',
+    'monet_dejeuner_sur_l_herbe': '👥 风俗生活',
+    'monet_women_in_garden': '👥 风俗生活',
+    'monet_boulevard_capucines': '👥 风俗生活',
+    'monet_rue_saint_denis': '👥 风俗生活',
+    'monet_saint_lazare': '👥 风俗生活',
+    'caillebotte_the_floor_scrapers': '👥 风俗生活',
+    'caillebotte_paris_street_rainy_day': '👥 风俗生活',
+    'caillebotte_pont_de_l_europe': '👥 风俗生活',
+    'caillebotte_boating_on_yerres': '👥 风俗生活',
+    'caillebotte_young_man_at_window': '👥 风俗生活',
+    'cassatt_cup_of_tea': '👥 风俗生活',
+    'cassatt_the_boating_party': '👥 风俗生活',
+    'cassatt_the_childs_bath': '👥 风俗生活',
+    'bazille_family_reunion': '👥 风俗生活',
+    'pissarro_peasant_woman_washing': '👥 风俗生活',
+    'pissarro_apple_picking_eragny': '👥 风俗生活',
+    'morisot_reading_green_parasol': '👥 风俗生活',
+    'morisot_the_cradle': '👥 风俗生活',
+    'morisot_woman_at_toilette': '👥 风俗生活',
+    'renoir_bal_du_moulin_de_la_galette': '👥 风俗生活',
+    'renoir_luncheon_of_the_boating_party': '👥 风俗生活',
+    'renoir_the_swing': '👥 风俗生活',
+    'renoir_the_loge': '👥 风俗生活',
+    'renoir_girls_at_piano': '👥 风俗生活',
+    'renoir_two_sisters_terrace': '👥 风俗生活',
+    'renoir_the_skiff': '👥 风俗生活',
+    'sorolla_walk_on_the_beach': '👥 风俗生活',
+    'hassam_boston_common_twilight': '👥 风俗生活',
+    'seurat_sunday_afternoon': '👥 风俗生活',
+    'cezanne_card_players': '👥 风俗生活',
+    'vangogh_potato_eaters': '👥 风俗生活',
+    'vangogh_night_cafe': '👥 风俗生活',
+    'sargent_carnation_lily_lily_rose': '👥 风俗生活',
+    'hals_the_gypsy_girl': '👥 风俗生活',
+
+    # 历史故事 (History & Narrative)
+    'david_coronation_of_napoleon': '⚔️ 历史故事',
+    'david_death_of_marat': '⚔️ 历史故事',
+    'david_death_of_socrates': '⚔️ 历史故事',
+    'david_napoleon_crossing_the_alps': '⚔️ 历史故事',
+    'david_oath_of_the_horatii': '⚔️ 历史故事',
+    'delacroix_death_of_sardanapalus': '⚔️ 历史故事',
+    'delacroix_liberty_leading_the_people': '⚔️ 历史故事',
+    'delacroix_the_barque_of_dante': '⚔️ 历史故事',
+    'gericault_raft_of_the_medusa': '⚔️ 历史故事',
+    'goya_third_of_may_1808': '⚔️ 历史故事',
+    'leutze_washington_crossing_delaware': '⚔️ 历史故事',
+    'trumbull_declaration_of_independence': '⚔️ 历史故事',
+    'west_death_of_general_wolfe': '⚔️ 历史故事',
+    'gast_american_progress': '⚔️ 历史故事',
+    'homer_prisoners_from_the_front': '⚔️ 历史故事',
+    'repin_ivan_the_terrible': '⚔️ 历史故事',
+
+    # 人物肖像 (Portraiture)
+    'davinci_mona_lisa': '👤 人物肖像',
+    'davinci_lady_with_ermine': '👤 人物肖像',
+    'holbein_the_ambassadors': '👤 人物肖像',
+    'titian_flora': '👤 人物肖像',
+    'van_eyck_arnolfini_portrait': '👤 人物肖像',
+    'rembrandt_self_portrait_1659': '👤 人物肖像',
+    'rembrandt_the_jewish_bride': '👤 人物肖像',
+    'velazquez_las_meninas': '👤 人物肖像',
+    'velazquez_portrait_of_innocent_x': '👤 人物肖像',
+    'vermeer_pearl_earring': '👤 人物肖像',
+    'goya_the_clothed_maja': '👤 人物肖像',
+    'goya_the_nude_maja': '👤 人物肖强', # fix typo
+    'goya_the_nude_maja': '👤 人物肖像',
+    'ingres_la_grande_odalisque': '👤 人物肖像',
+    'ingres_the_source': '👤 人物肖像',
+    'ingres_the_valpincon_bather': '👤 人物肖像',
+    'monet_camille_green_dress': '👤 人物肖像',
+    'monet_la_japonaise': '👤 人物肖像',
+    'monet_the_red_kerchief': '👤 人物肖像',
+    'monet_woman_parasol_left': '👤 人物肖像',
+    'monet_woman_parasol_right': '👤 人物肖像',
+    'monet_woman_with_parasol': '👤 人物肖像',
+    'manet_emile_zola': '👤 人物肖像',
+    'manet_olympia': '👤 人物肖像',
+    'manet_spring_jeanne': '👤 人物肖像',
+    'pissarro_self_portrait': '👤 人物肖像',
+    'renoir_jeanne_samary': '👤 人物肖像',
+    'renoir_madame_charpentier': '👤 人物肖像',
+    'renoir_nude_in_sunlight': '👤 人物肖像',
+    'renoir_young_girl_combing_hair': '👤 人物肖像',
+    'cezanne_the_large_bathers': '👤 人物肖像',
+    'gauguin_tahitian_women_on_beach': '👤 人物肖像',
+    'vangogh_self_portrait_bandaged_ear': '👤 人物肖像',
+    'klimt_adele_bloch_bauer_i': '👤 人物肖像',
+    'klimt_the_kiss': '👤 人物肖像',
+    'munch_the_scream': '👤 人物肖像',
+
+    # 规范化：示巴女王登舟统一为自然风景还是神话宗教？
+    # 洛兰是以理想港湾风景为核心，冠以圣经故事名称，归入 🌿 自然风景 更符合其画作主景（晨曦海港与古典建筑）
+    'claude_lorrain_embarkation_queen_sheba': '🌿 自然风景',
+}
+
+# 检查当前所有 293 件作品
+stats = {}
+for d in data:
+    aid = d['id']
+    if aid in GENRE_MAP:
+        d['genre'] = GENRE_MAP[aid]
+    else:
+        # 保持原先的自然风景或神话宗教
+        # 修正不一致的 emoji
+        if d.get('genre') == '🌊 自然风景':
+            d['genre'] = '🌿 自然风景'
+        elif d.get('genre') == '⚔️ 历史叙事':
+            d['genre'] = '👥 风俗生活'
+    g = d['genre']
+    stats[g] = stats.get(g, 0) + 1
+
+print("Updated stats:")
+for k, v in stats.items():
+    print(f"  {k}: {v}")

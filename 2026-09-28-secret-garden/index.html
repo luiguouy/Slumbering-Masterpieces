@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Masterpiece Garden · Interactive Art</title>
+    <title>Masterpiece Garden · 传世名画博览馆</title>
     <!-- 引入传世名画级古典优雅衬线字体 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=3.0.0">
+    <link rel="stylesheet" href="style.css?v=4.0.0">
 </head>
 <body>
     <div id="art-stage">
@@ -24,15 +24,15 @@
             <div class="cursor-ring"></div>
         </div>
 
-        <!-- 全屏仅保留的唯一切题名人名言 (莫奈名言) -->
+        <!-- 全屏仅保留的唯一切题名人名言 (随名画联动更新) -->
         <div id="art-quote" class="art-quote-container">
-            <p class="quote-text">“I must have flowers, always, and always.”</p>
-            <cite class="quote-author">— Claude Monet</cite>
+            <p class="quote-text">“Simplicity is the ultimate sophistication.”</p>
+            <cite class="quote-author">— Leonardo da Vinci</cite>
         </div>
 
         <!-- 画笔大小调节艺术控件 -->
         <div id="brush-control" class="brush-control-panel">
-            <button id="brush-toggle-btn" class="brush-btn" title="调节画笔大小" aria-label="调节画笔大小">
+            <button id="brush-toggle-btn" class="brush-btn" title="调节画笔与画作设置" aria-label="调节画笔大小">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 19l7-7 3 3-7 7-3-3z"/>
                     <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18"/>
@@ -87,11 +87,21 @@
                 </div>
                 <div class="brush-popup-divider"></div>
                 <div class="brush-popup-row">
-                    <span class="brush-label">名画画廊</span>
-                    <span id="masterpiece-index" class="brush-badge">1 / 10</span>
+                    <span class="brush-label">🏛️ 传世名画展厅</span>
+                    <span id="masterpiece-index" class="brush-badge">1 / 315</span>
                 </div>
+                <!-- 升级为美观的高级名画卡片入口，点击直达名画搜索与多维分类展厅 -->
                 <div class="masterpiece-selector-box">
-                    <select id="masterpiece-select" class="masterpiece-dropdown" aria-label="切换传世名画"></select>
+                    <button id="open-gallery-modal-btn" class="masterpiece-picker-btn" type="button" title="点击进入名画展厅 (支持按画家/题材分类检索)">
+                        <div class="picker-thumb-wrap">
+                            <img id="current-art-thumb" class="picker-thumb" src="" alt="当前画作">
+                        </div>
+                        <div class="picker-info">
+                            <div id="current-art-title" class="picker-title">正在加载...</div>
+                            <div id="current-art-artist" class="picker-artist">🔍 搜索·分类·全部名画 ▾</div>
+                        </div>
+                        <span class="picker-search-badge">🏛️</span>
+                    </button>
                 </div>
                 <div class="masterpiece-nav-row">
                     <button id="prev-art-btn" class="art-nav-btn" type="button" title="切换上一幅名画">‹ 上一幅</button>
@@ -99,11 +109,103 @@
                 </div>
             </div>
         </div>
+
+        <!-- 传世名画博览馆 · 典藏搜索与分类抽屉展厅 -->
+        <div id="gallery-drawer" class="gallery-drawer" aria-hidden="true">
+            <div id="gallery-backdrop" class="gallery-backdrop"></div>
+            <aside class="gallery-panel" role="dialog" aria-modal="true" aria-labelledby="gallery-main-title">
+                <!-- 展厅头部 -->
+                <div class="gallery-header">
+                    <div class="gallery-title-box">
+                        <h2 id="gallery-main-title" class="gallery-main-title">
+                            <span class="header-icon">🏛️</span> 传世名画博览馆
+                        </h2>
+                        <span class="gallery-sub-info">World Masterpieces · 315 幅传世杰作</span>
+                    </div>
+                    <button id="gallery-close-btn" class="gallery-close-btn" type="button" title="关闭展厅 (ESC)" aria-label="关闭名画展厅">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- 搜索栏区 -->
+                <div class="gallery-search-wrap">
+                    <div class="gallery-search-box">
+                        <svg class="search-svg" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="gallery-search-input" class="gallery-search-input" placeholder="搜索画名、画家 (如: 蒙娜丽莎 / 达芬奇 / 梵高 / Monet)..." autocomplete="off" spellcheck="false">
+                        <button id="gallery-search-clear" class="gallery-search-clear" type="button" title="清空搜索内容" style="display: none;">×</button>
+                    </div>
+                </div>
+
+                <!-- 多维分类与筛选控制区 -->
+                <div class="gallery-filter-panel">
+                    <!-- 1. 题材分类药丸 (用户明确需求：历史画、神话故事画、风景画、人物画等) -->
+                    <div class="filter-genre-section">
+                        <div class="filter-section-header">
+                            <span class="filter-title">题材分类</span>
+                            <span class="filter-tip">点击快速筛选题材</span>
+                        </div>
+                        <div id="genre-pills-container" class="genre-pills-container">
+                            <!-- 动态填充：全部题材、人物画像、神话宗教、历史故事、自然风景、静物花卉 -->
+                        </div>
+                    </div>
+
+                    <!-- 2. 画家与时期组合筛选行 (用户明确需求：按画家区分) -->
+                    <div class="filter-dropdowns-row">
+                        <div class="filter-dropdown-cell">
+                            <label for="artist-filter-select" class="dropdown-label">画家区分：</label>
+                            <div class="dropdown-shell">
+                                <select id="artist-filter-select" class="gallery-select-input">
+                                    <option value="all">🎨 全部画家 (58位大师)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="filter-dropdown-cell">
+                            <label for="category-filter-select" class="dropdown-label">时期画派：</label>
+                            <div class="dropdown-shell">
+                                <select id="category-filter-select" class="gallery-select-input">
+                                    <option value="all">🏛️ 全部画派时期 (8大流派)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. 热门艺术巨匠快捷直选胶囊 -->
+                    <div class="quick-artists-section">
+                        <span class="quick-artists-label">热门大师：</span>
+                        <div id="quick-artists-container" class="quick-artists-container">
+                            <!-- 动态填充快捷大师药丸：莫奈、梵高、达芬奇、维米尔、伦勃朗、米开朗基罗等 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 筛选结果统计与重置栏 -->
+                <div class="gallery-meta-bar">
+                    <div class="gallery-meta-count">
+                        找到 <span id="gallery-result-count" class="meta-num">315</span> 幅名画
+                        <span id="gallery-filter-desc" class="meta-filter-desc"></span>
+                    </div>
+                    <button id="gallery-reset-btn" class="gallery-reset-btn" type="button" style="display: none;">
+                        重置所有筛选 ↺
+                    </button>
+                </div>
+
+                <!-- 名画卡片滚动列表容器 -->
+                <div id="gallery-list-container" class="gallery-list-container" role="list">
+                    <!-- 动态生成 315 幅作品的高清卡片列表 -->
+                </div>
+            </aside>
+        </div>
     </div>
 
     <!-- 传世名画博览馆数据库 -->
-    <script src="data/masterpieces.js?v=3.5.0"></script>
-    <!-- 核心渲染脚本 -->
-    <script src="app.js?v=3.5.0"></script>
+    <script src="data/masterpieces.js?v=4.3.0"></script>
+    <!-- 核心渲染与交互脚本 -->
+    <script src="app.js?v=4.3.0"></script>
 </body>
 </html>

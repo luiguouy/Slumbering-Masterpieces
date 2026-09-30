@@ -41,11 +41,31 @@
     const fitScaleSlider = document.getElementById('fit-scale-slider');
     const fitScaleDisplay = document.getElementById('fit-scale-display');
 
-    // 名画画廊切换 UI 元素
-    const masterpieceSelect = document.getElementById('masterpiece-select');
+    // 名画画廊切换 UI 元素 (画笔面板卡片)
     const masterpieceIndexBadge = document.getElementById('masterpiece-index');
+    const openGalleryModalBtn = document.getElementById('open-gallery-modal-btn');
+    const currentArtThumb = document.getElementById('current-art-thumb');
+    const currentArtTitle = document.getElementById('current-art-title');
+    const currentArtArtist = document.getElementById('current-art-artist');
     const prevArtBtn = document.getElementById('prev-art-btn');
     const nextArtBtn = document.getElementById('next-art-btn');
+
+    // 传世名画博览馆 · 典藏搜索与多维分类抽屉展厅 UI 元素
+    const galleryOpenBtn = document.getElementById('gallery-open-btn');
+    const galleryOpenBadge = document.getElementById('gallery-open-badge');
+    const galleryDrawer = document.getElementById('gallery-drawer');
+    const galleryBackdrop = document.getElementById('gallery-backdrop');
+    const galleryCloseBtn = document.getElementById('gallery-close-btn');
+    const gallerySearchInput = document.getElementById('gallery-search-input');
+    const gallerySearchClear = document.getElementById('gallery-search-clear');
+    const genrePillsContainer = document.getElementById('genre-pills-container');
+    const artistFilterSelect = document.getElementById('artist-filter-select');
+    const categoryFilterSelect = document.getElementById('category-filter-select');
+    const quickArtistsContainer = document.getElementById('quick-artists-container');
+    const galleryResultCount = document.getElementById('gallery-result-count');
+    const galleryFilterDesc = document.getElementById('gallery-filter-desc');
+    const galleryResetBtn = document.getElementById('gallery-reset-btn');
+    const galleryListContainer = document.getElementById('gallery-list-container');
 
     const bgCtx = bgCanvas.getContext('2d');
     const revealCtx = revealCanvas.getContext('2d');
@@ -664,6 +684,27 @@
     }
 
     /**
+     * 题材分类定义与匹配器 (符合西方艺术史 6 大正统题材体系)
+     */
+    const GENRE_DEFINITIONS = [
+        { id: 'all', label: '全部题材', icon: '🎨', test: () => true },
+        { id: 'life', label: '风俗生活', icon: '👥', test: (art) => art.genre && (art.genre.includes('风俗') || art.genre.includes('生活')) },
+        { id: 'landscape', label: '自然风景', icon: '🌿', test: (art) => art.genre && (art.genre.includes('风景') || art.genre.includes('风光')) },
+        { id: 'portrait', label: '人物肖像', icon: '👤', test: (art) => art.genre && art.genre.includes('人物') },
+        { id: 'mythology', label: '神话宗教', icon: '🏛️', test: (art) => art.genre && (art.genre.includes('神话') || art.genre.includes('宗教')) },
+        { id: 'history', label: '历史故事', icon: '⚔️', test: (art) => art.genre && (art.genre.includes('历史') || art.genre.includes('故事') || art.genre.includes('叙事')) },
+        { id: 'still_life', label: '静物花卉', icon: '💐', test: (art) => art.genre && (art.genre.includes('静物') || art.genre.includes('花卉')) }
+    ];
+
+    // 全局名画多维筛选与搜索状态
+    const galleryFilterState = {
+        query: '',
+        genre: 'all',
+        artist: 'all',
+        category: 'all'
+    };
+
+    /**
      * 切换当前激活的名画
      * @param {number} index 画作索引 (0 ~ masterpieces.length - 1)
      */
@@ -694,59 +735,454 @@
         if (quoteTextEl) quoteTextEl.textContent = art.quote;
         if (quoteAuthorEl) quoteAuthorEl.textContent = art.quoteAuthor;
 
-        // 4. 更新控制面板下拉菜单与画作编号徽章
-        if (masterpieceSelect) masterpieceSelect.value = index;
+        // 4. 更新画笔面板当前名画卡片展示与徽章
+        if (currentArtThumb) {
+            currentArtThumb.src = art.src;
+            currentArtThumb.alt = art.title;
+        }
+        if (currentArtTitle) currentArtTitle.textContent = art.title;
+        if (currentArtArtist) currentArtArtist.textContent = `${art.artist} · 🔍 检索画廊`;
         if (masterpieceIndexBadge) masterpieceIndexBadge.textContent = `${index + 1} / ${masterpieces.length}`;
 
-        // 5. 载入新名画原图并重新渲染古典灰阶底图
+        // 5. 同步更新画廊展厅卡片激活高亮状态
+        updateActiveCardHighlight(index);
+
+        // 6. 载入新名画原图并重新渲染古典灰阶底图
         isImageLoaded = false;
         gardenImage.src = art.src;
     }
 
     /**
-     * 初始化名画画廊选择器 UI
+     * 更新画廊抽屉列表中的激活高亮项
      */
-    function setupGalleryUI() {
-        if (!masterpieceSelect) return;
-
-        masterpieceSelect.innerHTML = '';
-
-        if (window.ART_CATEGORIES && window.ART_CATEGORIES.length) {
-            window.ART_CATEGORIES.forEach(cat => {
-                const group = document.createElement('optgroup');
-                group.label = cat.name;
-                const items = masterpieces
-                    .map((art, idx) => ({ art, idx }))
-                    .filter(item => item.art.category === cat.id);
-
-                items.forEach(({ art, idx }) => {
-                    const opt = document.createElement('option');
-                    opt.value = idx;
-                    opt.textContent = `${idx + 1}. ${art.title} · ${art.artist}`;
-                    group.appendChild(opt);
-                });
-
-                if (items.length > 0) {
-                    masterpieceSelect.appendChild(group);
+    function updateActiveCardHighlight(activeIndex) {
+        if (!galleryListContainer) return;
+        const cards = galleryListContainer.querySelectorAll('.gallery-card');
+        cards.forEach(card => {
+            const idx = parseInt(card.getAttribute('data-index'), 10);
+            const isTarget = idx === activeIndex;
+            card.classList.toggle('is-active', isTarget);
+            let badge = card.querySelector('.card-badge-viewing');
+            if (isTarget) {
+                if (!badge) {
+                    badge = document.createElement('span');
+                    badge.className = 'card-badge-viewing';
+                    badge.textContent = '👑 观赏中';
+                    const header = card.querySelector('.card-header-row');
+                    if (header) header.appendChild(badge);
                 }
+            } else if (badge) {
+                badge.remove();
+            }
+        });
+    }
+
+    /**
+     * 规范化检索文本 (忽略空格、间隔号·、英文标点等，支持“达芬奇”匹配“达·芬奇”)
+     */
+    function normalizeSearchText(str) {
+        if (!str) return '';
+        return String(str).toLowerCase().replace(/[\s·\-\._・/()（）,"'‘’“”]/g, '');
+    }
+
+    /**
+     * 执行名画多维过滤与关键词检索
+     */
+    function getFilteredMasterpieces() {
+        const q = galleryFilterState.query.trim();
+        const qNorm = normalizeSearchText(q);
+        const activeGenre = GENRE_DEFINITIONS.find(g => g.id === galleryFilterState.genre) || GENRE_DEFINITIONS[0];
+
+        return masterpieces
+            .map((art, index) => ({ art, index }))
+            .filter(({ art }) => {
+                // 1. 题材筛选
+                if (!activeGenre.test(art)) return false;
+
+                // 2. 画家筛选
+                if (galleryFilterState.artist !== 'all' && art.artist !== galleryFilterState.artist) {
+                    return false;
+                }
+
+                // 3. 画派时期筛选
+                if (galleryFilterState.category !== 'all' && art.category !== galleryFilterState.category) {
+                    return false;
+                }
+
+                // 4. 关键词智能模糊搜索 (画名、外文名、画家、名言、题材、时期)
+                if (qNorm) {
+                    const matchTitle = normalizeSearchText(art.title).includes(qNorm);
+                    const matchEnTitle = normalizeSearchText(art.enTitle).includes(qNorm);
+                    const matchArtist = normalizeSearchText(art.artist).includes(qNorm);
+                    const matchGenre = normalizeSearchText(art.genre).includes(qNorm);
+                    const matchQuote = normalizeSearchText(art.quote).includes(qNorm);
+                    const matchCategory = normalizeSearchText(art.category).includes(qNorm);
+                    if (!matchTitle && !matchEnTitle && !matchArtist && !matchGenre && !matchQuote && !matchCategory) {
+                        return false;
+                    }
+                }
+
+                return true;
             });
-        } else {
-            const defaultGroup = document.createElement('optgroup');
-            defaultGroup.label = `🏛️ 传世名画博览馆 (${masterpieces.length}幅)`;
-            masterpieces.forEach((art, idx) => {
-                const opt = document.createElement('option');
-                opt.value = idx;
-                opt.textContent = `${idx + 1}. ${art.title} · ${art.artist}`;
-                defaultGroup.appendChild(opt);
-            });
-            masterpieceSelect.appendChild(defaultGroup);
+    }
+
+    /**
+     * 重新渲染画廊抽屉列表
+     */
+    function renderGalleryList() {
+        if (!galleryListContainer) return;
+
+        const filtered = getFilteredMasterpieces();
+        const hasActiveFilter = galleryFilterState.query.trim() !== '' ||
+            galleryFilterState.genre !== 'all' ||
+            galleryFilterState.artist !== 'all' ||
+            galleryFilterState.category !== 'all';
+
+        // 更新结果统计与重置按钮
+        if (galleryResultCount) galleryResultCount.textContent = filtered.length;
+        if (galleryResetBtn) {
+            galleryResetBtn.style.display = hasActiveFilter ? 'inline-block' : 'none';
         }
 
-        masterpieceSelect.addEventListener('change', (e) => {
-            switchMasterpiece(parseInt(e.target.value, 10));
-        });
-        masterpieceSelect.addEventListener('click', (e) => e.stopPropagation());
+        // 更新筛选描述提示
+        if (galleryFilterDesc) {
+            const parts = [];
+            if (galleryFilterState.genre !== 'all') {
+                const g = GENRE_DEFINITIONS.find(item => item.id === galleryFilterState.genre);
+                if (g) parts.push(g.label);
+            }
+            if (galleryFilterState.artist !== 'all') parts.push(galleryFilterState.artist.split('(')[0].trim());
+            if (galleryFilterState.category !== 'all' && window.ART_CATEGORIES) {
+                const c = window.ART_CATEGORIES.find(item => item.id === galleryFilterState.category);
+                if (c) parts.push(c.name.split('(')[0].replace(/[^\u4e00-\u9fa5]/g, ''));
+            }
+            galleryFilterDesc.textContent = parts.length > 0 ? `(${parts.join(' · ')})` : '';
+        }
 
+        galleryListContainer.innerHTML = '';
+
+        if (filtered.length === 0) {
+            // 空状态展示
+            const emptyEl = document.createElement('div');
+            emptyEl.className = 'gallery-empty-state';
+            emptyEl.innerHTML = `
+                <div class="empty-icon">🎨</div>
+                <div class="empty-title">未寻得匹配的名画作品</div>
+                <p class="empty-desc">换个搜索词试试，或者重置当前题材与画家分类筛选。</p>
+                <button class="empty-reset-btn" type="button">重置所有筛选</button>
+            `;
+            const emptyResetBtn = emptyEl.querySelector('.empty-reset-btn');
+            if (emptyResetBtn) {
+                emptyResetBtn.addEventListener('click', resetAllFilters);
+            }
+            galleryListContainer.appendChild(emptyEl);
+            return;
+        }
+
+        // 渲染画作卡片
+        const frag = document.createDocumentFragment();
+        filtered.forEach(({ art, index }) => {
+            const isCurrent = index === currentMasterpieceIndex;
+            const card = document.createElement('div');
+            card.className = `gallery-card ${isCurrent ? 'is-active' : ''}`;
+            card.setAttribute('data-index', index);
+            card.setAttribute('role', 'listitem');
+            card.title = `点击切换欣赏：《${art.title}》· ${art.artist}`;
+
+            // 获取画派分类友好名称
+            let catLabel = '';
+            if (window.ART_CATEGORIES) {
+                const catObj = window.ART_CATEGORIES.find(c => c.id === art.category);
+                if (catObj) catLabel = catObj.name.split('(')[0].trim();
+            }
+
+            card.innerHTML = `
+                <div class="card-thumb-box">
+                    <img class="card-thumb-img" src="${art.src}" alt="${art.title}" loading="lazy">
+                </div>
+                <div class="card-details">
+                    <div class="card-header-row">
+                        <div class="card-title">${index + 1}. ${art.title}</div>
+                        ${isCurrent ? '<span class="card-badge-viewing">👑 观赏中</span>' : ''}
+                    </div>
+                    ${art.enTitle ? `<div class="card-entitle">${art.enTitle}</div>` : ''}
+                    <div class="card-artist">${art.artist}</div>
+                    <div class="card-tags-row">
+                        ${art.genre ? `<span class="card-tag card-tag-genre">${art.genre}</span>` : ''}
+                        ${catLabel ? `<span class="card-tag card-tag-cat">${catLabel}</span>` : ''}
+                    </div>
+                </div>
+            `;
+
+            card.addEventListener('click', () => {
+                switchMasterpiece(index);
+                // 移动端选择后自动轻柔收起展厅
+                if (window.innerWidth <= 640) {
+                    closeGallery();
+                }
+            });
+
+            frag.appendChild(card);
+        });
+
+        galleryListContainer.appendChild(frag);
+    }
+
+    /**
+     * 重置所有筛选与搜索
+     */
+    function resetAllFilters() {
+        galleryFilterState.query = '';
+        galleryFilterState.genre = 'all';
+        galleryFilterState.artist = 'all';
+        galleryFilterState.category = 'all';
+
+        if (gallerySearchInput) gallerySearchInput.value = '';
+        if (gallerySearchClear) gallerySearchClear.style.display = 'none';
+
+        // 复位题材药丸高亮
+        if (genrePillsContainer) {
+            const pills = genrePillsContainer.querySelectorAll('.genre-pill');
+            pills.forEach(p => p.classList.toggle('active', p.getAttribute('data-genre') === 'all'));
+        }
+
+        // 复位下拉
+        if (artistFilterSelect) artistFilterSelect.value = 'all';
+        if (categoryFilterSelect) categoryFilterSelect.value = 'all';
+
+        // 复位热门大师高亮
+        if (quickArtistsContainer) {
+            const qp = quickArtistsContainer.querySelectorAll('.quick-artist-pill');
+            qp.forEach(p => p.classList.remove('active'));
+        }
+
+        renderGalleryList();
+    }
+
+    /**
+     * 打开名画抽屉展厅
+     */
+    function openGallery() {
+        if (!galleryDrawer) return;
+
+        // 打开大展厅时，顺畅收起右上角画笔控制弹窗
+        if (brushPopup && brushPopup.classList.contains('open')) {
+            brushPopup.classList.remove('open');
+            if (brushToggleBtn) brushToggleBtn.classList.remove('active');
+        }
+
+        document.body.classList.add('gallery-open');
+        galleryDrawer.classList.add('open');
+        galleryDrawer.setAttribute('aria-hidden', 'false');
+
+        // 自动聚焦搜索框
+        setTimeout(() => {
+            if (gallerySearchInput) gallerySearchInput.focus();
+        }, 150);
+
+        // 自动滚入视窗：让当前观赏的画作卡片居中可见
+        setTimeout(() => {
+            if (galleryListContainer) {
+                const activeCard = galleryListContainer.querySelector('.gallery-card.is-active');
+                if (activeCard) {
+                    activeCard.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                }
+            }
+        }, 220);
+    }
+
+    /**
+     * 关闭名画抽屉展厅
+     */
+    function closeGallery() {
+        if (!galleryDrawer) return;
+        document.body.classList.remove('gallery-open');
+        galleryDrawer.classList.remove('open');
+        galleryDrawer.setAttribute('aria-hidden', 'true');
+    }
+
+    /**
+     * 初始化名画画廊与多维分类检索 UI
+     */
+    function setupGalleryUI() {
+        // 1. 初始化题材药丸按钮 (包含数量统计)
+        if (genrePillsContainer) {
+            genrePillsContainer.innerHTML = '';
+            GENRE_DEFINITIONS.forEach(def => {
+                const count = def.id === 'all'
+                    ? masterpieces.length
+                    : masterpieces.filter(def.test).length;
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `genre-pill ${def.id === 'all' ? 'active' : ''}`;
+                btn.setAttribute('data-genre', def.id);
+                btn.innerHTML = `<span>${def.icon} ${def.label}</span><span class="genre-pill-count">(${count})</span>`;
+
+                btn.addEventListener('click', () => {
+                    galleryFilterState.genre = def.id;
+                    const allPills = genrePillsContainer.querySelectorAll('.genre-pill');
+                    allPills.forEach(p => p.classList.toggle('active', p === btn));
+                    renderGalleryList();
+                });
+
+                genrePillsContainer.appendChild(btn);
+            });
+        }
+
+        const gallerySubInfo = document.querySelector('.gallery-sub-info');
+        if (gallerySubInfo) {
+            gallerySubInfo.textContent = `World Masterpieces · ${masterpieces.length} 幅传世杰作`;
+        }
+
+        // 2. 统计所有画家作品数并按作品量降序填充下拉菜单
+        const artistCounts = {};
+        masterpieces.forEach(art => {
+            const a = art.artist || '未知艺术家';
+            artistCounts[a] = (artistCounts[a] || 0) + 1;
+        });
+        const sortedArtists = Object.keys(artistCounts).sort((a, b) => artistCounts[b] - artistCounts[a]);
+
+        if (artistFilterSelect) {
+            artistFilterSelect.innerHTML = `<option value="all">🎨 全部画家 (${sortedArtists.length}位大师)</option>`;
+            sortedArtists.forEach(artist => {
+                const opt = document.createElement('option');
+                opt.value = artist;
+                opt.textContent = `${artist} (${artistCounts[artist]}幅)`;
+                artistFilterSelect.appendChild(opt);
+            });
+
+            artistFilterSelect.addEventListener('change', (e) => {
+                galleryFilterState.artist = e.target.value;
+                // 同步热门大师高亮
+                if (quickArtistsContainer) {
+                    const qp = quickArtistsContainer.querySelectorAll('.quick-artist-pill');
+                    qp.forEach(p => p.classList.toggle('active', p.getAttribute('data-artist') === e.target.value));
+                }
+                renderGalleryList();
+            });
+        }
+
+        // 3. 填充时期画派流派下拉
+        if (categoryFilterSelect && window.ART_CATEGORIES) {
+            categoryFilterSelect.innerHTML = `<option value="all">🏛️ 全部画派时期 (${window.ART_CATEGORIES.length}大流派)</option>`;
+            window.ART_CATEGORIES.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat.id;
+                opt.textContent = `${cat.name} (${cat.count || 0}幅)`;
+                categoryFilterSelect.appendChild(opt);
+            });
+
+            categoryFilterSelect.addEventListener('change', (e) => {
+                galleryFilterState.category = e.target.value;
+                renderGalleryList();
+            });
+        }
+
+        // 4. 填充热门艺术大师快捷直选胶囊
+        if (quickArtistsContainer) {
+            quickArtistsContainer.innerHTML = '';
+            // 挑选前 7 位大师作品量最大的或最具代表性的
+            const topArtists = sortedArtists.slice(0, 8);
+            topArtists.forEach(artist => {
+                // 提取短名，如 "Claude Monet (莫奈)" -> "莫奈"
+                const shortMatch = artist.match(/\((.*?)\)/);
+                const shortName = shortMatch ? shortMatch[1] : artist.split(' ')[0];
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'quick-artist-pill';
+                btn.setAttribute('data-artist', artist);
+                btn.textContent = `${shortName} (${artistCounts[artist]})`;
+
+                btn.addEventListener('click', () => {
+                    if (galleryFilterState.artist === artist) {
+                        // 再次点击取消选择
+                        galleryFilterState.artist = 'all';
+                        btn.classList.remove('active');
+                        if (artistFilterSelect) artistFilterSelect.value = 'all';
+                    } else {
+                        galleryFilterState.artist = artist;
+                        const allPills = quickArtistsContainer.querySelectorAll('.quick-artist-pill');
+                        allPills.forEach(p => p.classList.toggle('active', p === btn));
+                        if (artistFilterSelect) artistFilterSelect.value = artist;
+                    }
+                    renderGalleryList();
+                });
+
+                quickArtistsContainer.appendChild(btn);
+            });
+        }
+
+        // 5. 搜索栏输入与实时清除事件
+        if (gallerySearchInput) {
+            gallerySearchInput.addEventListener('input', (e) => {
+                galleryFilterState.query = e.target.value;
+                if (gallerySearchClear) {
+                    gallerySearchClear.style.display = e.target.value ? 'flex' : 'none';
+                }
+                renderGalleryList();
+            });
+
+            gallerySearchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (gallerySearchInput.value) {
+                        gallerySearchInput.value = '';
+                        galleryFilterState.query = '';
+                        if (gallerySearchClear) gallerySearchClear.style.display = 'none';
+                        renderGalleryList();
+                    } else {
+                        closeGallery();
+                    }
+                    e.stopPropagation();
+                }
+            });
+        }
+
+        if (gallerySearchClear) {
+            gallerySearchClear.addEventListener('click', () => {
+                if (gallerySearchInput) gallerySearchInput.value = '';
+                galleryFilterState.query = '';
+                gallerySearchClear.style.display = 'none';
+                if (gallerySearchInput) gallerySearchInput.focus();
+                renderGalleryList();
+            });
+        }
+
+        // 6. 重置所有筛选按钮
+        if (galleryResetBtn) {
+            galleryResetBtn.addEventListener('click', resetAllFilters);
+        }
+
+        // 7. 展厅打开/关闭触发器
+        if (galleryOpenBtn) {
+            galleryOpenBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openGallery();
+            });
+        }
+
+        if (openGalleryModalBtn) {
+            openGalleryModalBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openGallery();
+            });
+        }
+
+        if (galleryCloseBtn) {
+            galleryCloseBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closeGallery();
+            });
+        }
+
+        if (galleryBackdrop) {
+            galleryBackdrop.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closeGallery();
+            });
+        }
+
+        // 8. 上一幅 / 下一幅快捷切换
         if (prevArtBtn) {
             prevArtBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -763,9 +1199,24 @@
             });
         }
 
-        // 初始选中第 1 幅
-        masterpieceSelect.value = 0;
-        if (masterpieceIndexBadge) masterpieceIndexBadge.textContent = `1 / ${masterpieces.length}`;
+        // 9. 全局键盘快捷键: 按 G 或 / 打开展厅，按 ESC 关闭
+        window.addEventListener('keydown', (e) => {
+            const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement && document.activeElement.tagName);
+            if (e.key === 'Escape') {
+                if (galleryDrawer && galleryDrawer.classList.contains('open')) {
+                    closeGallery();
+                } else if (brushPopup && brushPopup.classList.contains('open')) {
+                    brushPopup.classList.remove('open');
+                    if (brushToggleBtn) brushToggleBtn.classList.remove('active');
+                }
+            } else if (!isTyping && (e.key === 'g' || e.key === 'G' || e.key === '/')) {
+                e.preventDefault();
+                openGallery();
+            }
+        });
+
+        // 初始渲染卡片列表
+        renderGalleryList();
     }
 
     /**

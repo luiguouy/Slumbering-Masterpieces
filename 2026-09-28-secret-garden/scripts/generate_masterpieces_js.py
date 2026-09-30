@@ -22,18 +22,7 @@ new_artworks = local_scope['NEW_ARTWORKS']
 
 # 现有的 33 幅画作定义与归类
 EXISTING_ARTWORKS = [
-    # 莫奈专栏 (27幅)
-    {
-        'id': 'garden',
-        'title': '莫奈的秘密花园 · 沉睡庄园',
-        'enTitle': 'The Slumbering Garden',
-        'artist': 'Claude Monet (莫奈风格)',
-        'category': 'monet',
-        'file': 'garden.jpg',
-        'src': 'assets/images/garden.jpg?v=3.5.0',
-        'quote': '“I must have flowers, always, and always.”',
-        'quoteAuthor': '— Claude Monet'
-    },
+    # 莫奈专栏 (26幅真实传世油画名作)
     {
         'id': 'monet_giverny_path',
         'title': '吉维尼的花园小径 (1902)',
@@ -41,7 +30,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'thumb_monet_giverny.jpg',
-        'src': 'assets/images/thumb_monet_giverny.jpg?v=3.5.0',
+        'src': 'assets/images/thumb_monet_giverny.jpg?v=3.6.1',
         'quote': '“Perhaps I owe having become a painter to flowers.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -52,7 +41,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'thumb_monet_argenteuil.jpg',
-        'src': 'assets/images/thumb_monet_argenteuil.jpg?v=3.5.0',
+        'src': 'assets/images/thumb_monet_argenteuil.jpg?v=3.6.1',
         'quote': '“My garden is my most beautiful masterpiece.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -63,7 +52,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_met_irises.jpg',
-        'src': 'assets/images/monet_met_irises.jpg?v=3.5.0',
+        'src': 'assets/images/monet_met_irises.jpg?v=3.6.1',
         'quote': '“Colour is my day-long obsession, joy and torment.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -74,7 +63,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_nga_vetheuil.jpg',
-        'src': 'assets/images/monet_nga_vetheuil.jpg?v=3.5.0',
+        'src': 'assets/images/monet_nga_vetheuil.jpg?v=3.6.1',
         'quote': '“The richness I achieve comes from nature, the source of my inspiration.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -85,7 +74,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'preview_sainte_adresse.jpg',
-        'src': 'assets/images/preview_sainte_adresse.jpg?v=3.5.0',
+        'src': 'assets/images/preview_sainte_adresse.jpg?v=3.6.1',
         'quote': '“Everyone discusses my art and pretends to understand, when it is simply necessary to love.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -96,7 +85,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'thumb_monet_gladiolus.jpg',
-        'src': 'assets/images/thumb_monet_gladiolus.jpg?v=3.5.0',
+        'src': 'assets/images/thumb_monet_gladiolus.jpg?v=3.6.1',
         'quote': '“I would like to paint the way a bird sings.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -107,7 +96,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_japanese_bridge.jpg',
-        'src': 'assets/images/monet_japanese_bridge.jpg?v=3.5.0',
+        'src': 'assets/images/monet_japanese_bridge.jpg?v=3.6.1',
         'quote': '“It took me time to understand my water lilies... I planted them without thinking of painting them.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -118,7 +107,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_poppy_field.jpg',
-        'src': 'assets/images/monet_poppy_field.jpg?v=3.5.0',
+        'src': 'assets/images/monet_poppy_field.jpg?v=3.6.1',
         'quote': '“Every day I discover even more beautiful things. It is intoxicating me, and I want to paint it all.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -129,7 +118,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_impression_sunrise.jpg',
-        'src': 'assets/images/monet_impression_sunrise.jpg?v=3.5.0',
+        'src': 'assets/images/monet_impression_sunrise.jpg?v=3.6.1',
         'quote': '“A landscape is only an impression, instantaneous, hence the label they\'ve given us.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -140,7 +129,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_woman_with_parasol.jpg',
-        'src': 'assets/images/monet_woman_with_parasol.jpg?v=3.5.0',
+        'src': 'assets/images/monet_woman_with_parasol.jpg?v=3.6.1',
         'quote': '“I am working on figures outdoors as I want, done like landscapes... It is an old dream that always torments me.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -151,7 +140,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_water_lilies_1906.jpg',
-        'src': 'assets/images/monet_water_lilies_1906.jpg?v=3.5.0',
+        'src': 'assets/images/monet_water_lilies_1906.jpg?v=3.6.1',
         'quote': '“These water landscapes have become an obsession. They are beyond my powers as an old man, and yet I want to succeed in expressing what I feel.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -162,7 +151,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_haystacks_snow.jpg',
-        'src': 'assets/images/monet_haystacks_snow.jpg?v=3.5.0',
+        'src': 'assets/images/monet_haystacks_snow.jpg?v=3.6.1',
         'quote': '“The further I go, the more I see that a lot of work is needed to succeed in rendering what I want to render: \'instantaneity\'.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -173,7 +162,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_rouen_cathedral.jpg',
-        'src': 'assets/images/monet_rouen_cathedral.jpg?v=3.5.0',
+        'src': 'assets/images/monet_rouen_cathedral.jpg?v=3.6.1',
         'quote': '“Everything changes, even stone... Colour is vibration just like music.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -184,7 +173,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_saint_lazare.jpg',
-        'src': 'assets/images/monet_saint_lazare.jpg?v=3.5.0',
+        'src': 'assets/images/monet_saint_lazare.jpg?v=3.6.1',
         'quote': '“I am following nature without being able to grasp her... and then there is the light that refuses to stay still.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -195,7 +184,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_camille_green_dress.jpg',
-        'src': 'assets/images/monet_camille_green_dress.jpg?v=3.5.0',
+        'src': 'assets/images/monet_camille_green_dress.jpg?v=3.6.1',
         'quote': '“My heart goes out to the light and the beauty that walks among us.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -206,7 +195,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_dejeuner_sur_l_herbe.jpg',
-        'src': 'assets/images/monet_dejeuner_sur_l_herbe.jpg?v=3.5.0',
+        'src': 'assets/images/monet_dejeuner_sur_l_herbe.jpg?v=3.6.1',
         'quote': '“I want to paint the air in which the bridge, the house, and the boat are situated, the beauty of the air around them.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -217,7 +206,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_women_in_garden.jpg',
-        'src': 'assets/images/monet_women_in_garden.jpg?v=3.5.0',
+        'src': 'assets/images/monet_women_in_garden.jpg?v=3.6.1',
         'quote': '“I paint directly from nature, outdoors, trying to catch the freshness of sunlight on the flowers and fabrics.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -228,7 +217,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_la_grenouillere.jpg',
-        'src': 'assets/images/monet_la_grenouillere.jpg?v=3.5.0',
+        'src': 'assets/images/monet_la_grenouillere.jpg?v=3.6.1',
         'quote': '“I have a dream of a picture of the waters of La Grenouillère... sparkling with life and ripples.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -239,7 +228,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_argenteuil_basin.jpg',
-        'src': 'assets/images/monet_argenteuil_basin.jpg?v=3.5.0',
+        'src': 'assets/images/monet_argenteuil_basin.jpg?v=3.6.1',
         'quote': '“Water is the mirror of the sky, reflecting every fleeting cloud and beam of shimmer.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -250,7 +239,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_boulevard_capucines.jpg',
-        'src': 'assets/images/monet_boulevard_capucines.jpg?v=3.5.0',
+        'src': 'assets/images/monet_boulevard_capucines.jpg?v=3.6.1',
         'quote': '“To capture the pulse of the boulevard, the bustle of carriages and pedestrians disappearing into winter haze.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -261,7 +250,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_rue_saint_denis.jpg',
-        'src': 'assets/images/monet_rue_saint_denis.jpg?v=3.5.0',
+        'src': 'assets/images/monet_rue_saint_denis.jpg?v=3.6.1',
         'quote': '“I was enchanted by the flags... thousands of banners billowing in the Parisian breeze like fields of flowers.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -272,7 +261,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_poplars.jpg',
-        'src': 'assets/images/monet_poplars.jpg?v=3.5.0',
+        'src': 'assets/images/monet_poplars.jpg?v=3.6.1',
         'quote': '“Nature does not stand still. Every hour brings a new vibration through the slender poplars against the sky.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -283,7 +272,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_etretat_cliff.jpg',
-        'src': 'assets/images/monet_etretat_cliff.jpg?v=3.5.0',
+        'src': 'assets/images/monet_etretat_cliff.jpg?v=3.6.1',
         'quote': '“The sea is an incredible spectacle, changing colour and grandeur with every passing hour.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -294,7 +283,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_parliament.jpg',
-        'src': 'assets/images/monet_parliament.jpg?v=3.5.0',
+        'src': 'assets/images/monet_parliament.jpg?v=3.6.1',
         'quote': '“Without the fog, London would not be a beautiful city. It is the fog that gives it its magnificent amplitude.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -305,7 +294,7 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_waterloo_bridge.jpg',
-        'src': 'assets/images/monet_waterloo_bridge.jpg?v=3.5.0',
+        'src': 'assets/images/monet_waterloo_bridge.jpg?v=3.6.1',
         'quote': '“I cannot paint the bridge, I paint only the atmosphere, the light, the fleeting mist upon the Thames.”',
         'quoteAuthor': '— Claude Monet'
     },
@@ -316,80 +305,13 @@ EXISTING_ARTWORKS = [
         'artist': 'Claude Monet (莫奈)',
         'category': 'monet',
         'file': 'monet_venice_grand_canal.jpg',
-        'src': 'assets/images/monet_venice_grand_canal.jpg?v=3.5.0',
+        'src': 'assets/images/monet_venice_grand_canal.jpg?v=3.6.1',
         'quote': '“The light of Venice is so exquisite, like molten jewels floating upon the undulating waves.”',
         'quoteAuthor': '— Claude Monet'
     },
-    # 现有的 6 幅大师杰作
-    {
-        'id': 'renoir_wargemont',
-        'title': '瓦日蒙玫瑰花海 (1879)',
-        'enTitle': 'A Garden at Wargemont',
-        'artist': 'Pierre-Auguste Renoir (雷诺阿)',
-        'category': 'impressionism',
-        'file': 'renoir_wargemont.jpg',
-        'src': 'assets/images/renoir_wargemont.jpg?v=3.5.0',
-        'quote': '“The pain passes, but the beauty remains.”',
-        'quoteAuthor': '— Pierre-Auguste Renoir'
-    },
-    {
-        'id': 'caillebotte_dahlias',
-        'title': '大丽花与小热讷维利耶花园 (1893)',
-        'enTitle': 'Dahlias in the Garden',
-        'artist': 'Gustave Caillebotte (卡耶博特)',
-        'category': 'impressionism',
-        'file': 'caillebotte_nga_dahlias.jpg',
-        'src': 'assets/images/caillebotte_nga_dahlias.jpg?v=3.5.0',
-        'quote': '“To paint nature as it is, pure and untamed.”',
-        'quoteAuthor': '— Gustave Caillebotte'
-    },
-    {
-        'id': 'sorolla_garden',
-        'title': '索罗拉故居庭院 (1919)',
-        'enTitle': 'Garden of the Sorolla House',
-        'artist': 'Joaquín Sorolla (索罗拉)',
-        'category': 'world_treasures',
-        'file': 'sorolla_garden.jpg',
-        'src': 'assets/images/sorolla_garden.jpg?v=3.5.0',
-        'quote': '“Art has no color without light.”',
-        'quoteAuthor': '— Joaquín Sorolla'
-    },
-    {
-        'id': 'hassam_celia',
-        'title': '西莉亚的海岛盛开花园 (1890)',
-        'enTitle': "Celia Thaxter's Island Garden",
-        'artist': 'Childe Hassam (哈萨姆)',
-        'category': 'world_treasures',
-        'file': 'hassam_celia_garden.jpg',
-        'src': 'assets/images/hassam_celia_garden.jpg?v=3.5.0',
-        'quote': '“The portrait of a garden is the portrait of summer itself.”',
-        'quoteAuthor': '— Childe Hassam'
-    },
-    {
-        'id': 'nolde_flower_garden',
-        'title': '盛放花境 (1908)',
-        'enTitle': 'Flower Garden (Blumengarten)',
-        'artist': 'Emil Nolde (诺尔德)',
-        'category': 'expressionism',
-        'file': 'nolde_blumengarten.jpg',
-        'src': 'assets/images/nolde_blumengarten.jpg?v=3.5.0',
-        'quote': '“Color is life, for a world without color appears to us as dead.”',
-        'quoteAuthor': '— Emil Nolde'
-    },
-    {
-        'id': 'liebermann_terrace',
-        'title': '万纳湖畔花境 (1915)',
-        'enTitle': 'Flower Terrace at Wannsee',
-        'artist': 'Max Liebermann (利伯曼)',
-        'category': 'world_treasures',
-        'file': 'liebermann_blumenstauden.jpg',
-        'src': 'assets/images/liebermann_blumenstauden.jpg?v=3.5.0',
-        'quote': '“Whenever I see something well painted, I am delighted.”',
-        'quoteAuthor': '— Max Liebermann'
-    }
 ]
 
-# 组装 10 大分类字典
+# 组装 8 大传世出名油画流派展厅 (剔除现代主义与非油画内容)
 CATEGORIES = [
     ('renaissance', '🏛️ 文艺复兴与北方画派 (Renaissance & Northern Masters)'),
     ('baroque', '🎭 巴洛克与荷兰黄金时代 (Baroque & Dutch Golden Age)'),
@@ -398,9 +320,7 @@ CATEGORIES = [
     ('monet', '🌟 克劳德·莫奈专题特辑 (Claude Monet Collection)'),
     ('impressionism', '🎨 印象派巅峰盛宴 (Impressionism Masters)'),
     ('post_impressionism', '🌻 后印象派三杰与现代先驱 (Post-Impressionism)'),
-    ('expressionism', '🌌 象征主义与表现主义 (Symbolism & Expressionism)'),
-    ('modernism', '🔷 现代主义、立体派与超现实主义 (Modernism & Surrealism)'),
-    ('world_treasures', '🌊 东方瑰宝与世界名作 (World Treasures)')
+    ('expressionism', '🌌 象征主义与表现主义 (Symbolism & Expressionism)')
 ]
 
 # 合并全部名画列表并按分类排序组织
@@ -412,7 +332,7 @@ for p in new_artworks:
     # 避免 id 重复
     if not any(x['id'] == p['id'] for x in combined):
         p_copy = dict(p)
-        p_copy['src'] = f"assets/images/{p['file']}?v=3.5.0"
+        p_copy['src'] = f"assets/images/{p['file']}?v=3.6.1"
         combined.append(p_copy)
 
 # 按类别组织

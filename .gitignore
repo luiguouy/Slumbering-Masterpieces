@@ -23,3 +23,9 @@ temp/
 node_modules/
 dist/
 .cache/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+

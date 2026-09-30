@@ -308,7 +308,7 @@ html, body {
 }
 
 /* ==========================================================================
-   名画画廊切换器样式 (Masterpiece Gallery Switcher)
+   名画画廊快捷入口与切换器样式 (Masterpiece Gallery Picker Card)
    ========================================================================== */
 .brush-badge {
     font-size: 0.82rem;
@@ -326,30 +326,76 @@ html, body {
     width: 100%;
 }
 
-.masterpiece-dropdown {
+.masterpiece-picker-btn {
     width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     padding: 7px 10px;
     background: rgba(24, 28, 36, 0.9);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(238, 214, 170, 0.35);
+    border-radius: 8px;
+    color: #ffffff;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.22s ease;
+}
+
+.masterpiece-picker-btn:hover {
+    border-color: rgba(238, 214, 170, 0.85);
+    background: rgba(36, 44, 58, 0.95);
+    box-shadow: 0 4px 14px rgba(238, 214, 170, 0.18);
+    transform: translateY(-1px);
+}
+
+.picker-thumb-wrap {
+    width: 36px;
+    height: 36px;
     border-radius: 6px;
-    color: #eed6aa;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #0d0f12;
+    border: 1px solid rgba(238, 214, 170, 0.3);
+}
+
+.picker-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.picker-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.picker-title {
     font-family: 'Cormorant Garamond', Georgia, serif;
     font-size: 0.95rem;
-    letter-spacing: 0.03em;
-    outline: none;
-    cursor: pointer;
-    transition: border-color 0.2s ease, background 0.2s ease;
+    font-weight: 600;
+    color: #eed6aa;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.25;
 }
 
-.masterpiece-dropdown:hover, .masterpiece-dropdown:focus {
-    border-color: rgba(238, 214, 170, 0.8);
-    background: rgba(30, 36, 48, 0.95);
+.picker-artist {
+    font-size: 0.76rem;
+    color: rgba(255, 255, 255, 0.65);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+    margin-top: 2px;
 }
 
-.masterpiece-dropdown option {
-    background: #14171d;
-    color: #ffffff;
-    padding: 6px;
+.picker-search-badge {
+    font-size: 0.9rem;
+    color: rgba(238, 214, 170, 0.8);
+    flex-shrink: 0;
+    padding-left: 2px;
 }
 
 .masterpiece-nav-row {
@@ -491,4 +537,661 @@ html, body {
     font-size: 0.82rem;
     letter-spacing: 0.06em;
     color: rgba(255, 255, 255, 0.65);
+}
+
+
+
+/* ==========================================================================
+   名画博览馆 · 典藏搜索与多维分类抽屉展厅 (Masterpiece Gallery Drawer)
+   ========================================================================== */
+.gallery-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-drawer.open {
+    opacity: 1;
+    pointer-events: auto;
+    cursor: default;
+}
+
+body.gallery-open {
+    cursor: default !important;
+}
+
+body.gallery-open * {
+    cursor: auto;
+}
+
+body.gallery-open #custom-cursor {
+    opacity: 0 !important;
+    display: none !important;
+}
+
+.gallery-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(6, 8, 12, 0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease;
+}
+
+.gallery-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 480px;
+    max-width: 95vw;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(18, 22, 30, 0.96) 0%, rgba(12, 15, 20, 0.98) 100%);
+    border-right: 1px solid rgba(238, 214, 170, 0.28);
+    box-shadow: 12px 0 48px rgba(0, 0, 0, 0.75), inset -1px 0 0 rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: text; /* 方便用户复制画作或画家名字 */
+}
+
+.gallery-drawer.open .gallery-panel {
+    transform: translateX(0);
+}
+
+/* 展厅头部 */
+.gallery-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 24px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.gallery-title-box {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.gallery-main-title {
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.gallery-main-title .header-icon {
+    font-size: 1.35rem;
+}
+
+.gallery-sub-info {
+    font-size: 0.82rem;
+    color: #eed6aa;
+    opacity: 0.85;
+    letter-spacing: 0.08em;
+}
+
+.gallery-close-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gallery-close-btn:hover {
+    background: rgba(238, 214, 170, 0.2);
+    border-color: rgba(238, 214, 170, 0.6);
+    color: #eed6aa;
+    transform: rotate(90deg);
+}
+
+/* 搜索栏区 */
+.gallery-search-wrap {
+    padding: 14px 24px 10px;
+}
+
+.gallery-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: rgba(8, 10, 14, 0.85);
+    border: 1px solid rgba(238, 214, 170, 0.35);
+    border-radius: 10px;
+    padding: 2px 12px;
+    transition: all 0.25s ease;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.gallery-search-box:focus-within {
+    border-color: rgba(238, 214, 170, 0.95);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 14px rgba(238, 214, 170, 0.25);
+    background: rgba(14, 18, 24, 0.95);
+}
+
+.gallery-search-box .search-svg {
+    color: rgba(238, 214, 170, 0.75);
+    flex-shrink: 0;
+    margin-right: 8px;
+}
+
+.gallery-search-input {
+    flex: 1;
+    height: 38px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-family: 'Cormorant Garamond', Georgia, -apple-system, serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+}
+
+.gallery-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.92rem;
+}
+
+.gallery-search-clear {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    color: #eed6aa;
+    font-size: 16px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gallery-search-clear:hover {
+    background: rgba(238, 214, 170, 0.3);
+    color: #ffffff;
+}
+
+/* 多维分类筛选区 */
+.gallery-filter-panel {
+    padding: 6px 24px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.filter-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.filter-title {
+    font-size: 0.86rem;
+    color: #eed6aa;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+}
+
+.filter-tip {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* 题材胶囊标签 (Genre Pills) */
+.genre-pills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.genre-pill {
+    padding: 4px 11px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.84rem;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.genre-pill:hover {
+    background: rgba(238, 214, 170, 0.15);
+    border-color: rgba(238, 214, 170, 0.5);
+    color: #eed6aa;
+    transform: translateY(-1px);
+}
+
+.genre-pill.active {
+    background: linear-gradient(135deg, rgba(238, 214, 170, 0.28) 0%, rgba(190, 145, 85, 0.2) 100%);
+    border-color: #eed6aa;
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(238, 214, 170, 0.25);
+}
+
+.genre-pill-count {
+    font-size: 0.74rem;
+    opacity: 0.75;
+    font-family: monospace;
+}
+
+/* 下拉菜单行 (画家 + 画派时期) */
+.filter-dropdowns-row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.filter-dropdown-cell {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.dropdown-label {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: 0.06em;
+}
+
+.dropdown-shell {
+    position: relative;
+    width: 100%;
+}
+
+.gallery-select-input {
+    width: 100%;
+    padding: 6px 10px;
+    background: rgba(12, 15, 20, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 6px;
+    color: #eed6aa;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.88rem;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gallery-select-input:hover, .gallery-select-input:focus {
+    border-color: rgba(238, 214, 170, 0.8);
+    background: rgba(18, 24, 32, 0.98);
+}
+
+.gallery-select-input option {
+    background: #10141b;
+    color: #ffffff;
+    padding: 6px;
+}
+
+/* 热门大师快捷标签 (Quick Artists) */
+.quick-artists-section {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding-top: 2px;
+}
+
+.quick-artists-label {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.55);
+    flex-shrink: 0;
+}
+
+.quick-artists-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.quick-artist-pill {
+    padding: 2px 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quick-artist-pill:hover {
+    background: rgba(238, 214, 170, 0.15);
+    border-color: rgba(238, 214, 170, 0.45);
+    color: #eed6aa;
+}
+
+.quick-artist-pill.active {
+    background: rgba(238, 214, 170, 0.25);
+    border-color: #eed6aa;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* 筛选结果统计与重置 */
+.gallery-meta-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px 6px;
+    font-size: 0.84rem;
+}
+
+.gallery-meta-count {
+    color: rgba(255, 255, 255, 0.75);
+    letter-spacing: 0.05em;
+}
+
+.meta-num {
+    color: #eed6aa;
+    font-weight: 600;
+    font-family: monospace;
+    font-size: 0.95rem;
+}
+
+.meta-filter-desc {
+    color: rgba(238, 214, 170, 0.85);
+    margin-left: 6px;
+    font-style: italic;
+}
+
+.gallery-reset-btn {
+    background: transparent;
+    border: none;
+    color: #eed6aa;
+    font-size: 0.82rem;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    padding: 0;
+}
+
+.gallery-reset-btn:hover {
+    color: #ffffff;
+}
+
+/* 名画卡片滚动容器 */
+.gallery-list-container {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px 20px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.gallery-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.gallery-list-container::-webkit-scrollbar-thumb {
+    background: rgba(238, 214, 170, 0.22);
+    border-radius: 3px;
+}
+
+.gallery-list-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(238, 214, 170, 0.45);
+}
+
+/* 单个名画卡片 (Artwork Card) */
+.gallery-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    min-height: 72px;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 10px;
+    cursor: pointer !important;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.gallery-card * {
+    cursor: pointer;
+}
+
+.gallery-card:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(238, 214, 170, 0.55);
+    transform: translateY(-1px) translateX(2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.gallery-card.is-active {
+    background: linear-gradient(135deg, rgba(238, 214, 170, 0.16) 0%, rgba(26, 32, 44, 0.85) 100%);
+    border: 1px solid rgba(238, 214, 170, 0.8);
+    box-shadow: 0 4px 18px rgba(238, 214, 170, 0.2), inset 0 0 12px rgba(238, 214, 170, 0.1);
+}
+
+.gallery-card.is-active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #eed6aa;
+    border-radius: 2px 0 0 2px;
+}
+
+.card-thumb-box {
+    width: 54px;
+    height: 54px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #080a0d;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    position: relative;
+}
+
+.card-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.gallery-card:hover .card-thumb-img {
+    transform: scale(1.08);
+}
+
+.card-details {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.card-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.card-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.25;
+}
+
+.gallery-card.is-active .card-title {
+    color: #eed6aa;
+}
+
+.card-badge-viewing {
+    font-size: 0.72rem;
+    color: #12161e;
+    background: #eed6aa;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    letter-spacing: 0.04em;
+}
+
+.card-entitle {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.45);
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+.card-artist {
+    font-size: 0.84rem;
+    color: #eed6aa;
+    opacity: 0.9;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.25;
+}
+
+.card-tags-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 3px;
+    flex-wrap: wrap;
+}
+
+.card-tag {
+    font-size: 0.7rem;
+    padding: 1px 6px;
+    border-radius: 4px;
+    line-height: 1.3;
+}
+
+.card-tag-genre {
+    background: rgba(238, 214, 170, 0.12);
+    color: #eed6aa;
+    border: 1px solid rgba(238, 214, 170, 0.25);
+}
+
+.card-tag-cat {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 空状态 (Empty State) */
+.gallery-empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.empty-icon {
+    font-size: 2.4rem;
+    opacity: 0.7;
+}
+
+.empty-title {
+    font-size: 1.15rem;
+    color: #eed6aa;
+    font-weight: 500;
+}
+
+.empty-desc {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.5);
+    max-width: 280px;
+    line-height: 1.45;
+}
+
+.empty-reset-btn {
+    margin-top: 6px;
+    padding: 6px 16px;
+    background: rgba(238, 214, 170, 0.18);
+    border: 1px solid rgba(238, 214, 170, 0.5);
+    border-radius: 16px;
+    color: #eed6aa;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.empty-reset-btn:hover {
+    background: rgba(238, 214, 170, 0.35);
+    color: #ffffff;
+}
+
+/* 响应式适配 */
+@media (max-width: 640px) {
+    .gallery-open-container {
+        top: 16px;
+        left: 16px;
+    }
+
+    .gallery-open-hint {
+        display: none;
+    }
+
+    .gallery-panel {
+        width: 100vw;
+        max-width: 100vw;
+    }
+
+    .brush-control-panel {
+        top: 16px;
+        right: 16px;
+    }
 }

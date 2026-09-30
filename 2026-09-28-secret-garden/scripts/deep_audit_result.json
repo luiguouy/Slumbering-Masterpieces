@@ -1,0 +1,3122 @@
+[
+  {
+    "art": {
+      "id": "corot_the_bridge_at_mantes",
+      "title": "芒特的桥 (1869)",
+      "titleEn": "The Bridge at Mantes",
+      "artist": "Jean-Baptiste-Camille Corot (卡米耶·柯罗)",
+      "category": "realism",
+      "file": "corot_the_bridge_at_mantes.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/corot_the_bridge_at_mantes.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3425,
+    "h": 2540,
+    "colorfulness": 10.23,
+    "mean_s": 0.124,
+    "std_s": 0.096,
+    "mean_v": 0.421,
+    "aspect": 1.35
+  },
+  {
+    "art": {
+      "id": "friedrich_wanderer_above_sea_of_fog",
+      "title": "雾海上的旅人 (1818)",
+      "titleEn": "Wanderer above the Sea of Fog",
+      "artist": "Caspar David Friedrich (弗里德里希)",
+      "category": "romanticism",
+      "file": "friedrich_wanderer_above_sea_of_fog.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/friedrich_wanderer_above_sea_of_fog.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1559,
+    "h": 2000,
+    "colorfulness": 12.15,
+    "mean_s": 0.165,
+    "std_s": 0.163,
+    "mean_v": 0.529,
+    "aspect": 0.78
+  },
+  {
+    "art": {
+      "id": "vangogh_almond_blossom",
+      "title": "盛开的杏花 (1890)",
+      "titleEn": "Almond Blossoms",
+      "artist": "Vincent van Gogh (梵高)",
+      "category": "post_impressionism",
+      "file": "vangogh_almond_blossom.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/vangogh_almond_blossom.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1280,
+    "colorfulness": 15.46,
+    "mean_s": 0.161,
+    "std_s": 0.169,
+    "mean_v": 0.573,
+    "aspect": 1.5
+  },
+  {
+    "art": {
+      "id": "monet_saint_lazare",
+      "title": "圣拉扎尔火车站 (1877)",
+      "titleEn": "Gare Saint-Lazare, Arrival of a Train",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_saint_lazare.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_saint_lazare.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2000,
+    "h": 1487,
+    "colorfulness": 16.77,
+    "mean_s": 0.151,
+    "std_s": 0.109,
+    "mean_v": 0.442,
+    "aspect": 1.34
+  },
+  {
+    "art": {
+      "id": "rembrandt_return_of_the_prodigal_son",
+      "title": "浪子回头 (1669)",
+      "titleEn": "The Return of the Prodigal Son",
+      "artist": "Rembrandt (伦勃朗)",
+      "category": "baroque",
+      "file": "rembrandt_return_of_the_prodigal_son.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/rembrandt_return_of_the_prodigal_son.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 3840,
+    "colorfulness": 17.53,
+    "mean_s": 0.545,
+    "std_s": 0.15,
+    "mean_v": 0.112,
+    "aspect": 1.0
+  },
+  {
+    "art": {
+      "id": "gast_american_progress",
+      "title": "美洲的进步 · 西进先锋 (1872)",
+      "titleEn": "American Progress",
+      "artist": "John Gast (约翰·加斯特)",
+      "category": "realism",
+      "file": "gast_american_progress.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/gast_american_progress.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 4815,
+    "h": 3584,
+    "colorfulness": 18.27,
+    "mean_s": 0.22,
+    "std_s": 0.146,
+    "mean_v": 0.444,
+    "aspect": 1.34
+  },
+  {
+    "art": {
+      "id": "degas_the_dance_class",
+      "title": "舞蹈课 (1874)",
+      "titleEn": "The Dance Class",
+      "artist": "Edgar Degas (德加)",
+      "category": "impressionism",
+      "file": "degas_the_dance_class.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/degas_the_dance_class.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1742,
+    "h": 2000,
+    "colorfulness": 18.3,
+    "mean_s": 0.228,
+    "std_s": 0.075,
+    "mean_v": 0.459,
+    "aspect": 0.87
+  },
+  {
+    "art": {
+      "id": "caravaggio_calling_of_saint_matthew",
+      "title": "圣马太蒙召 (1600)",
+      "titleEn": "The Calling of Saint Matthew",
+      "artist": "Caravaggio (卡拉瓦乔)",
+      "category": "baroque",
+      "file": "caravaggio_calling_of_saint_matthew.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/caravaggio_calling_of_saint_matthew.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1813,
+    "colorfulness": 18.46,
+    "mean_s": 0.198,
+    "std_s": 0.157,
+    "mean_v": 0.167,
+    "aspect": 1.06
+  },
+  {
+    "art": {
+      "id": "homer_the_gulf_stream",
+      "title": "墨西哥湾流 (1899)",
+      "titleEn": "The Gulf Stream",
+      "artist": "Winslow Homer (温斯洛·霍默)",
+      "category": "realism",
+      "file": "homer_the_gulf_stream.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/homer_the_gulf_stream.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 5886,
+    "h": 3540,
+    "colorfulness": 19.52,
+    "mean_s": 0.206,
+    "std_s": 0.123,
+    "mean_v": 0.43,
+    "aspect": 1.66
+  },
+  {
+    "art": {
+      "id": "bruegel_the_hunters_in_the_snow",
+      "title": "雪中猎人 (1565)",
+      "titleEn": "The Hunters in the Snow",
+      "artist": "Pieter Bruegel the Elder (老彼得·勃鲁盖尔)",
+      "category": "renaissance",
+      "file": "bruegel_the_hunters_in_the_snow.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/bruegel_the_hunters_in_the_snow.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1377,
+    "colorfulness": 19.57,
+    "mean_s": 0.151,
+    "std_s": 0.084,
+    "mean_v": 0.501,
+    "aspect": 1.39
+  },
+  {
+    "art": {
+      "id": "van_eyck_arnolfini_portrait",
+      "title": "阿诺菲尼夫妇像 (1434)",
+      "titleEn": "The Arnolfini Portrait",
+      "artist": "Jan van Eyck (扬·凡·艾克)",
+      "category": "renaissance",
+      "file": "van_eyck_arnolfini_portrait.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/van_eyck_arnolfini_portrait.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1451,
+    "h": 2000,
+    "colorfulness": 19.62,
+    "mean_s": 0.431,
+    "std_s": 0.187,
+    "mean_v": 0.176,
+    "aspect": 0.73
+  },
+  {
+    "art": {
+      "id": "goya_saturn_devouring_his_son",
+      "title": "农神吞噬其子 (1823)",
+      "titleEn": "Saturn Devouring His Son",
+      "artist": "Francisco Goya (戈雅)",
+      "category": "romanticism",
+      "file": "goya_saturn_devouring_his_son.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/goya_saturn_devouring_his_son.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1089,
+    "h": 2000,
+    "colorfulness": 19.76,
+    "mean_s": 0.402,
+    "std_s": 0.198,
+    "mean_v": 0.198,
+    "aspect": 0.54
+  },
+  {
+    "art": {
+      "id": "manet_olympia",
+      "title": "奥林匹亚 (1863)",
+      "titleEn": "Olympia",
+      "artist": "Édouard Manet (马奈)",
+      "category": "impressionism",
+      "file": "manet_olympia.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/manet_olympia.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1299,
+    "colorfulness": 19.91,
+    "mean_s": 0.197,
+    "std_s": 0.186,
+    "mean_v": 0.505,
+    "aspect": 1.48
+  },
+  {
+    "art": {
+      "id": "davinci_last_supper",
+      "title": "最后的晚餐 (1498)",
+      "titleEn": "The Last Supper",
+      "artist": "Leonardo da Vinci (达·芬奇)",
+      "category": "renaissance",
+      "file": "davinci_last_supper.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/davinci_last_supper.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2000,
+    "h": 1088,
+    "colorfulness": 20.14,
+    "mean_s": 0.28,
+    "std_s": 0.155,
+    "mean_v": 0.443,
+    "aspect": 1.84
+  },
+  {
+    "art": {
+      "id": "caillebotte_paris_street_rainy_day",
+      "title": "下雨天的巴黎街道 (1877)",
+      "titleEn": "Paris Street; Rainy Day",
+      "artist": "Gustave Caillebotte (卡耶博特)",
+      "category": "impressionism",
+      "file": "caillebotte_paris_street_rainy_day.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/caillebotte_paris_street_rainy_day.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1465,
+    "colorfulness": 20.15,
+    "mean_s": 0.139,
+    "std_s": 0.092,
+    "mean_v": 0.574,
+    "aspect": 1.31
+  },
+  {
+    "art": {
+      "id": "vermeer_the_astronomer",
+      "title": "天文学家 (1668)",
+      "titleEn": "The Astronomer",
+      "artist": "Johannes Vermeer (维米尔)",
+      "category": "baroque",
+      "file": "vermeer_the_astronomer.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/vermeer_the_astronomer.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3379,
+    "h": 3840,
+    "colorfulness": 20.67,
+    "mean_s": 0.472,
+    "std_s": 0.203,
+    "mean_v": 0.166,
+    "aspect": 0.88
+  },
+  {
+    "art": {
+      "id": "manet_dejeuner_sur_l_herbe",
+      "title": "草地上的午餐 (1863)",
+      "titleEn": "Le Déjeuner sur l'herbe",
+      "artist": "Édouard Manet (马奈)",
+      "category": "impressionism",
+      "file": "manet_dejeuner_sur_l_herbe.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/manet_dejeuner_sur_l_herbe.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1492,
+    "colorfulness": 20.9,
+    "mean_s": 0.316,
+    "std_s": 0.124,
+    "mean_v": 0.268,
+    "aspect": 1.29
+  },
+  {
+    "art": {
+      "id": "vermeer_woman_holding_a_balance",
+      "title": "持天平的女人 (1664)",
+      "titleEn": "Woman Holding a Balance",
+      "artist": "Johannes Vermeer (维米尔)",
+      "category": "baroque",
+      "file": "vermeer_woman_holding_a_balance.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/vermeer_woman_holding_a_balance.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 4342,
+    "colorfulness": 20.92,
+    "mean_s": 0.365,
+    "std_s": 0.205,
+    "mean_v": 0.196,
+    "aspect": 0.88
+  },
+  {
+    "art": {
+      "id": "degas_ballet_rehearsal_on_stage",
+      "title": "舞台上的芭蕾排练 (1874)",
+      "titleEn": "Ballet Rehearsal on Stage",
+      "artist": "Edgar Degas (德加)",
+      "category": "impressionism",
+      "file": "degas_ballet_rehearsal_on_stage.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/degas_ballet_rehearsal_on_stage.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 3061,
+    "colorfulness": 21.28,
+    "mean_s": 0.299,
+    "std_s": 0.106,
+    "mean_v": 0.482,
+    "aspect": 1.25
+  },
+  {
+    "art": {
+      "id": "constable_salisbury_cathedral",
+      "title": "索尔兹伯里大教堂 (1823)",
+      "titleEn": "Salisbury Cathedral from the Bishop's Grounds",
+      "artist": "John Constable (约翰·康斯特勃)",
+      "category": "romanticism",
+      "file": "constable_salisbury_cathedral.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/constable_salisbury_cathedral.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 3032,
+    "colorfulness": 21.41,
+    "mean_s": 0.336,
+    "std_s": 0.18,
+    "mean_v": 0.377,
+    "aspect": 1.27
+  },
+  {
+    "art": {
+      "id": "sisley_flood_at_port_marly",
+      "title": "马利港的洪水 (1876)",
+      "titleEn": "Flood at Port-Marly",
+      "artist": "Alfred Sisley (阿尔弗雷德·西斯莱)",
+      "category": "impressionism",
+      "file": "sisley_flood_at_port_marly.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/sisley_flood_at_port_marly.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 3038,
+    "colorfulness": 21.62,
+    "mean_s": 0.18,
+    "std_s": 0.111,
+    "mean_v": 0.609,
+    "aspect": 1.26
+  },
+  {
+    "art": {
+      "id": "velazquez_the_spinners",
+      "title": "纺织女 · 阿拉克涅的寓言 (1657)",
+      "titleEn": "The Spinners (Las Hilanderas)",
+      "artist": "Diego Velázquez (委拉斯凯兹)",
+      "category": "baroque",
+      "file": "velazquez_the_spinners.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/velazquez_the_spinners.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3051,
+    "h": 2349,
+    "colorfulness": 21.68,
+    "mean_s": 0.304,
+    "std_s": 0.203,
+    "mean_v": 0.25,
+    "aspect": 1.3
+  },
+  {
+    "art": {
+      "id": "monet_boulevard_capucines",
+      "title": "卡普辛大道 · 冬日熙攘 (1873)",
+      "titleEn": "Boulevard des Capucines",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_boulevard_capucines.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_boulevard_capucines.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1482,
+    "h": 2000,
+    "colorfulness": 21.73,
+    "mean_s": 0.139,
+    "std_s": 0.125,
+    "mean_v": 0.694,
+    "aspect": 0.74
+  },
+  {
+    "art": {
+      "id": "delacroix_the_barque_of_dante",
+      "title": "但丁之舟 (1822)",
+      "titleEn": "The Barque of Dante",
+      "artist": "Eugène Delacroix (德拉克罗瓦)",
+      "category": "romanticism",
+      "file": "delacroix_the_barque_of_dante.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/delacroix_the_barque_of_dante.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 2956,
+    "colorfulness": 21.76,
+    "mean_s": 0.282,
+    "std_s": 0.144,
+    "mean_v": 0.224,
+    "aspect": 1.3
+  },
+  {
+    "art": {
+      "id": "pissarro_boulevard_montmartre_spring",
+      "title": "蒙马特大道 · 春晓 (1897)",
+      "titleEn": "Boulevard Montmartre, Spring Morning",
+      "artist": "Camille Pissarro (卡米耶·毕沙罗)",
+      "category": "impressionism",
+      "file": "pissarro_boulevard_montmartre_spring.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/pissarro_boulevard_montmartre_spring.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3293,
+    "h": 2647,
+    "colorfulness": 22.27,
+    "mean_s": 0.195,
+    "std_s": 0.122,
+    "mean_v": 0.553,
+    "aspect": 1.24
+  },
+  {
+    "art": {
+      "id": "millet_the_angelus",
+      "title": "晚钟 (1859)",
+      "titleEn": "The Angelus",
+      "artist": "Jean-François Millet (米勒)",
+      "category": "realism",
+      "file": "millet_the_angelus.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/millet_the_angelus.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 3193,
+    "colorfulness": 22.4,
+    "mean_s": 0.351,
+    "std_s": 0.1,
+    "mean_v": 0.302,
+    "aspect": 1.2
+  },
+  {
+    "art": {
+      "id": "vermeer_woman_reading_a_letter",
+      "title": "读信的蓝衣女人 (1663)",
+      "titleEn": "Woman Reading a Letter",
+      "artist": "Johannes Vermeer (维米尔)",
+      "category": "baroque",
+      "file": "vermeer_woman_reading_a_letter.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/vermeer_woman_reading_a_letter.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 4585,
+    "colorfulness": 22.45,
+    "mean_s": 0.288,
+    "std_s": 0.191,
+    "mean_v": 0.358,
+    "aspect": 0.84
+  },
+  {
+    "art": {
+      "id": "monet_impression_sunrise",
+      "title": "日出·印象 (1872)",
+      "titleEn": "Impression, Sunrise",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_impression_sunrise.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_impression_sunrise.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2000,
+    "h": 1551,
+    "colorfulness": 22.61,
+    "mean_s": 0.195,
+    "std_s": 0.1,
+    "mean_v": 0.466,
+    "aspect": 1.29
+  },
+  {
+    "art": {
+      "id": "millet_the_gleaners",
+      "title": "拾穗者 (1857)",
+      "titleEn": "The Gleaners",
+      "artist": "Jean-François Millet (米勒)",
+      "category": "realism",
+      "file": "millet_the_gleaners.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/millet_the_gleaners.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1437,
+    "colorfulness": 22.67,
+    "mean_s": 0.253,
+    "std_s": 0.101,
+    "mean_v": 0.503,
+    "aspect": 1.34
+  },
+  {
+    "art": {
+      "id": "rousseau_the_dream",
+      "title": "梦境 (1910)",
+      "titleEn": "The Dream",
+      "artist": "Henri Rousseau (亨利·卢梭)",
+      "category": "post_impressionism",
+      "file": "rousseau_the_dream.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/rousseau_the_dream.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1307,
+    "colorfulness": 23.11,
+    "mean_s": 0.328,
+    "std_s": 0.133,
+    "mean_v": 0.23,
+    "aspect": 1.47
+  },
+  {
+    "art": {
+      "id": "rembrandt_self_portrait_1659",
+      "title": "戴贝雷帽的自画像 (1659)",
+      "titleEn": "Self-Portrait with Beret",
+      "artist": "Rembrandt (伦勃朗)",
+      "category": "baroque",
+      "file": "rembrandt_self_portrait_1659.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/rembrandt_self_portrait_1659.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 4974,
+    "colorfulness": 23.62,
+    "mean_s": 0.581,
+    "std_s": 0.107,
+    "mean_v": 0.17,
+    "aspect": 0.77
+  },
+  {
+    "art": {
+      "id": "degas_dancer_tilting",
+      "title": "舞台上的舞女 · 绿衣舞者 (1878)",
+      "titleEn": "Dancer on Stage (Swaying Dancer)",
+      "artist": "Edgar Degas (德加)",
+      "category": "impressionism",
+      "file": "degas_dancer_tilting.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/degas_dancer_tilting.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2148,
+    "h": 3840,
+    "colorfulness": 23.88,
+    "mean_s": 0.195,
+    "std_s": 0.115,
+    "mean_v": 0.468,
+    "aspect": 0.56
+  },
+  {
+    "art": {
+      "id": "manet_a_bar_at_the_folies_bergere",
+      "title": "女神游乐厅的吧台 (1882)",
+      "titleEn": "A Bar at the Folies-Bergère",
+      "artist": "Édouard Manet (马奈)",
+      "category": "impressionism",
+      "file": "manet_a_bar_at_the_folies_bergere.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/manet_a_bar_at_the_folies_bergere.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1410,
+    "colorfulness": 24.27,
+    "mean_s": 0.236,
+    "std_s": 0.175,
+    "mean_v": 0.381,
+    "aspect": 1.36
+  },
+  {
+    "art": {
+      "id": "monet_parliament",
+      "title": "伦敦国会大厦系列 · 雾中夕阳 (1903)",
+      "titleEn": "The Houses of Parliament, Sunset",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_parliament.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_parliament.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2000,
+    "h": 1767,
+    "colorfulness": 24.84,
+    "mean_s": 0.197,
+    "std_s": 0.102,
+    "mean_v": 0.659,
+    "aspect": 1.13
+  },
+  {
+    "art": {
+      "id": "watteau_the_embarkation_for_cythera",
+      "title": "舟发西苔岛 (1717)",
+      "titleEn": "The Embarkation for Cythera",
+      "artist": "Antoine Watteau (让-安东尼·华托)",
+      "category": "romanticism",
+      "file": "watteau_the_embarkation_for_cythera.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/watteau_the_embarkation_for_cythera.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 2574,
+    "colorfulness": 24.99,
+    "mean_s": 0.325,
+    "std_s": 0.192,
+    "mean_v": 0.406,
+    "aspect": 1.49
+  },
+  {
+    "art": {
+      "id": "rembrandt_anatomy_lesson",
+      "title": "杜尔普医生的解剖课 (1632)",
+      "titleEn": "The Anatomy Lesson of Dr. Nicolaes Tulp",
+      "artist": "Rembrandt (伦勃朗)",
+      "category": "baroque",
+      "file": "rembrandt_anatomy_lesson.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/rembrandt_anatomy_lesson.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1526,
+    "colorfulness": 25.15,
+    "mean_s": 0.534,
+    "std_s": 0.219,
+    "mean_v": 0.161,
+    "aspect": 1.26
+  },
+  {
+    "art": {
+      "id": "vermeer_the_geographer",
+      "title": "地理学家 (1669)",
+      "titleEn": "The Geographer",
+      "artist": "Johannes Vermeer (维米尔)",
+      "category": "baroque",
+      "file": "vermeer_the_geographer.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/vermeer_the_geographer.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 4296,
+    "colorfulness": 25.22,
+    "mean_s": 0.312,
+    "std_s": 0.149,
+    "mean_v": 0.261,
+    "aspect": 0.89
+  },
+  {
+    "art": {
+      "id": "velazquez_las_meninas",
+      "title": "宫娥 (1656)",
+      "titleEn": "Las Meninas",
+      "artist": "Diego Velázquez (委拉斯凯兹)",
+      "category": "baroque",
+      "file": "velazquez_las_meninas.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/velazquez_las_meninas.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1738,
+    "h": 2000,
+    "colorfulness": 25.56,
+    "mean_s": 0.485,
+    "std_s": 0.153,
+    "mean_v": 0.16,
+    "aspect": 0.87
+  },
+  {
+    "art": {
+      "id": "leutze_washington_crossing_delaware",
+      "title": "华盛顿横渡特拉华河 (1851)",
+      "titleEn": "Washington Crossing the Delaware",
+      "artist": "Emanuel Leutze (洛伊茨)",
+      "category": "romanticism",
+      "file": "leutze_washington_crossing_delaware.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/leutze_washington_crossing_delaware.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3874,
+    "h": 2269,
+    "colorfulness": 25.77,
+    "mean_s": 0.275,
+    "std_s": 0.125,
+    "mean_v": 0.436,
+    "aspect": 1.71
+  },
+  {
+    "art": {
+      "id": "monet_argenteuil",
+      "title": "阿让特伊的艺术家花园 (1873)",
+      "titleEn": "The Artist's Garden at Argenteuil",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "thumb_monet_argenteuil.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/thumb_monet_argenteuil.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 800,
+    "h": 598,
+    "colorfulness": 26.44,
+    "mean_s": 0.249,
+    "std_s": 0.138,
+    "mean_v": 0.549,
+    "aspect": 1.34
+  },
+  {
+    "art": {
+      "id": "ingres_the_source",
+      "title": "泉 (1856)",
+      "titleEn": "The Source (La Source)",
+      "artist": "Jean-Auguste-Dominique Ingres (安格尔)",
+      "category": "romanticism",
+      "file": "ingres_the_source.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/ingres_the_source.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1922,
+    "h": 3840,
+    "colorfulness": 26.6,
+    "mean_s": 0.279,
+    "std_s": 0.113,
+    "mean_v": 0.324,
+    "aspect": 0.5
+  },
+  {
+    "art": {
+      "id": "degas_l_absinthe",
+      "title": "苦艾酒 (1876)",
+      "titleEn": "L'Absinthe",
+      "artist": "Edgar Degas (德加)",
+      "category": "impressionism",
+      "file": "degas_l_absinthe.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/degas_l_absinthe.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1458,
+    "h": 2000,
+    "colorfulness": 26.85,
+    "mean_s": 0.327,
+    "std_s": 0.11,
+    "mean_v": 0.425,
+    "aspect": 0.73
+  },
+  {
+    "art": {
+      "id": "gericault_raft_of_the_medusa",
+      "title": "梅杜萨之筏 (1819)",
+      "titleEn": "The Raft of the Medusa",
+      "artist": "Théodore Géricault (席里柯)",
+      "category": "romanticism",
+      "file": "gericault_raft_of_the_medusa.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/gericault_raft_of_the_medusa.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1311,
+    "colorfulness": 26.89,
+    "mean_s": 0.369,
+    "std_s": 0.146,
+    "mean_v": 0.3,
+    "aspect": 1.46
+  },
+  {
+    "art": {
+      "id": "homer_prisoners_from_the_front",
+      "title": "来自前线的囚犯 · 南北战争 (1866)",
+      "titleEn": "Prisoners from the Front",
+      "artist": "Winslow Homer (温斯洛·霍默)",
+      "category": "realism",
+      "file": "homer_prisoners_from_the_front.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/homer_prisoners_from_the_front.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 2398,
+    "colorfulness": 27.04,
+    "mean_s": 0.353,
+    "std_s": 0.174,
+    "mean_v": 0.468,
+    "aspect": 1.6
+  },
+  {
+    "art": {
+      "id": "monet_venice_grand_canal",
+      "title": "威尼斯大运河与安康圣母圣殿 (1908)",
+      "titleEn": "The Grand Canal, Venice",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_venice_grand_canal.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_venice_grand_canal.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2000,
+    "h": 1588,
+    "colorfulness": 27.08,
+    "mean_s": 0.149,
+    "std_s": 0.132,
+    "mean_v": 0.693,
+    "aspect": 1.26
+  },
+  {
+    "art": {
+      "id": "vermeer_pearl_earring",
+      "title": "戴珍珠耳环的少女 (1665)",
+      "titleEn": "Girl with a Pearl Earring",
+      "artist": "Johannes Vermeer (维米尔)",
+      "category": "baroque",
+      "file": "vermeer_pearl_earring.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/vermeer_pearl_earring.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1689,
+    "h": 2000,
+    "colorfulness": 27.12,
+    "mean_s": 0.433,
+    "std_s": 0.169,
+    "mean_v": 0.311,
+    "aspect": 0.84
+  },
+  {
+    "art": {
+      "id": "renoir_bal_du_moulin_de_la_galette",
+      "title": "红磨坊街的舞会 (1876)",
+      "titleEn": "Bal du moulin de la Galette",
+      "artist": "Pierre-Auguste Renoir (雷诺阿)",
+      "category": "impressionism",
+      "file": "renoir_bal_du_moulin_de_la_galette.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/renoir_bal_du_moulin_de_la_galette.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1427,
+    "colorfulness": 27.53,
+    "mean_s": 0.456,
+    "std_s": 0.252,
+    "mean_v": 0.27,
+    "aspect": 1.35
+  },
+  {
+    "art": {
+      "id": "renoir_the_swing",
+      "title": "秋千 (1876)",
+      "titleEn": "The Swing",
+      "artist": "Pierre-Auguste Renoir (雷诺阿)",
+      "category": "impressionism",
+      "file": "renoir_the_swing.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/renoir_the_swing.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 5021,
+    "colorfulness": 27.54,
+    "mean_s": 0.232,
+    "std_s": 0.14,
+    "mean_v": 0.492,
+    "aspect": 0.76
+  },
+  {
+    "art": {
+      "id": "shishkin_morning_in_a_pine_forest",
+      "title": "松林的早晨 (1889)",
+      "titleEn": "Morning in a Pine Forest",
+      "artist": "Ivan Shishkin (伊凡·希什金)",
+      "category": "realism",
+      "file": "shishkin_morning_in_a_pine_forest.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/shishkin_morning_in_a_pine_forest.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 2602,
+    "colorfulness": 27.69,
+    "mean_s": 0.309,
+    "std_s": 0.13,
+    "mean_v": 0.399,
+    "aspect": 1.48
+  },
+  {
+    "art": {
+      "id": "vermeer_the_milkmaid",
+      "title": "倒牛奶的女仆 (1658)",
+      "titleEn": "The Milkmaid",
+      "artist": "Johannes Vermeer (维米尔)",
+      "category": "baroque",
+      "file": "vermeer_the_milkmaid.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/vermeer_the_milkmaid.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1784,
+    "h": 2000,
+    "colorfulness": 27.79,
+    "mean_s": 0.342,
+    "std_s": 0.203,
+    "mean_v": 0.463,
+    "aspect": 0.89
+  },
+  {
+    "art": {
+      "id": "monet_woman_with_parasol",
+      "title": "撑阳伞的女人 · 散步 (1875)",
+      "titleEn": "Woman with a Parasol - Madame Monet and Her Son",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_woman_with_parasol.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/monet_woman_with_parasol.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1613,
+    "h": 2000,
+    "colorfulness": 27.81,
+    "mean_s": 0.204,
+    "std_s": 0.129,
+    "mean_v": 0.624,
+    "aspect": 0.81
+  },
+  {
+    "art": {
+      "id": "courbet_the_painters_studio",
+      "title": "画室 · 真实寓言 (1855)",
+      "titleEn": "The Painter's Studio",
+      "artist": "Gustave Courbet (古斯塔夫·库尔贝)",
+      "category": "realism",
+      "file": "courbet_the_painters_studio.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/courbet_the_painters_studio.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 2263,
+    "colorfulness": 28.17,
+    "mean_s": 0.272,
+    "std_s": 0.145,
+    "mean_v": 0.331,
+    "aspect": 1.7
+  },
+  {
+    "art": {
+      "id": "monet_camille_green_dress",
+      "title": "绿衣女子 · 卡米尔 (1866)",
+      "titleEn": "The Woman in the Green Dress (Camille)",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_camille_green_dress.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/monet_camille_green_dress.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1298,
+    "h": 2000,
+    "colorfulness": 28.55,
+    "mean_s": 0.503,
+    "std_s": 0.138,
+    "mean_v": 0.236,
+    "aspect": 0.65
+  },
+  {
+    "art": {
+      "id": "turner_the_fighting_temeraire",
+      "title": "被拖去解体的战舰无畏号 (1839)",
+      "titleEn": "The Fighting Temeraire",
+      "artist": "J. M. W. Turner (透纳)",
+      "category": "romanticism",
+      "file": "turner_the_fighting_temeraire.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/turner_the_fighting_temeraire.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1500,
+    "h": 2000,
+    "colorfulness": 28.86,
+    "mean_s": 0.218,
+    "std_s": 0.171,
+    "mean_v": 0.48,
+    "aspect": 0.75
+  },
+  {
+    "art": {
+      "id": "trumbull_declaration_of_independence",
+      "title": "独立宣言 (1819)",
+      "titleEn": "Declaration of Independence",
+      "artist": "John Trumbull (特朗布尔)",
+      "category": "romanticism",
+      "file": "trumbull_declaration_of_independence.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/trumbull_declaration_of_independence.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3000,
+    "h": 1970,
+    "colorfulness": 28.86,
+    "mean_s": 0.42,
+    "std_s": 0.224,
+    "mean_v": 0.324,
+    "aspect": 1.52
+  },
+  {
+    "art": {
+      "id": "monet_gladiolus",
+      "title": "睡莲池景 (1900)",
+      "titleEn": "Water Lily Pond",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "thumb_monet_gladiolus.jpg",
+      "genre": "💐 静物花卉",
+      "image": "assets/images/thumb_monet_gladiolus.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 437,
+    "h": 600,
+    "colorfulness": 28.86,
+    "mean_s": 0.234,
+    "std_s": 0.135,
+    "mean_v": 0.394,
+    "aspect": 0.73
+  },
+  {
+    "art": {
+      "id": "rubens_descent_from_the_cross",
+      "title": "下十字架 (1614)",
+      "titleEn": "The Descent from the Cross",
+      "artist": "Peter Paul Rubens (鲁本斯)",
+      "category": "baroque",
+      "file": "rubens_descent_from_the_cross.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/rubens_descent_from_the_cross.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 2248,
+    "colorfulness": 28.9,
+    "mean_s": 0.267,
+    "std_s": 0.209,
+    "mean_v": 0.362,
+    "aspect": 1.71
+  },
+  {
+    "art": {
+      "id": "holbein_the_ambassadors",
+      "title": "出使英国的法国使臣 (1533)",
+      "titleEn": "The Ambassadors",
+      "artist": "Hans Holbein the Younger (小汉斯·霍尔拜因)",
+      "category": "renaissance",
+      "file": "holbein_the_ambassadors.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/holbein_the_ambassadors.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 3784,
+    "colorfulness": 29.09,
+    "mean_s": 0.384,
+    "std_s": 0.266,
+    "mean_v": 0.244,
+    "aspect": 1.01
+  },
+  {
+    "art": {
+      "id": "vermeer_view_of_delft",
+      "title": "代尔夫特风景 (1661)",
+      "titleEn": "View of Delft",
+      "artist": "Johannes Vermeer (维米尔)",
+      "category": "baroque",
+      "file": "vermeer_view_of_delft.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/vermeer_view_of_delft.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1398,
+    "h": 2000,
+    "colorfulness": 29.16,
+    "mean_s": 0.384,
+    "std_s": 0.132,
+    "mean_v": 0.196,
+    "aspect": 0.7
+  },
+  {
+    "art": {
+      "id": "botticelli_birth_of_venus",
+      "title": "维纳斯的诞生 (1485)",
+      "titleEn": "The Birth of Venus",
+      "artist": "Sandro Botticelli (波提切利)",
+      "category": "renaissance",
+      "file": "botticelli_birth_of_venus.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/botticelli_birth_of_venus.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1206,
+    "colorfulness": 29.27,
+    "mean_s": 0.333,
+    "std_s": 0.16,
+    "mean_v": 0.375,
+    "aspect": 1.59
+  },
+  {
+    "art": {
+      "id": "goya_the_nude_maja",
+      "title": "裸体的玛哈 (1800)",
+      "titleEn": "The Nude Maja",
+      "artist": "Francisco Goya (戈雅)",
+      "category": "romanticism",
+      "file": "goya_the_nude_maja.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/goya_the_nude_maja.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 1948,
+    "colorfulness": 29.58,
+    "mean_s": 0.366,
+    "std_s": 0.105,
+    "mean_v": 0.305,
+    "aspect": 1.97
+  },
+  {
+    "art": {
+      "id": "caravaggio_judith_beheading_holofernes",
+      "title": "朱迪斯斩杀霍洛芬斯 (1599)",
+      "titleEn": "Judith Beheading Holofernes",
+      "artist": "Caravaggio (卡拉瓦乔)",
+      "category": "baroque",
+      "file": "caravaggio_judith_beheading_holofernes.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/caravaggio_judith_beheading_holofernes.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1216,
+    "h": 902,
+    "colorfulness": 29.68,
+    "mean_s": 0.363,
+    "std_s": 0.146,
+    "mean_v": 0.236,
+    "aspect": 1.35
+  },
+  {
+    "art": {
+      "id": "monet_haystacks_snow",
+      "title": "干草堆系列 · 雪景晨光 (1891)",
+      "titleEn": "Wheatstacks (Snow Effect, Morning)",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_haystacks_snow.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_haystacks_snow.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2000,
+    "h": 1422,
+    "colorfulness": 29.78,
+    "mean_s": 0.209,
+    "std_s": 0.119,
+    "mean_v": 0.705,
+    "aspect": 1.41
+  },
+  {
+    "art": {
+      "id": "monet_dejeuner_sur_l_herbe",
+      "title": "草地上的午餐 (1866)",
+      "titleEn": "Le Déjeuner sur l'herbe",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_dejeuner_sur_l_herbe.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/monet_dejeuner_sur_l_herbe.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2000,
+    "h": 1436,
+    "colorfulness": 29.78,
+    "mean_s": 0.311,
+    "std_s": 0.17,
+    "mean_v": 0.332,
+    "aspect": 1.39
+  },
+  {
+    "art": {
+      "id": "ingres_the_valpincon_bather",
+      "title": "瓦平松的浴女 (1808)",
+      "titleEn": "The Valpinçon Bather",
+      "artist": "Jean-Auguste-Dominique Ingres (安格尔)",
+      "category": "romanticism",
+      "file": "ingres_the_valpincon_bather.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/ingres_the_valpincon_bather.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1340,
+    "h": 2000,
+    "colorfulness": 30.4,
+    "mean_s": 0.287,
+    "std_s": 0.212,
+    "mean_v": 0.487,
+    "aspect": 0.67
+  },
+  {
+    "art": {
+      "id": "delacroix_death_of_sardanapalus",
+      "title": "萨达那帕鲁斯之死 (1827)",
+      "titleEn": "The Death of Sardanapalus",
+      "artist": "Eugène Delacroix (德拉克罗瓦)",
+      "category": "romanticism",
+      "file": "delacroix_death_of_sardanapalus.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/delacroix_death_of_sardanapalus.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 3005,
+    "colorfulness": 30.44,
+    "mean_s": 0.247,
+    "std_s": 0.182,
+    "mean_v": 0.372,
+    "aspect": 1.28
+  },
+  {
+    "art": {
+      "id": "sargent_carnation_lily_lily_rose",
+      "title": "康乃馨、百合与玫瑰 (1886)",
+      "titleEn": "Carnation, Lily, Lily, Rose",
+      "artist": "John Singer Sargent (约翰·辛格·萨金特)",
+      "category": "realism",
+      "file": "sargent_carnation_lily_lily_rose.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/sargent_carnation_lily_lily_rose.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3330,
+    "h": 3762,
+    "colorfulness": 30.87,
+    "mean_s": 0.326,
+    "std_s": 0.201,
+    "mean_v": 0.399,
+    "aspect": 0.89
+  },
+  {
+    "art": {
+      "id": "rembrandt_storm_on_sea_of_galilee",
+      "title": "加利利海风暴 (1633)",
+      "titleEn": "The Storm on the Sea of Galilee",
+      "artist": "Rembrandt (伦勃朗)",
+      "category": "baroque",
+      "file": "rembrandt_storm_on_sea_of_galilee.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/rembrandt_storm_on_sea_of_galilee.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1609,
+    "h": 2000,
+    "colorfulness": 30.88,
+    "mean_s": 0.235,
+    "std_s": 0.153,
+    "mean_v": 0.301,
+    "aspect": 0.8
+  },
+  {
+    "art": {
+      "id": "waterhouse_the_lady_of_shalott",
+      "title": "沙洛特女郎 (1888)",
+      "titleEn": "The Lady of Shalott",
+      "artist": "John William Waterhouse (沃特豪斯)",
+      "category": "expressionism",
+      "file": "waterhouse_the_lady_of_shalott.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/waterhouse_the_lady_of_shalott.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1712,
+    "h": 1314,
+    "colorfulness": 30.97,
+    "mean_s": 0.272,
+    "std_s": 0.182,
+    "mean_v": 0.279,
+    "aspect": 1.3
+  },
+  {
+    "art": {
+      "id": "delacroix_liberty_leading_the_people",
+      "title": "自由引导人民 (1830)",
+      "titleEn": "Liberty Leading the People",
+      "artist": "Eugène Delacroix (德拉克罗瓦)",
+      "category": "romanticism",
+      "file": "delacroix_liberty_leading_the_people.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/delacroix_liberty_leading_the_people.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3133,
+    "h": 2480,
+    "colorfulness": 31.04,
+    "mean_s": 0.344,
+    "std_s": 0.189,
+    "mean_v": 0.305,
+    "aspect": 1.26
+  },
+  {
+    "art": {
+      "id": "monet_rouen_cathedral",
+      "title": "鲁昂大教堂系列 · 阳光下的西正面 (1894)",
+      "titleEn": "Rouen Cathedral, West Façade, Sunlight",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_rouen_cathedral.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_rouen_cathedral.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1310,
+    "h": 2000,
+    "colorfulness": 31.17,
+    "mean_s": 0.179,
+    "std_s": 0.115,
+    "mean_v": 0.782,
+    "aspect": 0.66
+  },
+  {
+    "art": {
+      "id": "rubens_the_three_graces",
+      "title": "三美神 (1635)",
+      "titleEn": "The Three Graces",
+      "artist": "Peter Paul Rubens (鲁本斯)",
+      "category": "baroque",
+      "file": "rubens_the_three_graces.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/rubens_the_three_graces.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 3840,
+    "colorfulness": 31.23,
+    "mean_s": 0.261,
+    "std_s": 0.154,
+    "mean_v": 0.638,
+    "aspect": 1.0
+  },
+  {
+    "art": {
+      "id": "turner_the_grand_canal_venice",
+      "title": "威尼斯大运河 (1835)",
+      "titleEn": "The Grand Canal, Venice",
+      "artist": "J. M. W. Turner (透纳)",
+      "category": "romanticism",
+      "file": "turner_the_grand_canal_venice.jpg",
+      "genre": "🌊 自然风景",
+      "image": "assets/images/turner_the_grand_canal_venice.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 2664,
+    "colorfulness": 31.23,
+    "mean_s": 0.217,
+    "std_s": 0.082,
+    "mean_v": 0.857,
+    "aspect": 1.44
+  },
+  {
+    "art": {
+      "id": "monet_sainte_adresse",
+      "title": "圣阿德雷斯的露台花园 (1867)",
+      "titleEn": "Garden at Sainte-Adresse",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "preview_sainte_adresse.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/preview_sainte_adresse.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1192,
+    "h": 900,
+    "colorfulness": 31.37,
+    "mean_s": 0.301,
+    "std_s": 0.177,
+    "mean_v": 0.455,
+    "aspect": 1.32
+  },
+  {
+    "art": {
+      "id": "monet_argenteuil_basin",
+      "title": "阿让特伊盆地帆船 (1872)",
+      "titleEn": "The Basin at Argenteuil",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_argenteuil_basin.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_argenteuil_basin.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1051,
+    "h": 785,
+    "colorfulness": 31.58,
+    "mean_s": 0.297,
+    "std_s": 0.252,
+    "mean_v": 0.589,
+    "aspect": 1.34
+  },
+  {
+    "art": {
+      "id": "goya_the_clothed_maja",
+      "title": "着衣的玛哈 (1803)",
+      "titleEn": "The Clothed Maja",
+      "artist": "Francisco Goya (戈雅)",
+      "category": "romanticism",
+      "file": "goya_the_clothed_maja.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/goya_the_clothed_maja.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 1931,
+    "colorfulness": 31.66,
+    "mean_s": 0.45,
+    "std_s": 0.153,
+    "mean_v": 0.332,
+    "aspect": 1.99
+  },
+  {
+    "art": {
+      "id": "constable_the_hay_wain",
+      "title": "干草车 (1821)",
+      "titleEn": "The Hay Wain",
+      "artist": "John Constable (约翰·康斯特勃)",
+      "category": "romanticism",
+      "file": "constable_the_hay_wain.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/constable_the_hay_wain.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1324,
+    "colorfulness": 32.07,
+    "mean_s": 0.325,
+    "std_s": 0.227,
+    "mean_v": 0.45,
+    "aspect": 1.45
+  },
+  {
+    "art": {
+      "id": "gauguin_where_do_we_come_from",
+      "title": "我们从何处来？我们是谁？我们向何处去？ (1897)",
+      "titleEn": "Where Do We Come From? What Are We? Where Are We Going?",
+      "artist": "Paul Gauguin (高更)",
+      "category": "post_impressionism",
+      "file": "gauguin_where_do_we_come_from.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/gauguin_where_do_we_come_from.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 713,
+    "colorfulness": 32.13,
+    "mean_s": 0.324,
+    "std_s": 0.191,
+    "mean_v": 0.292,
+    "aspect": 2.69
+  },
+  {
+    "art": {
+      "id": "savrasov_the_rooks_have_returned",
+      "title": "白嘴鸦飞来了 (1871)",
+      "titleEn": "The Rooks Have Returned",
+      "artist": "Alexei Savrasov (阿列克谢·萨夫拉索夫)",
+      "category": "realism",
+      "file": "savrasov_the_rooks_have_returned.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/savrasov_the_rooks_have_returned.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3055,
+    "h": 4000,
+    "colorfulness": 32.21,
+    "mean_s": 0.348,
+    "std_s": 0.253,
+    "mean_v": 0.557,
+    "aspect": 0.76
+  },
+  {
+    "art": {
+      "id": "velazquez_portrait_of_innocent_x",
+      "title": "教皇英诺森十世像 (1650)",
+      "titleEn": "Portrait of Innocent X",
+      "artist": "Diego Velázquez (委拉斯凯兹)",
+      "category": "baroque",
+      "file": "velazquez_portrait_of_innocent_x.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/velazquez_portrait_of_innocent_x.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1685,
+    "h": 2000,
+    "colorfulness": 32.37,
+    "mean_s": 0.367,
+    "std_s": 0.243,
+    "mean_v": 0.346,
+    "aspect": 0.84
+  },
+  {
+    "art": {
+      "id": "caravaggio_bacchus",
+      "title": "酒神巴克斯 (1595)",
+      "titleEn": "Bacchus",
+      "artist": "Caravaggio (卡拉瓦乔)",
+      "category": "baroque",
+      "file": "caravaggio_bacchus.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/caravaggio_bacchus.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1614,
+    "h": 2000,
+    "colorfulness": 32.76,
+    "mean_s": 0.429,
+    "std_s": 0.139,
+    "mean_v": 0.345,
+    "aspect": 0.81
+  },
+  {
+    "art": {
+      "id": "raphael_school_of_athens",
+      "title": "雅典学院 (1511)",
+      "titleEn": "The School of Athens",
+      "artist": "Raphael (拉斐尔)",
+      "category": "renaissance",
+      "file": "raphael_school_of_athens.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/raphael_school_of_athens.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1490,
+    "colorfulness": 32.93,
+    "mean_s": 0.346,
+    "std_s": 0.203,
+    "mean_v": 0.578,
+    "aspect": 1.29
+  },
+  {
+    "art": {
+      "id": "titian_bacchus_and_ariadne",
+      "title": "酒神与阿丽亚娜 (1523)",
+      "titleEn": "Bacchus and Ariadne",
+      "artist": "Titian (提香)",
+      "category": "renaissance",
+      "file": "titian_bacchus_and_ariadne.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/titian_bacchus_and_ariadne.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 4670,
+    "h": 4226,
+    "colorfulness": 32.97,
+    "mean_s": 0.422,
+    "std_s": 0.156,
+    "mean_v": 0.399,
+    "aspect": 1.11
+  },
+  {
+    "art": {
+      "id": "monet_giverny_path",
+      "title": "日本桥与睡莲 (1899)",
+      "titleEn": "The Japanese Footbridge",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "thumb_monet_giverny.jpg",
+      "genre": "🌿 自然风光",
+      "image": "assets/images/thumb_monet_giverny.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 611,
+    "h": 600,
+    "colorfulness": 33.19,
+    "mean_s": 0.299,
+    "std_s": 0.185,
+    "mean_v": 0.53,
+    "aspect": 1.02
+  },
+  {
+    "art": {
+      "id": "david_death_of_socrates",
+      "title": "苏格拉底之死 (1787)",
+      "titleEn": "The Death of Socrates",
+      "artist": "Jacques-Louis David (达维特)",
+      "category": "romanticism",
+      "file": "david_death_of_socrates.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/david_death_of_socrates.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 2547,
+    "colorfulness": 33.25,
+    "mean_s": 0.315,
+    "std_s": 0.203,
+    "mean_v": 0.26,
+    "aspect": 1.51
+  },
+  {
+    "art": {
+      "id": "pissarro_apple_picking_eragny",
+      "title": "厄拉尼采苹果 (1888)",
+      "titleEn": "Apple Picking at Éragny",
+      "artist": "Camille Pissarro (卡米耶·毕沙罗)",
+      "category": "realism",
+      "file": "pissarro_apple_picking_eragny.jpg",
+      "genre": "🌾 田园风光",
+      "image": "assets/images/pissarro_apple_picking_eragny.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3337,
+    "h": 3354,
+    "colorfulness": 33.26,
+    "mean_s": 0.29,
+    "std_s": 0.132,
+    "mean_v": 0.468,
+    "aspect": 0.99
+  },
+  {
+    "art": {
+      "id": "vangogh_potato_eaters",
+      "title": "吃土豆的人 (1885)",
+      "titleEn": "The Potato Eaters",
+      "artist": "Vincent van Gogh (梵高)",
+      "category": "post_impressionism",
+      "file": "vangogh_potato_eaters.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/vangogh_potato_eaters.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1455,
+    "colorfulness": 33.42,
+    "mean_s": 0.367,
+    "std_s": 0.197,
+    "mean_v": 0.258,
+    "aspect": 1.32
+  },
+  {
+    "art": {
+      "id": "goya_third_of_may_1808",
+      "title": "1808年5月3日夜间起义枪杀 (1814)",
+      "titleEn": "The Third of May 1808",
+      "artist": "Francisco Goya (戈雅)",
+      "category": "romanticism",
+      "file": "goya_third_of_may_1808.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/goya_third_of_may_1808.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1279,
+    "colorfulness": 33.47,
+    "mean_s": 0.442,
+    "std_s": 0.131,
+    "mean_v": 0.351,
+    "aspect": 1.5
+  },
+  {
+    "art": {
+      "id": "veronese_wedding_at_cana",
+      "title": "迦拿的婚礼 (1563)",
+      "titleEn": "The Wedding at Cana",
+      "artist": "Paolo Veronese (保罗·委罗内塞)",
+      "category": "renaissance",
+      "file": "veronese_wedding_at_cana.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/veronese_wedding_at_cana.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 2571,
+    "colorfulness": 33.77,
+    "mean_s": 0.312,
+    "std_s": 0.171,
+    "mean_v": 0.487,
+    "aspect": 1.49
+  },
+  {
+    "art": {
+      "id": "cezanne_the_large_bathers",
+      "title": "大浴女 (1906)",
+      "titleEn": "The Large Bathers",
+      "artist": "Paul Cézanne (塞尚)",
+      "category": "post_impressionism",
+      "file": "cezanne_the_large_bathers.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/cezanne_the_large_bathers.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 3210,
+    "colorfulness": 33.82,
+    "mean_s": 0.264,
+    "std_s": 0.192,
+    "mean_v": 0.513,
+    "aspect": 1.2
+  },
+  {
+    "art": {
+      "id": "michelangelo_creation_of_adam",
+      "title": "创世纪 · 创造亚当 (1512)",
+      "titleEn": "The Creation of Adam",
+      "artist": "Michelangelo (米开朗基罗)",
+      "category": "renaissance",
+      "file": "michelangelo_creation_of_adam.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/michelangelo_creation_of_adam.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 871,
+    "colorfulness": 33.91,
+    "mean_s": 0.32,
+    "std_s": 0.204,
+    "mean_v": 0.646,
+    "aspect": 2.2
+  },
+  {
+    "art": {
+      "id": "rousseau_the_sleeping_gypsy",
+      "title": "沉睡的吉普赛人 (1897)",
+      "titleEn": "The Sleeping Gypsy",
+      "artist": "Henri Rousseau (亨利·卢梭)",
+      "category": "post_impressionism",
+      "file": "rousseau_the_sleeping_gypsy.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/rousseau_the_sleeping_gypsy.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1280,
+    "colorfulness": 34.08,
+    "mean_s": 0.3,
+    "std_s": 0.159,
+    "mean_v": 0.547,
+    "aspect": 1.5
+  },
+  {
+    "art": {
+      "id": "david_napoleon_crossing_the_alps",
+      "title": "跨越阿尔卑斯山圣伯纳隘道的拿破仑 (1801)",
+      "titleEn": "Napoleon Crossing the Alps",
+      "artist": "Jacques-Louis David (达维特)",
+      "category": "romanticism",
+      "file": "david_napoleon_crossing_the_alps.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/david_napoleon_crossing_the_alps.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1169,
+    "h": 1371,
+    "colorfulness": 35.12,
+    "mean_s": 0.353,
+    "std_s": 0.219,
+    "mean_v": 0.466,
+    "aspect": 0.85
+  },
+  {
+    "art": {
+      "id": "caravaggio_supper_at_emmaus",
+      "title": "以马忤斯的晚餐 (1601)",
+      "titleEn": "Supper at Emmaus",
+      "artist": "Caravaggio (卡拉瓦乔)",
+      "category": "baroque",
+      "file": "caravaggio_supper_at_emmaus.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/caravaggio_supper_at_emmaus.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1498,
+    "colorfulness": 35.21,
+    "mean_s": 0.359,
+    "std_s": 0.183,
+    "mean_v": 0.263,
+    "aspect": 1.28
+  },
+  {
+    "art": {
+      "id": "monet_etretat_cliff",
+      "title": "普尔维尔峭壁漫步 (1882)",
+      "titleEn": "The Cliff Walk at Pourville",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_etretat_cliff.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_etretat_cliff.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2000,
+    "h": 1604,
+    "colorfulness": 35.26,
+    "mean_s": 0.223,
+    "std_s": 0.124,
+    "mean_v": 0.661,
+    "aspect": 1.25
+  },
+  {
+    "art": {
+      "id": "monet_water_lilies_bridge",
+      "title": "睡莲池与日本桥 (1899)",
+      "titleEn": "Water Lilies and Japanese Bridge",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_japanese_bridge.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_japanese_bridge.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1928,
+    "h": 1928,
+    "colorfulness": 35.93,
+    "mean_s": 0.411,
+    "std_s": 0.211,
+    "mean_v": 0.439,
+    "aspect": 1.0
+  },
+  {
+    "art": {
+      "id": "monet_waterloo_bridge",
+      "title": "滑铁卢桥系列 · 晨曦日光效应 (1903)",
+      "titleEn": "Waterloo Bridge, Sunlight Effect",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_waterloo_bridge.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_waterloo_bridge.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2000,
+    "h": 1302,
+    "colorfulness": 36.58,
+    "mean_s": 0.211,
+    "std_s": 0.153,
+    "mean_v": 0.731,
+    "aspect": 1.54
+  },
+  {
+    "art": {
+      "id": "caravaggio_david_with_head_of_goliath",
+      "title": "大卫手提歌利亚的头颅 (1610)",
+      "titleEn": "David with the Head of Goliath",
+      "artist": "Caravaggio (卡拉瓦乔)",
+      "category": "baroque",
+      "file": "caravaggio_david_with_head_of_goliath.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/caravaggio_david_with_head_of_goliath.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 4807,
+    "colorfulness": 36.82,
+    "mean_s": 0.538,
+    "std_s": 0.149,
+    "mean_v": 0.404,
+    "aspect": 0.8
+  },
+  {
+    "art": {
+      "id": "raphael_madonna_of_the_meadow",
+      "title": "草地上的圣母 (1506)",
+      "titleEn": "Madonna of the Meadow",
+      "artist": "Raphael (拉斐尔)",
+      "category": "renaissance",
+      "file": "raphael_madonna_of_the_meadow.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/raphael_madonna_of_the_meadow.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2998,
+    "h": 3840,
+    "colorfulness": 37.36,
+    "mean_s": 0.435,
+    "std_s": 0.238,
+    "mean_v": 0.506,
+    "aspect": 0.78
+  },
+  {
+    "art": {
+      "id": "titian_flora",
+      "title": "花神弗洛拉 (1515)",
+      "titleEn": "Flora",
+      "artist": "Titian (提香)",
+      "category": "renaissance",
+      "file": "titian_flora.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/titian_flora.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2879,
+    "h": 3840,
+    "colorfulness": 37.36,
+    "mean_s": 0.416,
+    "std_s": 0.21,
+    "mean_v": 0.387,
+    "aspect": 0.75
+  },
+  {
+    "art": {
+      "id": "rubens_rape_of_daughters_leucippus",
+      "title": "抢夺留西帕斯的女儿 (1618)",
+      "titleEn": "The Rape of the Daughters of Leucippus",
+      "artist": "Peter Paul Rubens (鲁本斯)",
+      "category": "baroque",
+      "file": "rubens_rape_of_daughters_leucippus.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/rubens_rape_of_daughters_leucippus.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 5462,
+    "colorfulness": 37.36,
+    "mean_s": 0.21,
+    "std_s": 0.219,
+    "mean_v": 0.524,
+    "aspect": 0.7
+  },
+  {
+    "art": {
+      "id": "titian_assumption_of_the_virgin",
+      "title": "圣母升天 (1518)",
+      "titleEn": "Assumption of the Virgin",
+      "artist": "Titian (提香)",
+      "category": "renaissance",
+      "file": "titian_assumption_of_the_virgin.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/titian_assumption_of_the_virgin.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3024,
+    "h": 4032,
+    "colorfulness": 37.77,
+    "mean_s": 0.414,
+    "std_s": 0.276,
+    "mean_v": 0.36,
+    "aspect": 0.75
+  },
+  {
+    "art": {
+      "id": "renoir_luncheon_of_the_boating_party",
+      "title": "游艇上的午餐 (1881)",
+      "titleEn": "Luncheon of the Boating Party",
+      "artist": "Pierre-Auguste Renoir (雷诺阿)",
+      "category": "impressionism",
+      "file": "renoir_luncheon_of_the_boating_party.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/renoir_luncheon_of_the_boating_party.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1422,
+    "colorfulness": 37.84,
+    "mean_s": 0.252,
+    "std_s": 0.171,
+    "mean_v": 0.578,
+    "aspect": 1.35
+  },
+  {
+    "art": {
+      "id": "monet_water_lilies_1906",
+      "title": "睡莲系列 · 碧波浮萍 (1906)",
+      "titleEn": "Water Lilies (Nymphéas)",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_water_lilies_1906.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_water_lilies_1906.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2000,
+    "h": 1921,
+    "colorfulness": 37.85,
+    "mean_s": 0.376,
+    "std_s": 0.13,
+    "mean_v": 0.564,
+    "aspect": 1.04
+  },
+  {
+    "art": {
+      "id": "friedrich_sea_of_ice",
+      "title": "冰海 · 极地沉船 (1824)",
+      "titleEn": "The Sea of Ice",
+      "artist": "Caspar David Friedrich (弗里德里希)",
+      "category": "romanticism",
+      "file": "friedrich_sea_of_ice.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/friedrich_sea_of_ice.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 2560,
+    "colorfulness": 38.37,
+    "mean_s": 0.309,
+    "std_s": 0.182,
+    "mean_v": 0.678,
+    "aspect": 1.5
+  },
+  {
+    "art": {
+      "id": "giorgione_the_tempest",
+      "title": "暴风雨 (1508)",
+      "titleEn": "The Tempest",
+      "artist": "Giorgione (乔尔乔内)",
+      "category": "renaissance",
+      "file": "giorgione_the_tempest.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/giorgione_the_tempest.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 4031,
+    "h": 4471,
+    "colorfulness": 38.47,
+    "mean_s": 0.393,
+    "std_s": 0.175,
+    "mean_v": 0.445,
+    "aspect": 0.9
+  },
+  {
+    "art": {
+      "id": "botticelli_primavera",
+      "title": "春 · 普里马韦拉 (1482)",
+      "titleEn": "Primavera (Spring)",
+      "artist": "Sandro Botticelli (波提切利)",
+      "category": "renaissance",
+      "file": "botticelli_primavera.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/botticelli_primavera.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1261,
+    "colorfulness": 38.52,
+    "mean_s": 0.297,
+    "std_s": 0.167,
+    "mean_v": 0.329,
+    "aspect": 1.52
+  },
+  {
+    "art": {
+      "id": "monet_poplars",
+      "title": "埃普特河畔的白杨树系列 (1891)",
+      "titleEn": "Poplars on the Epte",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_poplars.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_poplars.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1587,
+    "h": 2000,
+    "colorfulness": 38.69,
+    "mean_s": 0.223,
+    "std_s": 0.135,
+    "mean_v": 0.726,
+    "aspect": 0.79
+  },
+  {
+    "art": {
+      "id": "rembrandt_night_watch",
+      "title": "夜巡 (1642)",
+      "titleEn": "The Night Watch",
+      "artist": "Rembrandt (伦勃朗)",
+      "category": "baroque",
+      "file": "rembrandt_night_watch.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/rembrandt_night_watch.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1562,
+    "colorfulness": 38.87,
+    "mean_s": 0.669,
+    "std_s": 0.138,
+    "mean_v": 0.206,
+    "aspect": 1.23
+  },
+  {
+    "art": {
+      "id": "cezanne_basket_of_apples",
+      "title": "苹果篮静物 (1893)",
+      "titleEn": "The Basket of Apples",
+      "artist": "Paul Cézanne (保罗·塞尚)",
+      "category": "post_impressionism",
+      "file": "cezanne_basket_of_apples.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/cezanne_basket_of_apples.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3000,
+    "h": 2401,
+    "colorfulness": 39.09,
+    "mean_s": 0.25,
+    "std_s": 0.223,
+    "mean_v": 0.586,
+    "aspect": 1.25
+  },
+  {
+    "art": {
+      "id": "hals_the_gypsy_girl",
+      "title": "吉普赛女郎 (1628)",
+      "titleEn": "The Gypsy Girl",
+      "artist": "Frans Hals (弗朗斯·哈尔斯)",
+      "category": "baroque",
+      "file": "hals_the_gypsy_girl.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/hals_the_gypsy_girl.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 5760,
+    "colorfulness": 39.98,
+    "mean_s": 0.532,
+    "std_s": 0.156,
+    "mean_v": 0.418,
+    "aspect": 0.67
+  },
+  {
+    "art": {
+      "id": "bruegel_the_peasant_wedding",
+      "title": "农民的婚礼 (1567)",
+      "titleEn": "The Peasant Wedding",
+      "artist": "Pieter Bruegel the Elder (老彼得·勃鲁盖尔)",
+      "category": "renaissance",
+      "file": "bruegel_the_peasant_wedding.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/bruegel_the_peasant_wedding.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 2623,
+    "colorfulness": 40.15,
+    "mean_s": 0.517,
+    "std_s": 0.242,
+    "mean_v": 0.296,
+    "aspect": 1.46
+  },
+  {
+    "art": {
+      "id": "rembrandt_the_jewish_bride",
+      "title": "犹太新娘 (1667)",
+      "titleEn": "The Jewish Bride",
+      "artist": "Rembrandt (伦勃朗)",
+      "category": "baroque",
+      "file": "rembrandt_the_jewish_bride.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/rembrandt_the_jewish_bride.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 2800,
+    "colorfulness": 40.77,
+    "mean_s": 0.526,
+    "std_s": 0.15,
+    "mean_v": 0.253,
+    "aspect": 1.37
+  },
+  {
+    "art": {
+      "id": "seurat_sunday_afternoon",
+      "title": "大碗岛的星期天下午 (1886)",
+      "titleEn": "A Sunday on La Grande Jatte",
+      "artist": "Georges Seurat (修拉)",
+      "category": "post_impressionism",
+      "file": "seurat_sunday_afternoon.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/seurat_sunday_afternoon.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1278,
+    "colorfulness": 40.8,
+    "mean_s": 0.273,
+    "std_s": 0.143,
+    "mean_v": 0.519,
+    "aspect": 1.5
+  },
+  {
+    "art": {
+      "id": "poussin_et_in_arcadia_ego",
+      "title": "阿卡迪亚的牧人 (1638)",
+      "titleEn": "Et in Arcadia ego",
+      "artist": "Nicolas Poussin (尼古拉·普桑)",
+      "category": "baroque",
+      "file": "poussin_et_in_arcadia_ego.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/poussin_et_in_arcadia_ego.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 2673,
+    "colorfulness": 41.01,
+    "mean_s": 0.424,
+    "std_s": 0.201,
+    "mean_v": 0.361,
+    "aspect": 1.44
+  },
+  {
+    "art": {
+      "id": "monet_vetheuil",
+      "title": "维特伊的艺术家花园 (1880)",
+      "titleEn": "The Artist's Garden at Vétheuil",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_nga_vetheuil.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_nga_vetheuil.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1280,
+    "h": 1602,
+    "colorfulness": 41.3,
+    "mean_s": 0.272,
+    "std_s": 0.15,
+    "mean_v": 0.63,
+    "aspect": 0.8
+  },
+  {
+    "art": {
+      "id": "davinci_lady_with_ermine",
+      "title": "抱银貂的女子 (1490)",
+      "titleEn": "Lady with an Ermine",
+      "artist": "Leonardo da Vinci (达·芬奇)",
+      "category": "renaissance",
+      "file": "davinci_lady_with_ermine.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/davinci_lady_with_ermine.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1453,
+    "h": 2000,
+    "colorfulness": 41.33,
+    "mean_s": 0.482,
+    "std_s": 0.155,
+    "mean_v": 0.258,
+    "aspect": 0.73
+  },
+  {
+    "art": {
+      "id": "monet_la_grenouillere",
+      "title": "蛙塘岛水上浴场 (1869)",
+      "titleEn": "Bathers at La Grenouillère",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_la_grenouillere.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_la_grenouillere.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2000,
+    "h": 1496,
+    "colorfulness": 41.4,
+    "mean_s": 0.353,
+    "std_s": 0.165,
+    "mean_v": 0.467,
+    "aspect": 1.34
+  },
+  {
+    "art": {
+      "id": "david_oath_of_the_horatii",
+      "title": "荷拉斯兄弟之誓 (1784)",
+      "titleEn": "Oath of the Horatii",
+      "artist": "Jacques-Louis David (达维特)",
+      "category": "romanticism",
+      "file": "david_oath_of_the_horatii.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/david_oath_of_the_horatii.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1480,
+    "colorfulness": 41.42,
+    "mean_s": 0.508,
+    "std_s": 0.249,
+    "mean_v": 0.296,
+    "aspect": 1.3
+  },
+  {
+    "art": {
+      "id": "vangogh_starry_night",
+      "title": "星夜 (1889)",
+      "titleEn": "The Starry Night",
+      "artist": "Vincent van Gogh (梵高)",
+      "category": "post_impressionism",
+      "file": "vangogh_starry_night.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/vangogh_starry_night.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1920,
+    "colorfulness": 41.8,
+    "mean_s": 0.394,
+    "std_s": 0.192,
+    "mean_v": 0.474,
+    "aspect": 1.0
+  },
+  {
+    "art": {
+      "id": "bosch_garden_of_earthly_delights",
+      "title": "人间乐园 (1500)",
+      "titleEn": "The Garden of Earthly Delights",
+      "artist": "Hieronymus Bosch (博斯)",
+      "category": "renaissance",
+      "file": "bosch_garden_of_earthly_delights.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/bosch_garden_of_earthly_delights.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1028,
+    "colorfulness": 42.34,
+    "mean_s": 0.332,
+    "std_s": 0.192,
+    "mean_v": 0.464,
+    "aspect": 1.87
+  },
+  {
+    "art": {
+      "id": "vermeer_the_little_street",
+      "title": "小街 (1658)",
+      "titleEn": "The Little Street",
+      "artist": "Johannes Vermeer (维米尔)",
+      "category": "baroque",
+      "file": "vermeer_the_little_street.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/vermeer_the_little_street.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1727,
+    "h": 2000,
+    "colorfulness": 42.68,
+    "mean_s": 0.644,
+    "std_s": 0.223,
+    "mean_v": 0.352,
+    "aspect": 0.86
+  },
+  {
+    "art": {
+      "id": "davinci_mona_lisa",
+      "title": "蒙娜丽莎 (1503)",
+      "titleEn": "Mona Lisa (La Gioconda)",
+      "artist": "Leonardo da Vinci (达·芬奇)",
+      "category": "renaissance",
+      "file": "davinci_mona_lisa.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/davinci_mona_lisa.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1342,
+    "h": 2000,
+    "colorfulness": 43.13,
+    "mean_s": 0.461,
+    "std_s": 0.158,
+    "mean_v": 0.358,
+    "aspect": 0.67
+  },
+  {
+    "art": {
+      "id": "fragonard_young_girl_reading",
+      "title": "读书的少女 (1770)",
+      "titleEn": "A Young Girl Reading",
+      "artist": "Jean-Honoré Fragonard (弗拉戈纳尔)",
+      "category": "romanticism",
+      "file": "fragonard_young_girl_reading.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/fragonard_young_girl_reading.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3182,
+    "h": 4000,
+    "colorfulness": 43.46,
+    "mean_s": 0.44,
+    "std_s": 0.165,
+    "mean_v": 0.471,
+    "aspect": 0.8
+  },
+  {
+    "art": {
+      "id": "vangogh_starry_night_over_the_rhone",
+      "title": "罗讷河上的星夜 (1888)",
+      "titleEn": "Starry Night Over the Rhône",
+      "artist": "Vincent van Gogh (梵高)",
+      "category": "post_impressionism",
+      "file": "vangogh_starry_night_over_the_rhone.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/vangogh_starry_night_over_the_rhone.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1488,
+    "colorfulness": 43.5,
+    "mean_s": 0.469,
+    "std_s": 0.207,
+    "mean_v": 0.423,
+    "aspect": 1.29
+  },
+  {
+    "art": {
+      "id": "david_death_of_marat",
+      "title": "马拉之死 (1793)",
+      "titleEn": "The Death of Marat",
+      "artist": "Jacques-Louis David (达维特)",
+      "category": "romanticism",
+      "file": "david_death_of_marat.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/david_death_of_marat.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1554,
+    "h": 2000,
+    "colorfulness": 43.71,
+    "mean_s": 0.451,
+    "std_s": 0.157,
+    "mean_v": 0.354,
+    "aspect": 0.78
+  },
+  {
+    "art": {
+      "id": "bruegel_parable_of_the_blind",
+      "title": "盲人的寓言 (1568)",
+      "titleEn": "The Parable of the Blind",
+      "artist": "Pieter Bruegel the Elder (老彼得·勃鲁盖尔)",
+      "category": "renaissance",
+      "file": "bruegel_parable_of_the_blind.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/bruegel_parable_of_the_blind.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1066,
+    "colorfulness": 43.72,
+    "mean_s": 0.367,
+    "std_s": 0.165,
+    "mean_v": 0.568,
+    "aspect": 1.8
+  },
+  {
+    "art": {
+      "id": "vangogh_self_portrait_bandaged_ear",
+      "title": "自画像 · 包扎耳朵的自画像 (1889)",
+      "titleEn": "Self-Portrait with Bandaged Ear",
+      "artist": "Vincent van Gogh (梵高)",
+      "category": "post_impressionism",
+      "file": "vangogh_self_portrait_bandaged_ear.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/vangogh_self_portrait_bandaged_ear.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1417,
+    "h": 1744,
+    "colorfulness": 44.11,
+    "mean_s": 0.396,
+    "std_s": 0.188,
+    "mean_v": 0.585,
+    "aspect": 0.81
+  },
+  {
+    "art": {
+      "id": "monet_women_in_garden",
+      "title": "花园里的女人 (1866)",
+      "titleEn": "Women in the Garden (Femmes au jardin)",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_women_in_garden.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/monet_women_in_garden.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1658,
+    "h": 2000,
+    "colorfulness": 44.82,
+    "mean_s": 0.267,
+    "std_s": 0.222,
+    "mean_v": 0.633,
+    "aspect": 0.83
+  },
+  {
+    "art": {
+      "id": "west_death_of_general_wolfe",
+      "title": "沃尔夫将军之死 · 魁北克战役 (1770)",
+      "titleEn": "The Death of General Wolfe",
+      "artist": "Benjamin West (本杰明·韦斯特)",
+      "category": "romanticism",
+      "file": "west_death_of_general_wolfe.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/west_death_of_general_wolfe.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3456,
+    "h": 2304,
+    "colorfulness": 45.11,
+    "mean_s": 0.383,
+    "std_s": 0.257,
+    "mean_v": 0.412,
+    "aspect": 1.5
+  },
+  {
+    "art": {
+      "id": "raphael_sistine_madonna",
+      "title": "西斯廷圣母 (1512)",
+      "titleEn": "Sistine Madonna",
+      "artist": "Raphael (拉斐尔)",
+      "category": "renaissance",
+      "file": "raphael_sistine_madonna.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/raphael_sistine_madonna.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2827,
+    "h": 3840,
+    "colorfulness": 45.31,
+    "mean_s": 0.48,
+    "std_s": 0.201,
+    "mean_v": 0.458,
+    "aspect": 0.74
+  },
+  {
+    "art": {
+      "id": "bruegel_triumph_of_death",
+      "title": "死神的胜利 (1562)",
+      "titleEn": "The Triumph of Death",
+      "artist": "Pieter Bruegel the Elder (老彼得·勃鲁盖尔)",
+      "category": "renaissance",
+      "file": "bruegel_triumph_of_death.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/bruegel_triumph_of_death.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1283,
+    "h": 900,
+    "colorfulness": 45.33,
+    "mean_s": 0.522,
+    "std_s": 0.155,
+    "mean_v": 0.378,
+    "aspect": 1.43
+  },
+  {
+    "art": {
+      "id": "cezanne_card_players",
+      "title": "玩纸牌的人 (1895)",
+      "titleEn": "The Card Players",
+      "artist": "Paul Cézanne (塞尚)",
+      "category": "post_impressionism",
+      "file": "cezanne_card_players.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/cezanne_card_players.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1575,
+    "colorfulness": 45.54,
+    "mean_s": 0.501,
+    "std_s": 0.223,
+    "mean_v": 0.322,
+    "aspect": 1.22
+  },
+  {
+    "art": {
+      "id": "davinci_virgin_of_the_rocks",
+      "title": "岩间圣母 (1483)",
+      "titleEn": "Virgin of the Rocks",
+      "artist": "Leonardo da Vinci (达·芬奇)",
+      "category": "renaissance",
+      "file": "davinci_virgin_of_the_rocks.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/davinci_virgin_of_the_rocks.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1192,
+    "h": 1948,
+    "colorfulness": 45.96,
+    "mean_s": 0.575,
+    "std_s": 0.21,
+    "mean_v": 0.309,
+    "aspect": 0.61
+  },
+  {
+    "art": {
+      "id": "vangogh_irises",
+      "title": "鸢尾花 (1889)",
+      "titleEn": "Irises",
+      "artist": "Vincent van Gogh (梵高)",
+      "category": "post_impressionism",
+      "file": "vangogh_irises.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/vangogh_irises.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1467,
+    "colorfulness": 46.73,
+    "mean_s": 0.404,
+    "std_s": 0.167,
+    "mean_v": 0.551,
+    "aspect": 1.31
+  },
+  {
+    "art": {
+      "id": "monet_rue_saint_denis",
+      "title": "圣丹尼斯街的节日 (1878)",
+      "titleEn": "Rue Saint-Denis, Celebration of June 30, 1878",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_rue_saint_denis.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_rue_saint_denis.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1433,
+    "h": 2000,
+    "colorfulness": 47.18,
+    "mean_s": 0.291,
+    "std_s": 0.178,
+    "mean_v": 0.471,
+    "aspect": 0.72
+  },
+  {
+    "art": {
+      "id": "ingres_la_grande_odalisque",
+      "title": "大宫女 (1814)",
+      "titleEn": "Grande Odalisque",
+      "artist": "Jean-Auguste-Dominique Ingres (安格尔)",
+      "category": "romanticism",
+      "file": "ingres_la_grande_odalisque.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/ingres_la_grande_odalisque.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2200,
+    "h": 1225,
+    "colorfulness": 48.02,
+    "mean_s": 0.367,
+    "std_s": 0.149,
+    "mean_v": 0.389,
+    "aspect": 1.8
+  },
+  {
+    "art": {
+      "id": "munch_the_scream",
+      "title": "呐喊 (1893)",
+      "titleEn": "The Scream",
+      "artist": "Edvard Munch (蒙克)",
+      "category": "expressionism",
+      "file": "munch_the_scream.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/munch_the_scream.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1611,
+    "h": 2000,
+    "colorfulness": 48.44,
+    "mean_s": 0.326,
+    "std_s": 0.197,
+    "mean_v": 0.492,
+    "aspect": 0.81
+  },
+  {
+    "art": {
+      "id": "david_coronation_of_napoleon",
+      "title": "拿破仑一世及皇后加冕典礼 (1807)",
+      "titleEn": "The Coronation of Napoleon",
+      "artist": "Jacques-Louis David (达维特)",
+      "category": "romanticism",
+      "file": "david_coronation_of_napoleon.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/david_coronation_of_napoleon.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 2415,
+    "colorfulness": 48.97,
+    "mean_s": 0.598,
+    "std_s": 0.195,
+    "mean_v": 0.395,
+    "aspect": 1.59
+  },
+  {
+    "art": {
+      "id": "cezanne_mont_sainte_victoire",
+      "title": "圣维克多山系列 (1904)",
+      "titleEn": "Mont Sainte-Victoire",
+      "artist": "Paul Cézanne (塞尚)",
+      "category": "post_impressionism",
+      "file": "cezanne_mont_sainte_victoire.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/cezanne_mont_sainte_victoire.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1527,
+    "colorfulness": 49.25,
+    "mean_s": 0.361,
+    "std_s": 0.207,
+    "mean_v": 0.517,
+    "aspect": 1.26
+  },
+  {
+    "art": {
+      "id": "repin_barge_haulers_on_the_volga",
+      "title": "伏尔加河上的纤夫 (1873)",
+      "titleEn": "Barge Haulers on the Volga",
+      "artist": "Ilya Repin (列宾)",
+      "category": "realism",
+      "file": "repin_barge_haulers_on_the_volga.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/repin_barge_haulers_on_the_volga.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 899,
+    "colorfulness": 51.6,
+    "mean_s": 0.364,
+    "std_s": 0.257,
+    "mean_v": 0.712,
+    "aspect": 2.14
+  },
+  {
+    "art": {
+      "id": "gauguin_tahitian_women_on_beach",
+      "title": "塔希提少女 · 沙滩上的大溪地女人 (1891)",
+      "titleEn": "Tahitian Women on the Beach",
+      "artist": "Paul Gauguin (高更)",
+      "category": "post_impressionism",
+      "file": "gauguin_tahitian_women_on_beach.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/gauguin_tahitian_women_on_beach.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1432,
+    "colorfulness": 53.59,
+    "mean_s": 0.394,
+    "std_s": 0.185,
+    "mean_v": 0.532,
+    "aspect": 1.34
+  },
+  {
+    "art": {
+      "id": "titian_venus_of_urbino",
+      "title": "乌尔比诺的维纳斯 (1538)",
+      "titleEn": "Venus of Urbino",
+      "artist": "Titian (提香)",
+      "category": "renaissance",
+      "file": "titian_venus_of_urbino.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/titian_venus_of_urbino.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3000,
+    "h": 2110,
+    "colorfulness": 54.14,
+    "mean_s": 0.474,
+    "std_s": 0.229,
+    "mean_v": 0.454,
+    "aspect": 1.42
+  },
+  {
+    "art": {
+      "id": "klimt_the_kiss",
+      "title": "吻 (1908)",
+      "titleEn": "The Kiss (Der Kuss)",
+      "artist": "Gustav Klimt (克里姆特)",
+      "category": "expressionism",
+      "file": "klimt_the_kiss.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/klimt_the_kiss.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1948,
+    "colorfulness": 54.75,
+    "mean_s": 0.492,
+    "std_s": 0.162,
+    "mean_v": 0.578,
+    "aspect": 0.99
+  },
+  {
+    "art": {
+      "id": "vangogh_night_cafe",
+      "title": "夜间咖啡馆 (1888)",
+      "titleEn": "The Night Café",
+      "artist": "Vincent van Gogh (梵高)",
+      "category": "post_impressionism",
+      "file": "vangogh_night_cafe.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/vangogh_night_cafe.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1516,
+    "colorfulness": 55.39,
+    "mean_s": 0.586,
+    "std_s": 0.183,
+    "mean_v": 0.491,
+    "aspect": 1.27
+  },
+  {
+    "art": {
+      "id": "fragonard_the_swing",
+      "title": "秋千 (1767)",
+      "titleEn": "The Swing",
+      "artist": "Jean-Honoré Fragonard (弗拉戈纳尔)",
+      "category": "romanticism",
+      "file": "fragonard_the_swing.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/fragonard_the_swing.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1659,
+    "h": 2000,
+    "colorfulness": 56.18,
+    "mean_s": 0.62,
+    "std_s": 0.309,
+    "mean_v": 0.453,
+    "aspect": 0.83
+  },
+  {
+    "art": {
+      "id": "bruegel_tower_of_babel",
+      "title": "巴别塔 (1563)",
+      "titleEn": "The Tower of Babel",
+      "artist": "Pieter Bruegel the Elder (老彼得·勃鲁盖尔)",
+      "category": "renaissance",
+      "file": "bruegel_tower_of_babel.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/bruegel_tower_of_babel.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 3075,
+    "colorfulness": 56.5,
+    "mean_s": 0.416,
+    "std_s": 0.277,
+    "mean_v": 0.644,
+    "aspect": 1.25
+  },
+  {
+    "art": {
+      "id": "monet_met_irises",
+      "title": "大都会的鸢尾花丛 (1890)",
+      "titleEn": "Irises in the Garden",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_met_irises.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_met_irises.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1280,
+    "h": 1421,
+    "colorfulness": 58.8,
+    "mean_s": 0.496,
+    "std_s": 0.245,
+    "mean_v": 0.522,
+    "aspect": 0.9
+  },
+  {
+    "art": {
+      "id": "repin_ivan_the_terrible",
+      "title": "伊凡雷帝杀子 (1885)",
+      "titleEn": "Ivan the Terrible and His Son Ivan",
+      "artist": "Ilya Repin (伊里亚·列宾)",
+      "category": "realism",
+      "file": "repin_ivan_the_terrible.jpg",
+      "genre": "⚔️ 历史故事",
+      "image": "assets/images/repin_ivan_the_terrible.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2992,
+    "h": 2328,
+    "colorfulness": 58.83,
+    "mean_s": 0.326,
+    "std_s": 0.277,
+    "mean_v": 0.295,
+    "aspect": 1.29
+  },
+  {
+    "art": {
+      "id": "caravaggio_medusa",
+      "title": "美杜莎 (1597)",
+      "titleEn": "Medusa",
+      "artist": "Caravaggio (卡拉瓦乔)",
+      "category": "baroque",
+      "file": "caravaggio_medusa.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/caravaggio_medusa.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 2560,
+    "colorfulness": 58.89,
+    "mean_s": 0.478,
+    "std_s": 0.228,
+    "mean_v": 0.492,
+    "aspect": 1.5
+  },
+  {
+    "art": {
+      "id": "monet_poppy_field",
+      "title": "阿让特伊的虞美人花田 (1873)",
+      "titleEn": "Poppy Field at Argenteuil",
+      "artist": "Claude Monet (莫奈)",
+      "category": "monet",
+      "file": "monet_poppy_field.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/monet_poppy_field.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2000,
+    "h": 1525,
+    "colorfulness": 62.94,
+    "mean_s": 0.478,
+    "std_s": 0.331,
+    "mean_v": 0.669,
+    "aspect": 1.31
+  },
+  {
+    "art": {
+      "id": "vangogh_bedroom_in_arles",
+      "title": "阿尔勒的卧室 (1888)",
+      "titleEn": "Bedroom in Arles",
+      "artist": "Vincent van Gogh (梵高)",
+      "category": "post_impressionism",
+      "file": "vangogh_bedroom_in_arles.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/vangogh_bedroom_in_arles.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3840,
+    "h": 3047,
+    "colorfulness": 62.97,
+    "mean_s": 0.496,
+    "std_s": 0.285,
+    "mean_v": 0.567,
+    "aspect": 1.26
+  },
+  {
+    "art": {
+      "id": "vangogh_sunflowers",
+      "title": "向日葵 · 十五朵向日葵 (1888)",
+      "titleEn": "Sunflowers",
+      "artist": "Vincent van Gogh (梵高)",
+      "category": "post_impressionism",
+      "file": "vangogh_sunflowers.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/vangogh_sunflowers.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1633,
+    "h": 2000,
+    "colorfulness": 66.19,
+    "mean_s": 0.647,
+    "std_s": 0.184,
+    "mean_v": 0.48,
+    "aspect": 0.82
+  },
+  {
+    "art": {
+      "id": "klimt_adele_bloch_bauer_i",
+      "title": "金衣女人 · 阿黛尔·布洛赫-鲍尔像一号 (1907)",
+      "titleEn": "Portrait of Adele Bloch-Bauer I",
+      "artist": "Gustav Klimt (克里姆特)",
+      "category": "expressionism",
+      "file": "klimt_adele_bloch_bauer_i.jpg",
+      "genre": "👤 人物肖像",
+      "image": "assets/images/klimt_adele_bloch_bauer_i.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 2801,
+    "h": 2801,
+    "colorfulness": 69.3,
+    "mean_s": 0.74,
+    "std_s": 0.18,
+    "mean_v": 0.634,
+    "aspect": 1.0
+  },
+  {
+    "art": {
+      "id": "gauguin_vision_after_the_sermon",
+      "title": "布道后的幻象 · 雅各与天使搏斗 (1888)",
+      "titleEn": "Vision after the Sermon",
+      "artist": "Paul Gauguin (高更)",
+      "category": "post_impressionism",
+      "file": "gauguin_vision_after_the_sermon.jpg",
+      "genre": "🏛️ 神话宗教",
+      "image": "assets/images/gauguin_vision_after_the_sermon.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 1920,
+    "h": 1505,
+    "colorfulness": 78.08,
+    "mean_s": 0.416,
+    "std_s": 0.306,
+    "mean_v": 0.53,
+    "aspect": 1.28
+  },
+  {
+    "art": {
+      "id": "vangogh_wheatfield_with_crows",
+      "title": "麦田群鸦 (1890)",
+      "titleEn": "Wheatfield with Crows",
+      "artist": "Vincent van Gogh (梵高)",
+      "category": "post_impressionism",
+      "file": "vangogh_wheatfield_with_crows.jpg",
+      "genre": "🌿 自然风景",
+      "image": "assets/images/vangogh_wheatfield_with_crows.jpg?v=3.8.0"
+    },
+    "status": "OK",
+    "w": 3757,
+    "h": 1764,
+    "colorfulness": 82.47,
+    "mean_s": 0.695,
+    "std_s": 0.217,
+    "mean_v": 0.706,
+    "aspect": 2.13
+  }
+]
