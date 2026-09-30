@@ -110,18 +110,17 @@
 Slumbering-Masterpieces/
 ├── .gitignore                      # Git 规范忽略配置
 ├── README.md                       # 项目主说明文档
+├── index.html                      # 舞台主结构、双模式控制台与 HUD 胶囊
+├── style.css                       # 传世名画级视觉样式与磨砂玻璃控制台
+├── app.js                          # 核心双模式图形物理引擎
+├── data/
+│   └── masterpieces.js             # 传世油画名作博览馆核心数据库 (315幅)
+├── assets/                         # 艺术资源目录
+│   └── images/                     # 315 幅高清油画原图资产库
 ├── docs/                           # 官方规范与标准文档
 │   ├── ART_SELECTION_SPEC.md       # 🏛️ 传世名画博览馆油画收录与准入规范 (v1.0.0)
 │   └── COLLECTED_ARTWORKS.md       # 📋 传世著名油画已收录台账总览表 (315幅全量台账)
-└── 2026-09-28-secret-garden/       # 沉睡的名画核心艺术工程
-    ├── index.html                  # 舞台主结构、双模式控制台与 HUD
-    ├── style.css                   # 传世名画级视觉样式与磨砂玻璃控件
-    ├── app.js                      # 核心双模式图形物理引擎
-    ├── data/
-    │   └── masterpieces.js         # 传世油画名作博览馆核心数据库 (315幅)
-    ├── README.md                   # 子模块说明文档
-    └── assets/                     # 艺术资源目录
-        └── images/                 # 315 幅高清油画原图资产库
+└── scripts/                        # 艺术资产抓取、清洗与台账同步脚本
 ```
 
 ---
@@ -131,17 +130,17 @@ Slumbering-Masterpieces/
 本项目为**零第三方依赖**的纯净现代前端代码，支持任何主流浏览器（Chrome、Edge、Safari、Firefox 等）：
 
 ### 方式一：直接双击打开
-进入 `2026-09-28-secret-garden/` 目录，双击打开 `index.html` 即可立即体验。
+在项目根目录下，双击打开 `index.html` 即可立即体验。
 
 ### 方式二：静态服务器运行（推荐，支持高清大图极速并行加载）
 在项目根目录下通过终端执行：
 
 ```bash
 # 使用 Python 启动
-python -m http.server 8080 --directory 2026-09-28-secret-garden
+python -m http.server 8080
 
 # 或使用 Node.js / npx serve
-npx serve 2026-09-28-secret-garden
+npx serve .
 ```
 
 在浏览器中打开：👉 **`http://localhost:8080`**
