@@ -30,6 +30,19 @@
             <cite class="quote-author">— Leonardo da Vinci</cite>
         </div>
 
+        <!-- 随机漫游模式 · 实时擦除进度浮动胶囊 (仅在随机漫游模式下显现) -->
+        <div id="scratch-hud" class="scratch-hud" style="display: none;">
+            <div class="scratch-hud-pill">
+                <span class="scratch-hud-icon">🎲</span>
+                <span class="scratch-hud-label">揭开下一幅:</span>
+                <span id="scratch-hud-percent" class="scratch-hud-val">0%</span>
+                <span class="scratch-hud-target">/ <span id="scratch-hud-target-val">85%</span></span>
+            </div>
+            <div class="scratch-hud-track">
+                <div id="scratch-hud-fill" class="scratch-hud-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+
         <!-- 画笔大小调节艺术控件 -->
         <div id="brush-control" class="brush-control-panel">
             <button id="brush-toggle-btn" class="brush-btn" title="调节画笔与画作设置" aria-label="调节画笔大小">
@@ -41,6 +54,13 @@
                 </svg>
             </button>
             <div id="brush-popup" class="brush-popup">
+                <!-- 交互模式选择：沉睡唤醒 vs 随机漫游 (分段选项卡，高亮直观，无冗余重复) -->
+                <div class="mode-tabs">
+                    <button id="mode-sleep-btn" class="fit-tab-btn active" type="button" title="触碰沉睡的静谧灰阶，用指尖唤醒稍纵即逝的真彩">🌸 沉睡唤醒</button>
+                    <button id="mode-scratch-btn" class="fit-tab-btn" type="button" title="原画直出，划动擦去当前画作，露出背后的下一幅随机名画">🎲 随机漫游</button>
+                </div>
+                <div class="brush-popup-divider"></div>
+
                 <div class="brush-popup-row">
                     <span class="brush-label">画笔大小</span>
                     <span id="brush-size-display" class="brush-value">75px</span>
@@ -52,23 +72,52 @@
                     <div id="brush-preview-dot" class="brush-preview-dot"></div>
                 </div>
                 <div class="brush-popup-divider"></div>
-                <div class="brush-popup-row">
-                    <span class="brush-label">色彩留存</span>
-                    <span id="brush-duration-display" class="brush-value">12秒</span>
+
+                <!-- 1. 经典沉睡唤醒模式专用控制项 -->
+                <div id="sleep-mode-controls">
+                    <div class="brush-popup-row">
+                        <span class="brush-label">色彩留存</span>
+                        <span id="brush-duration-display" class="brush-value">12秒</span>
+                    </div>
+                    <div class="brush-slider-container">
+                        <input type="range" id="brush-duration-slider" min="4" max="30" value="12" step="1">
+                    </div>
+                    <div class="brush-popup-divider"></div>
+                    <div class="brush-quick-actions">
+                        <button id="toggle-full-color-btn" class="full-color-btn" type="button" title="一键将整幅画还原为原始真彩">
+                            <svg class="full-color-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                            </svg>
+                            <span id="full-color-btn-text">一键全彩盛放</span>
+                        </button>
+                    </div>
+                    <div class="brush-popup-divider"></div>
                 </div>
-                <div class="brush-slider-container">
-                    <input type="range" id="brush-duration-slider" min="4" max="30" value="12" step="1">
+
+                <!-- 2. 随机漫游擦画模式专用控制项 (原画直出，擦除透出下一幅) -->
+                <div id="scratch-mode-controls" style="display: none;">
+                    <div class="brush-popup-row">
+                        <span class="brush-label">触发阈值</span>
+                        <span id="scratch-threshold-display" class="brush-value">85%</span>
+                    </div>
+                    <div class="brush-slider-container">
+                        <input type="range" id="scratch-threshold-slider" min="50" max="95" value="85" step="1">
+                    </div>
+                    <div class="brush-popup-row" style="margin-top: 6px;">
+                        <span class="brush-label-sub">已揭开面积</span>
+                        <span id="scratch-ratio-display" class="brush-value">0%</span>
+                    </div>
+                    <div class="scratch-mini-bar-bg">
+                        <div id="scratch-mini-bar-fill" class="scratch-mini-bar-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="brush-popup-divider"></div>
+                    <div class="brush-quick-actions">
+                        <button id="scratch-reveal-now-btn" class="full-color-btn" type="button" title="直接完全展示背后的下一幅随机名画">
+                            <span id="scratch-reveal-btn-text">✨ 立即完全展开下一幅</span>
+                        </button>
+                    </div>
+                    <div class="brush-popup-divider"></div>
                 </div>
-                <div class="brush-popup-divider"></div>
-                <div class="brush-quick-actions">
-                    <button id="toggle-full-color-btn" class="full-color-btn" type="button" title="一键将整幅画还原为原始真彩">
-                        <svg class="full-color-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                        </svg>
-                        <span id="full-color-btn-text">一键全彩盛放</span>
-                    </button>
-                </div>
-                <div class="brush-popup-divider"></div>
                 <div class="brush-popup-row">
                     <span class="brush-label">画面规格</span>
                     <span id="fit-mode-display" class="brush-badge">智能</span>

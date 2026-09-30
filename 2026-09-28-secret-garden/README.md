@@ -1,56 +1,43 @@
-# The Slumbering Garden (沉睡的花园)
+# The Slumbering Masterpieces (沉睡的名画)
 
-> **Fine Arts Digital Exhibition · An Interactive Chromatic Awakening (v3.2.0)**  
+> **Fine Arts Digital Exhibition · An Interactive Chromatic Awakening & Random Wander (v4.3.0)**  
 > *“I must have flowers, always, and always.” —— Claude Monet*  
-> *"Touch the dormant monochrome; breathe fleeting vividness into the petals."*
+> *"Touch the dormant monochrome; or wander through timeless canvases with a brush stroke."*
 
 ---
 
-## 🎨 艺术理念 (Artistic Philosophy)
+## 🎨 艺术理念与双重交互模式 (Dual Interactive Modes)
 
-《**The Slumbering Garden**》是一件融合古典油画美学与数字图形学交互的传世名画级网络艺术装置。
-整个画面以一座阳光沐浴下的欧洲古典庄园花园为主体——满园繁花（紫藤花廊、爬藤玫瑰、飞燕草、牡丹、绣球花丛与鸢尾花海）和透彻湛蓝的天空。
+《**Slumbering Masterpieces · 沉睡的名画**》融合西方经典油画美学与数字图形学交互。现已支持两大模式：
 
-- **静止沉睡**：未触碰时，整座花园宛如静止沉睡的古典灰阶版画，庄严素穆；
-- **多层浸染唤醒**：随着观者的鼠标拂过画面，沉睡的生机在指尖被层层唤醒——必须在同一区域来回擦拭 3~4 次，才能从朦胧浅彩完全还原为灿烂真彩；
-- **停驻盛开**：鼠标停驻之处，沉睡的花海将在 0.4 秒内绚烂绽放，只要悬停便永恒盛开；
-- **优雅退隐**：当指尖离去，绚烂的色彩随时间如水波般静静退去，再度归于宁静的黑白。
-
----
-
-## ✨ 核心功能与交互特性 (Core Features)
-
-1. **多层划动渐进显色机制 (Multi-Pass Accumulation)**：
-   - 告别单次轻划即完全全彩的生硬体验；
-   - 单次滑过仅透出约 25% 淡淡浅彩，需来回划动 3~4 次层层叠加至 100% 满彩原画。
-2. **焦点停驻充能机制 (Hover Focus Charge)**：
-   - 鼠标在原地停顿超过 40ms 即进入充能状态，约 0.4~0.5 秒完全绽放；
-   - 悬停之处时间戳持续刷新，永不衰减。
-3. **色彩留存与优雅退色 (Hold & Fade Decay)**：
-   - 涂抹出的彩色默认完整留存 **8.5 秒**不褪色；
-   - 随后在 **3.5 秒**内按非线性平滑曲线自然淡隐（默认总寿命 12.0 秒）。
-4. **典雅画笔与色彩留存调控台 (Artisan Control Panel)**：
-   - 右上角常驻典雅的羽毛画笔小图标；
-   - 点击展开高透磨砂玻璃面板，支持：
-     - **画笔大小**：35px ~ 160px 无级滑块，带动态圆圈微缩预览与视口光标圆环实时等比联动；
-     - **色彩留存**：4秒 ~ 30秒 自由定制，满足慢速欣赏或快速恢复等不同偏好；
-     - 点击空白处自动平滑折叠收起。
-5. **双线性平滑插值遮罩渲染 (Bilinear BILATERAL Smoothing)**：
-   - 采用空间状态衰减网格（Spatial Decay Grid）搭配 GPU 双线性硬件放大，边缘如水彩渗墨般柔和自然，杜绝任何锯齿和性能抖动。
+1. **🌸 沉睡唤醒 (Dormant Awakening)**：
+   - 未触碰时整幅画呈现为沉静古典的黑白灰阶素描；
+   - 鼠标划过时多层累积显色（需来回 3~4 次完全复原真彩）；
+   - 鼠标停驻之地在 0.4 秒内迅速绚烂绽放，悬停永不退隐；
+   - 指尖离去后，色彩在 8.5 秒内保持高光饱和，随后优雅如晨雾般退去（4~30 秒自由定制）。
+2. **🎲 随机漫游 (Random Wander & Scratch Mode)**：
+   - 原画真彩直出，无需灰阶；
+   - 画笔滑动擦除顶层画作，直接露出底层背后的下一幅随机名画；
+   - 达到用户设定阈值（默认 85%）自动平滑完全展开；
+   - 严格状态机锁定：一幅画必须完全展现出来后，画笔涂抹才能擦去它；
+   - 深色画廊防漏底合成体系：无论画作是智能、完整（Contain）还是缩放，四周留白绝不提前穿帮露底。
 
 ---
 
-## 🚀 启动与体验方式 (Quick Start)
+## 🎛️ 画面控制台与自由构图 (Artisan Controls)
 
-本项目为**零第三方依赖**的原生前端纯粹架构，任何现代浏览器均可直接运行：
+- **清爽模式分段切换**：面板顶部直观分段按钮，当前模式金色微光高亮；
+- **画笔大小无级调节**：35px ~ 160px，带微缩预览与视口艺术光标等比缩放；
+- **画面规格自适应**：【智能 (Auto)】、【完整 (Contain)】、【铺满 (Cover)】与 **60% ~ 140% 缩放**无论在沉睡还是漫游模式下均实时生效；
+- **传世名画博览馆**：收录 315 幅世界殿堂级油画杰作，覆盖 8 大时代展厅、6 大西方正统题材与多维关键词检索。
 
-1. **直接双击打开**：
-   - 双击打开 `index.html` 即可在本地浏览器中体验。
-2. **轻量静态服务器运行（推荐）**：
-   - 在当前目录打开命令行执行：
-     ```bash
-     python -m http.server 8080
-     # 或
-     npx serve .
-     ```
-   - 浏览器访问 `http://localhost:8080` 获得最佳体验。
+---
+
+## 🚀 启动与体验 (Quick Start)
+
+```bash
+# 静态服务器启动 (推荐)
+python -m http.server 8080
+# 浏览器访问
+http://localhost:8080
+```

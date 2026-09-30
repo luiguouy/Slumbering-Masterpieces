@@ -33,6 +33,21 @@
     const toggleFullColorBtn = document.getElementById('toggle-full-color-btn');
     const fullColorBtnText = document.getElementById('full-color-btn-text');
 
+    // 模式切换与随机漫游控制 UI 元素
+    const modeSleepBtn = document.getElementById('mode-sleep-btn');
+    const modeScratchBtn = document.getElementById('mode-scratch-btn');
+    const sleepModeControls = document.getElementById('sleep-mode-controls');
+    const scratchModeControls = document.getElementById('scratch-mode-controls');
+    const scratchThresholdSlider = document.getElementById('scratch-threshold-slider');
+    const scratchThresholdDisplay = document.getElementById('scratch-threshold-display');
+    const scratchRatioDisplay = document.getElementById('scratch-ratio-display');
+    const scratchMiniBarFill = document.getElementById('scratch-mini-bar-fill');
+    const scratchRevealNowBtn = document.getElementById('scratch-reveal-now-btn');
+    const scratchHud = document.getElementById('scratch-hud');
+    const scratchHudPercent = document.getElementById('scratch-hud-percent');
+    const scratchHudTargetVal = document.getElementById('scratch-hud-target-val');
+    const scratchHudFill = document.getElementById('scratch-hud-fill');
+
     // 画面规格与缩放控制 UI 元素
     const fitAutoBtn = document.getElementById('fit-auto-btn');
     const fitContainBtn = document.getElementById('fit-contain-btn');
@@ -77,6 +92,25 @@
     const maskSmallCanvas = document.createElement('canvas');
     const maskSmallCtx = maskSmallCanvas.getContext('2d', { willReadFrequently: true });
 
+    // 模式状态：'sleep' (沉睡唤醒) | 'scratch' (随机漫游擦画)
+    let appMode = 'sleep';
+
+    // 随机漫游擦画模式核心状态机
+    const scratchConfig = {
+        threshold: 0.85,             // 默认 85% 触发自动完全展开 (0.50 ~ 0.95)
+        isLocked: false,             // 关键状态机锁：一幅画未完全展示出来前，严禁擦除！
+        isTransitioning: false,      // 正在进行平滑揭晓过渡
+        ratio: 0.0,                  // 当前已擦除露出面积比例 (0.0 ~ 1.0)
+        historyQueue: [],            // 历史防重复队列
+        maxHistoryLen: 30            // 记忆最近 30 幅画作防重复
+    };
+
+    // 下一幅名画原图与几何参数 (用于随机模式底层透出)
+    const nextGardenImage = new Image();
+    let isNextImageLoaded = false;
+    let nextMasterpieceIndex = -1;
+    let nextImageBounds = { x: 0, y: 0, w: 0, h: 0 };
+
     // 交互参数配置
     const config = {
         brushRadius: 75,             // 默认画笔半径 (px)
@@ -100,7 +134,7 @@
     let gridCols = 0;
     let gridRows = 0;
     let totalCells = 0;
-    let gridAlpha = null;        // 当前累积显色度 (0.0 ~ 1.0)
+    let gridAlpha = null;        // 当前累积显色度/不透明度 (0.0 ~ 1.0)
     let gridLastTouch = null;    // 最后被划过或充能的时间戳 (ms)
     let gridLastStroke = null;   // 最后一次修改该单元格的笔画 ID
     let maskSmallImageData = null;
@@ -117,7 +151,7 @@
     let isInitialized = false;
     let isFullColorLocked = false;
 
-    // 传世名画博览馆数据库 (由 data/masterpieces.js 注入全量名作，具备完整 10 大艺术史展厅分类)
+    // 传世名画博览馆数据库 (由 data/masterpieces.js 注入全量名作)
     const masterpieces = (window.MASTERPIECES && window.MASTERPIECES.length) ? window.MASTERPIECES : [];
 
     let currentMasterpieceIndex = 0;
@@ -209,25 +243,80 @@
     }
 
     /**
+     * 计算下一幅名画在视口中的几何布局参数 (用于随机漫游模式底层全景透出)
+     */
+    function computeNextImageBounds() {
+        if (!isNextImageLoaded) return;
+        const imgW = nextGardenImage.naturalWidth || 2560;
+        const imgH = nextGardenImage.naturalHeight || 1440;
+        const imgAspect = imgW / imgH;
+        const screenAspect = viewportWidth / viewportHeight;
+
+        let effectiveMode = config.fitMode;
+        if (effectiveMode === 'auto') {
+            if (screenAspect > 1.2 && imgAspect < 1.22) {
+                effectiveMode = 'contain';
+            } else if (screenAspect < 0.88 && imgAspect > 1.1) {
+                effectiveMode = 'contain';
+            } else {
+                effectiveMode = 'cover';
+            }
+        }
+
+        let drawW, drawH;
+        if (effectiveMode === 'contain') {
+            if (screenAspect > imgAspect) {
+                drawH = viewportHeight * 0.94;
+                drawW = drawH * imgAspect;
+            } else {
+                drawW = viewportWidth * 0.94;
+                drawH = drawW / imgAspect;
+            }
+        } else {
+            if (screenAspect > imgAspect) {
+                drawW = viewportWidth;
+                drawH = viewportWidth / imgAspect;
+            } else {
+                drawH = viewportHeight;
+                drawW = viewportHeight * imgAspect;
+            }
+        }
+
+        drawW *= config.scale;
+        drawH *= config.scale;
+
+        const drawX = (viewportWidth - drawW) / 2;
+        const drawY = (viewportHeight - drawH) / 2;
+
+        nextImageBounds = { x: drawX, y: drawY, w: drawW, h: drawH, effectiveMode: effectiveMode };
+    }
+
+    /**
      * 刷新视口布局与底图重绘
      */
     function refreshLayout() {
         computeImageBounds();
-        renderGrayscaleBackground();
-        if (isFullColorLocked) {
-            revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
-            revealCtx.drawImage(
-                gardenImage,
-                imageBounds.x,
-                imageBounds.y,
-                imageBounds.w,
-                imageBounds.h
-            );
+        computeNextImageBounds();
+
+        if (appMode === 'scratch') {
+            renderScratchBackground();
+        } else {
+            renderGrayscaleBackground();
+            if (isFullColorLocked) {
+                revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
+                revealCtx.drawImage(
+                    gardenImage,
+                    imageBounds.x,
+                    imageBounds.y,
+                    imageBounds.w,
+                    imageBounds.h
+                );
+            }
         }
     }
 
     /**
-     * 渲染底层古典灰阶油画 (保持 1:1 纯粹灰度质感)
+     * 渲染底层古典灰阶油画 (经典沉睡模式)
      */
     function renderGrayscaleBackground() {
         if (!isImageLoaded) return;
@@ -242,6 +331,83 @@
             imageBounds.h
         );
         bgCtx.restore();
+    }
+
+    /**
+     * 渲染底层下一幅名画 (随机漫游模式：无需变灰，直接展示原画真彩)
+     */
+    function renderScratchBackground() {
+        if (appMode !== 'scratch') return;
+        bgCtx.save();
+        bgCtx.clearRect(0, 0, viewportWidth, viewportHeight);
+        bgCtx.fillStyle = '#0d0f12';
+        bgCtx.fillRect(0, 0, viewportWidth, viewportHeight);
+        bgCtx.filter = 'none'; // 原画色彩，不作任何灰度处理
+
+        if (isNextImageLoaded) {
+            bgCtx.drawImage(
+                nextGardenImage,
+                nextImageBounds.x,
+                nextImageBounds.y,
+                nextImageBounds.w,
+                nextImageBounds.h
+            );
+        }
+        bgCtx.restore();
+    }
+
+    /**
+     * 挑选下一幅不重复的随机名画索引
+     */
+    function pickRandomNextIndex() {
+        if (masterpieces.length <= 1) return 0;
+        const recentSet = new Set(scratchConfig.historyQueue);
+        let candidates = [];
+        for (let i = 0; i < masterpieces.length; i++) {
+            if (i !== currentMasterpieceIndex && !recentSet.has(i)) {
+                candidates.push(i);
+            }
+        }
+        if (candidates.length === 0) {
+            candidates = masterpieces.map((_, i) => i).filter(i => i !== currentMasterpieceIndex);
+        }
+        const picked = candidates[Math.floor(Math.random() * candidates.length)];
+        scratchConfig.historyQueue.push(picked);
+        if (scratchConfig.historyQueue.length > scratchConfig.maxHistoryLen) {
+            scratchConfig.historyQueue.shift();
+        }
+        return picked;
+    }
+
+    /**
+     * 预加载下一幅随机名画到后台底层
+     */
+    function prepareNextRandomArtwork(callback) {
+        nextMasterpieceIndex = pickRandomNextIndex();
+        const nextArt = masterpieces[nextMasterpieceIndex];
+        isNextImageLoaded = false;
+
+        let handled = false;
+        function finish() {
+            if (handled) return;
+            handled = true;
+            isNextImageLoaded = true;
+            computeNextImageBounds();
+            if (appMode === 'scratch') {
+                renderScratchBackground();
+            }
+            if (callback) callback();
+        }
+
+        nextGardenImage.onload = finish;
+        nextGardenImage.onerror = () => {
+            console.error('Failed to load next random artwork:', nextArt.src);
+            finish();
+        };
+        nextGardenImage.src = nextArt.src;
+        if (nextGardenImage.complete && nextGardenImage.naturalWidth > 0) {
+            finish();
+        }
     }
 
     /**
@@ -282,7 +448,53 @@
      * @param {number} gainBase 显色增量基数
      * @param {number} now 时间戳
      */
+    /**
+     * 在单点周围施加笔刷涂抹
+     * - 沉睡模式：渐进增加显色度
+     * - 随机模式：擦除当前画遮罩，透出底层背后的下一幅随机名画
+     */
     function applyDab(px, py, strokeId, gainBase, now) {
+        if (appMode === 'scratch') {
+            // 核心红线约束：一幅画必须完全展示出来后，画笔涂抹才能擦去它！
+            if (scratchConfig.isLocked || scratchConfig.isTransitioning) return;
+
+            const radius = config.brushRadius;
+            const cellSize = config.cellSize;
+
+            const minCol = Math.max(0, Math.floor((px - radius) / cellSize));
+            const maxCol = Math.min(gridCols - 1, Math.floor((px + radius) / cellSize));
+            const minRow = Math.max(0, Math.floor((py - radius) / cellSize));
+            const maxRow = Math.min(gridRows - 1, Math.floor((py + radius) / cellSize));
+
+            for (let r = minRow; r <= maxRow; r++) {
+                const cellCenterY = (r + 0.5) * cellSize;
+                const dy = cellCenterY - py;
+                const dy2 = dy * dy;
+
+                for (let c = minCol; c <= maxCol; c++) {
+                    const cellCenterX = (c + 0.5) * cellSize;
+                    const dx = cellCenterX - px;
+                    const dist2 = dx * dx + dy2;
+
+                    if (dist2 <= radius * radius) {
+                        const dist = Math.sqrt(dist2);
+                        const idx = r * gridCols + c;
+                        const normalizedDist = dist / radius;
+                        const weight = 0.5 * (1 + Math.cos(normalizedDist * Math.PI));
+
+                        // 擦除当前画遮罩 (从 1.0 降低至 0.0，使底层下一幅画透出)
+                        const eraseAmount = 0.65 * weight;
+                        gridAlpha[idx] = Math.max(0.0, gridAlpha[idx] - eraseAmount);
+                    }
+                }
+            }
+
+            // 实时计算已擦除露出面积比例
+            updateScratchRatio();
+            return;
+        }
+
+        // 经典沉睡模式逻辑
         const radius = config.brushRadius;
         const cellSize = config.cellSize;
 
@@ -305,7 +517,6 @@
                     const dist = Math.sqrt(dist2);
                     const idx = r * gridCols + c;
 
-                    // 同一次划过同一单元格仅生效一次，防止插值密集时单笔直接爆满
                     if (strokeId !== null && gridLastStroke[idx] === strokeId) {
                         continue;
                     }
@@ -314,11 +525,9 @@
                         gridLastStroke[idx] = strokeId;
                     }
 
-                    // 径向平滑余弦羽化权重 (核心饱满，外圈柔润晕染)
                     const normalizedDist = dist / radius;
                     const weight = 0.5 * (1 + Math.cos(normalizedDist * Math.PI));
 
-                    // 渐进增加透明度
                     const increment = gainBase * weight;
                     gridAlpha[idx] = Math.min(1.0, gridAlpha[idx] + increment);
                     gridLastTouch[idx] = now;
@@ -331,6 +540,10 @@
      * 笔触轨迹插值 (保证高速滑动时笔刷轨迹平滑无断点)
      */
     function strokeLine(from, to, strokeId, now) {
+        if (appMode === 'scratch' && (scratchConfig.isLocked || scratchConfig.isTransitioning)) {
+            return;
+        }
+
         const dx = to.x - from.x;
         const dy = to.y - from.y;
         const dist = Math.hypot(dx, dy);
@@ -349,9 +562,132 @@
     }
 
     /**
-     * 鼠标停驻充能 (只有停留或反复摩擦之处才会迅速蓄满 100% 满彩)
+     * 统计随机漫游模式下的已擦除露出面积比例
+     */
+    function updateScratchRatio() {
+        if (appMode !== 'scratch' || scratchConfig.isLocked || scratchConfig.isTransitioning) return;
+        if (totalCells <= 0) return;
+
+        let scratchedInside = 0;
+        for (let i = 0; i < totalCells; i++) {
+            // 当遮罩低于 0.35 时，判定为透出背后的画
+            if (gridAlpha[i] < 0.35) {
+                scratchedInside++;
+            }
+        }
+
+        const ratio = scratchedInside / totalCells;
+        scratchConfig.ratio = ratio;
+
+        const pct = Math.min(100, Math.round(ratio * 100));
+        if (scratchHudPercent) scratchHudPercent.textContent = `${pct}%`;
+        if (scratchHudFill) scratchHudFill.style.width = `${pct}%`;
+        if (scratchRatioDisplay) scratchRatioDisplay.textContent = `${pct}%`;
+        if (scratchMiniBarFill) scratchMiniBarFill.style.width = `${pct}%`;
+
+        // 达到设定阈值 (默认 85%)，立即锁定并触发完全展示
+        if (ratio >= scratchConfig.threshold) {
+            triggerAutoScratchReveal();
+        }
+    }
+
+    /**
+     * 达到阈值触发自动完全展开平滑过渡动画
+     */
+    function triggerAutoScratchReveal() {
+        if (scratchConfig.isLocked || scratchConfig.isTransitioning) return;
+        scratchConfig.isLocked = true;
+        scratchConfig.isTransitioning = true;
+
+        if (scratchHud) scratchHud.classList.add('locked');
+        if (scratchHudPercent) scratchHudPercent.textContent = `${Math.round(scratchConfig.threshold * 100)}% ✨`;
+
+        const startTime = performance.now();
+        const duration = 480; // ms
+        const startAlphas = new Float32Array(gridAlpha);
+
+        function step(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(1.0, elapsed / duration);
+            const ease = 1 - Math.pow(1 - progress, 3);
+
+            for (let i = 0; i < totalCells; i++) {
+                gridAlpha[i] = startAlphas[i] * (1 - ease);
+            }
+
+            if (progress < 1.0) {
+                requestAnimationFrame(step);
+            } else {
+                gridAlpha.fill(0);
+                finalizeScratchTransition();
+            }
+        }
+
+        requestAnimationFrame(step);
+    }
+
+    /**
+     * 下一幅画已经 100% 完全展示完毕后执行的状态机结算
+     * “注意，一幅画必须完全展示出来后，画笔涂抹才能擦去它。”
+     */
+    function finalizeScratchTransition() {
+        // 1. 将刚刚完全展现的下一幅名画正式晋升为当前画
+        currentMasterpieceIndex = nextMasterpieceIndex;
+        const art = masterpieces[currentMasterpieceIndex];
+
+        gardenImage.src = nextGardenImage.src;
+        computeImageBounds();
+
+        // 2. 联动更新名言与作者
+        if (quoteTextEl) quoteTextEl.textContent = art.quote;
+        if (quoteAuthorEl) quoteAuthorEl.textContent = art.quoteAuthor;
+
+        // 3. 联动更新画笔面板当前名画卡片
+        if (currentArtThumb) {
+            currentArtThumb.src = art.src;
+            currentArtThumb.alt = art.title;
+        }
+        if (currentArtTitle) currentArtTitle.textContent = art.title;
+        if (currentArtArtist) currentArtArtist.textContent = `${art.artist} · 🔍 检索画廊`;
+        if (masterpieceIndexBadge) masterpieceIndexBadge.textContent = `${currentMasterpieceIndex + 1} / ${masterpieces.length}`;
+        updateActiveCardHighlight(currentMasterpieceIndex);
+
+        // 4. 重置顶层遮罩为 100% 不透明 (新画完好展现)
+        gridAlpha.fill(1.0);
+        scratchConfig.ratio = 0;
+
+        // 5. 重置 HUD 进度
+        if (scratchHudPercent) scratchHudPercent.textContent = '0%';
+        if (scratchHudFill) scratchHudFill.style.width = '0%';
+        if (scratchRatioDisplay) scratchRatioDisplay.textContent = '0%';
+        if (scratchMiniBarFill) scratchMiniBarFill.style.width = '0%';
+        if (scratchHud) scratchHud.classList.remove('locked');
+
+        let hasUnlocked = false;
+        const doUnlock = () => {
+            if (hasUnlocked) return;
+            hasUnlocked = true;
+            scratchConfig.isLocked = false;
+            scratchConfig.isTransitioning = false;
+        };
+
+        // 6. 后台立即挑选并预加载下一幅全新的随机名画，渲染到底层 bgCanvas
+        prepareNextRandomArtwork(() => {
+            computeNextImageBounds();
+            renderScratchBackground();
+            doUnlock();
+        });
+
+        // 7. 600ms 超时保底解锁，保证交互绝对流畅不卡顿
+        setTimeout(doUnlock, 600);
+    }
+
+    /**
+     * 鼠标停驻充能 (沉睡模式专用)
      */
     function applyHoverCharge(px, py, now) {
+        if (appMode === 'scratch') return;
+
         const radius = config.brushRadius;
         const cellSize = config.cellSize;
 
@@ -377,36 +713,78 @@
                     const normalizedDist = dist / radius;
                     const weight = 0.5 * (1 + Math.cos(normalizedDist * Math.PI));
 
-                    // 停驻充能：层层滋润绽放
                     const increment = config.hoverChargeGain * weight;
                     gridAlpha[idx] = Math.min(1.0, gridAlpha[idx] + increment);
-                    gridLastTouch[idx] = now; // 持续更新时间戳，停留处永久盛开
+                    gridLastTouch[idx] = now;
                 }
             }
         }
     }
 
     /**
-     * 核心渲染主循环 (双线性插值遮罩与独立生命周期衰减)
+     * 核心渲染主循环
      */
     function renderLoop(currentTime) {
-        // 1. 停驻充能逻辑：当鼠标处于激活状态且停留未剧烈移动时，持续充能
+        if (appMode === 'scratch') {
+            // ================= 🎲 随机漫游擦画渲染管线 =================
+            const data = maskSmallImageData ? maskSmallImageData.data : null;
+            if (data && totalCells > 0) {
+                for (let i = 0; i < totalCells; i++) {
+                    const a = gridAlpha[i];
+                    data[i * 4 + 3] = Math.min(255, Math.round(a * 255));
+                }
+            }
+
+            revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
+
+            if (isImageLoaded && data) {
+                maskSmallCtx.putImageData(maskSmallImageData, 0, 0);
+
+                maskCtx.clearRect(0, 0, viewportWidth, viewportHeight);
+                maskCtx.save();
+                maskCtx.imageSmoothingEnabled = true;
+                maskCtx.imageSmoothingQuality = 'high';
+                maskCtx.drawImage(maskSmallCanvas, 0, 0, viewportWidth, viewportHeight);
+                maskCtx.restore();
+
+                // 顶层绘制当前画作 (原画真实色彩，无需灰度)，通过 destination-in 抠出擦除洞，透出底层
+                revealCtx.save();
+                // 顶层全屏填充古典画廊暗色底色，确保在 contain 完整模式或缩小缩放时四周严密遮挡，绝不漏出底层
+                revealCtx.fillStyle = '#0d0f12';
+                revealCtx.fillRect(0, 0, viewportWidth, viewportHeight);
+
+                revealCtx.drawImage(
+                    gardenImage,
+                    imageBounds.x,
+                    imageBounds.y,
+                    imageBounds.w,
+                    imageBounds.h
+                );
+                revealCtx.globalCompositeOperation = 'destination-in';
+                revealCtx.drawImage(maskCanvas, 0, 0, viewportWidth, viewportHeight);
+                revealCtx.restore();
+            }
+
+            requestAnimationFrame(renderLoop);
+            return;
+        }
+
+        // ================= 🌸 经典沉睡唤醒渲染管线 =================
+        // 1. 停驻充能逻辑
         if (isPointerActive && currentPointerPos) {
             const timeSinceMove = currentTime - lastMoveTime;
-            // 只要停顿超过 40ms，即进入原地充能机制，每 45ms 充能一次
             if (timeSinceMove > 40 && currentTime - lastHoverChargeTime > 45) {
                 applyHoverCharge(currentPointerPos.x, currentPointerPos.y, currentTime);
                 lastHoverChargeTime = currentTime;
             }
         }
 
-        // 2. 衰减与留存计算：在保留期内 100% 保持，过后平滑渐隐退回灰色
+        // 2. 衰减与留存计算
         const data = maskSmallImageData ? maskSmallImageData.data : null;
         let hasActiveColor = false;
 
         if (data && totalCells > 0) {
             if (isFullColorLocked) {
-                // 一键全彩模式：所有网格单元强制展现 100% 原画真彩
                 hasActiveColor = true;
                 for (let i = 0; i < totalCells; i++) {
                     data[i * 4 + 3] = 255;
@@ -422,33 +800,31 @@
                         continue;
                     }
 
-                const elapsed = currentTime - gridLastTouch[i];
-                let currentAlpha = alpha;
+                    const elapsed = currentTime - gridLastTouch[i];
+                    let currentAlpha = alpha;
 
-                if (elapsed <= solidMs) {
-                    // 保留期内：维持当前涂抹出的彩色强度不退色
-                    currentAlpha = alpha;
-                } else {
-                    // 超过保留期后：在 2.0 秒内优雅余弦衰减
-                    const fadeProgress = (elapsed - solidMs) / fadeMs;
-                    if (fadeProgress >= 1.0) {
-                        gridAlpha[i] = 0;
-                        currentAlpha = 0;
+                    if (elapsed <= solidMs) {
+                        currentAlpha = alpha;
                     } else {
-                        const decayFactor = 0.5 * (1 + Math.cos(fadeProgress * Math.PI));
-                        currentAlpha = alpha * decayFactor;
+                        const fadeProgress = (elapsed - solidMs) / fadeMs;
+                        if (fadeProgress >= 1.0) {
+                            gridAlpha[i] = 0;
+                            currentAlpha = 0;
+                        } else {
+                            const decayFactor = 0.5 * (1 + Math.cos(fadeProgress * Math.PI));
+                            currentAlpha = alpha * decayFactor;
+                        }
                     }
-                }
 
-                if (currentAlpha > 0.002) {
-                    hasActiveColor = true;
-                    data[i * 4 + 3] = Math.min(255, Math.round(currentAlpha * 255));
-                } else {
-                    data[i * 4 + 3] = 0;
+                    if (currentAlpha > 0.002) {
+                        hasActiveColor = true;
+                        data[i * 4 + 3] = Math.min(255, Math.round(currentAlpha * 255));
+                    } else {
+                        data[i * 4 + 3] = 0;
+                    }
                 }
             }
         }
-    }
 
         // 3. 将小尺寸网格遮罩通过 GPU 双线性平滑插值投射到全屏遮罩
         revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
@@ -463,7 +839,6 @@
             maskCtx.drawImage(maskSmallCanvas, 0, 0, viewportWidth, viewportHeight);
             maskCtx.restore();
 
-            // 绘制彩色原图并使用 destination-in 应用平滑羽化遮罩
             revealCtx.save();
             revealCtx.drawImage(
                 gardenImage,
@@ -562,10 +937,91 @@
     }
 
     /**
+     * 设置体验模式 ('sleep' | 'scratch')
+     * @param {'sleep' | 'scratch'} mode 
+     */
+    function setAppMode(mode) {
+        if (mode !== 'sleep' && mode !== 'scratch') return;
+        appMode = mode;
+
+        if (modeSleepBtn) modeSleepBtn.classList.toggle('active', mode === 'sleep');
+        if (modeScratchBtn) modeScratchBtn.classList.toggle('active', mode === 'scratch');
+
+        if (sleepModeControls) sleepModeControls.style.display = (mode === 'sleep') ? 'block' : 'none';
+        if (scratchModeControls) scratchModeControls.style.display = (mode === 'scratch') ? 'block' : 'none';
+        if (scratchHud) scratchHud.style.display = (mode === 'scratch') ? 'flex' : 'none';
+
+        if (mode === 'scratch') {
+            // 切换到随机漫游擦画模式
+            scratchConfig.isLocked = false;
+            scratchConfig.isTransitioning = false;
+            scratchConfig.ratio = 0;
+            if (gridAlpha) gridAlpha.fill(1.0); // 顶层全遮挡不透明
+            if (scratchHudPercent) scratchHudPercent.textContent = '0%';
+            if (scratchHudFill) scratchHudFill.style.width = '0%';
+            if (scratchRatioDisplay) scratchRatioDisplay.textContent = '0%';
+            if (scratchMiniBarFill) scratchMiniBarFill.style.width = '0%';
+            if (scratchHud) scratchHud.classList.remove('locked');
+
+            computeImageBounds();
+            computeNextImageBounds();
+
+            // 预加载下一幅并绘制底层全彩背景
+            prepareNextRandomArtwork(() => {
+                computeNextImageBounds();
+                renderScratchBackground();
+            });
+        } else {
+            // 切换回经典沉睡唤醒模式
+            computeImageBounds();
+            if (gridAlpha) gridAlpha.fill(0);
+            if (gridLastStroke) gridLastStroke.fill(0);
+            isFullColorLocked = false;
+            if (fullColorBtnText) fullColorBtnText.textContent = '一键全彩盛放';
+            if (toggleFullColorBtn) toggleFullColorBtn.classList.remove('active');
+            renderGrayscaleBackground();
+            revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
+        }
+    }
+
+    /**
      * 绑定画笔控制面板事件
      */
     function setupBrushUI() {
         if (!brushToggleBtn || !brushPopup) return;
+
+        // 模式切换按钮 (沉睡唤醒 vs 随机漫游)
+        if (modeSleepBtn) {
+            modeSleepBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                setAppMode('sleep');
+            });
+        }
+        if (modeScratchBtn) {
+            modeScratchBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                setAppMode('scratch');
+            });
+        }
+
+        // 随机擦画阈值滑块 (50% ~ 95%)
+        if (scratchThresholdSlider) {
+            scratchThresholdSlider.addEventListener('input', (e) => {
+                const val = parseInt(e.target.value, 10);
+                scratchConfig.threshold = val / 100;
+                if (scratchThresholdDisplay) scratchThresholdDisplay.textContent = `${val}%`;
+                if (scratchHudTargetVal) scratchHudTargetVal.textContent = `${val}%`;
+            });
+            scratchThresholdSlider.addEventListener('click', (e) => e.stopPropagation());
+        }
+
+        // 立即完全展现按钮
+        if (scratchRevealNowBtn) {
+            scratchRevealNowBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                triggerAutoScratchReveal();
+            });
+        }
 
         // 点击切换调节面板展开/收起
         brushToggleBtn.addEventListener('click', (e) => {
@@ -643,6 +1099,7 @@
         updateDuration(config.totalDurationSeconds);
         setFitMode(config.fitMode);
         setScale(config.scale);
+        setAppMode(appMode);
     }
 
     /**
@@ -719,17 +1176,27 @@
         }
 
         // 1. 重置显色状态网格与离屏采样遮罩
-        if (gridAlpha) gridAlpha.fill(0);
-        if (gridLastStroke) gridLastStroke.fill(0);
-        if (maskSmallImageData) {
-            const d = maskSmallImageData.data;
-            for (let i = 0; i < totalCells; i++) {
-                d[i * 4 + 3] = 0;
+        if (appMode === 'scratch') {
+            if (gridAlpha) gridAlpha.fill(1.0); // 随机漫游模式：顶层保持 100% 遮罩遮挡新画
+            scratchConfig.ratio = 0;
+            scratchConfig.isLocked = false;
+            scratchConfig.isTransitioning = false;
+            if (scratchHudPercent) scratchHudPercent.textContent = '0%';
+            if (scratchHudFill) scratchHudFill.style.width = '0%';
+            if (scratchRatioDisplay) scratchRatioDisplay.textContent = '0%';
+            if (scratchMiniBarFill) scratchMiniBarFill.style.width = '0%';
+            if (scratchHud) scratchHud.classList.remove('locked');
+        } else {
+            if (gridAlpha) gridAlpha.fill(0); // 经典沉睡模式：清空显色
+            if (gridLastStroke) gridLastStroke.fill(0);
+            if (maskSmallImageData) {
+                const d = maskSmallImageData.data;
+                for (let i = 0; i < totalCells; i++) {
+                    d[i * 4 + 3] = 0;
+                }
             }
+            revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
         }
-
-        // 2. 清理顶层彩色画布
-        revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
 
         // 3. 更新诗意名言与作者署名
         if (quoteTextEl) quoteTextEl.textContent = art.quote;
@@ -1357,7 +1824,13 @@
         gardenImage.onload = () => {
             isImageLoaded = true;
             computeImageBounds();
-            renderGrayscaleBackground();
+            if (appMode === 'scratch') {
+                renderScratchBackground();
+            } else {
+                renderGrayscaleBackground();
+            }
+            // 预加载下一幅候选名画，让漫游擦画即刻就绪
+            prepareNextRandomArtwork();
         };
 
         // 默认载入首幅传世名画
@@ -1369,6 +1842,8 @@
     // 暴露诊断与调试接口
     window.__gardenEngine = {
         isLoaded: () => isImageLoaded,
+        getAppMode: () => appMode,
+        setAppMode: setAppMode,
         getBrushRadius: () => config.brushRadius,
         setBrushRadius: updateBrushSize,
         getDuration: () => config.totalDurationSeconds,
@@ -1376,11 +1851,26 @@
         getMasterpieces: () => masterpieces,
         getCurrentIndex: () => currentMasterpieceIndex,
         setMasterpiece: switchMasterpiece,
+        getNextMasterpieceIndex: () => nextMasterpieceIndex,
+        getScratchRatio: () => scratchConfig.ratio,
+        getScratchThreshold: () => scratchConfig.threshold,
+        setScratchThreshold: (t) => {
+            const val = Math.max(0.5, Math.min(0.95, t));
+            scratchConfig.threshold = val;
+            if (scratchThresholdSlider) scratchThresholdSlider.value = Math.round(val * 100);
+            if (scratchThresholdDisplay) scratchThresholdDisplay.textContent = `${Math.round(val * 100)}%`;
+            if (scratchHudTargetVal) scratchHudTargetVal.textContent = `${Math.round(val * 100)}%`;
+        },
+        triggerScratchReveal: triggerAutoScratchReveal,
+        isScratchLocked: () => scratchConfig.isLocked,
         setFitMode: setFitMode,
         getFitMode: () => config.fitMode,
         setScale: setScale,
         getScale: () => config.scale,
         getBounds: () => imageBounds,
+        getNextBounds: () => nextImageBounds,
+        isNextLoaded: () => isNextImageLoaded,
+        getNextImgInfo: () => ({ src: nextGardenImage.src, complete: nextGardenImage.complete, nw: nextGardenImage.naturalWidth, nh: nextGardenImage.naturalHeight }),
         toggleFullColor: toggleFullColor,
         isFullColor: () => isFullColorLocked,
         stroke: (x1, y1, x2, y2) => {
