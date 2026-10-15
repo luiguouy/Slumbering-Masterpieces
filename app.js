@@ -30,6 +30,8 @@
     const brushPreviewDot = document.getElementById('brush-preview-dot');
     const brushDurationSlider = document.getElementById('brush-duration-slider');
     const brushDurationDisplay = document.getElementById('brush-duration-display');
+    const colorRatioSlider = document.getElementById('brush-color-ratio-slider');
+    const colorRatioDisplay = document.getElementById('brush-color-ratio-display');
     const toggleFullColorBtn = document.getElementById('toggle-full-color-btn');
     const fullColorBtnText = document.getElementById('full-color-btn-text');
 
@@ -82,6 +84,40 @@
     const galleryResetBtn = document.getElementById('gallery-reset-btn');
     const galleryListContainer = document.getElementById('gallery-list-container');
 
+    // 名画背景故事与艺术鉴赏抽屉 UI 元素
+    const storyToggleBtn = document.getElementById('story-toggle-btn');
+    const brushStoryBtn = document.getElementById('brush-story-btn');
+    const storyDrawer = document.getElementById('story-drawer');
+    const storyBackdrop = document.getElementById('story-backdrop');
+    const storyCloseBtn = document.getElementById('story-close-btn');
+    const storyTitle = document.getElementById('story-title');
+    const storyEntitle = document.getElementById('story-entitle');
+    const storyArtist = document.getElementById('story-artist');
+    const storyPeriod = document.getElementById('story-period');
+    const storyGenre = document.getElementById('story-genre');
+    const storyLocation = document.getElementById('story-location');
+    const storyContext = document.getElementById('story-context');
+    const storyAppreciation = document.getElementById('story-appreciation');
+    const storyQuoteText = document.getElementById('story-quote-text');
+    const storyQuoteAuthor = document.getElementById('story-quote-author');
+    const storyPrevBtn = document.getElementById('story-prev-btn');
+    const storyNextBtn = document.getElementById('story-next-btn');
+
+    // 操作引导与快捷键指南 UI 元素
+    const interactiveHint = document.getElementById('interactive-hint');
+    const hintTextEl = document.getElementById('hint-text');
+    const modeToast = document.getElementById('mode-toast');
+    const toastIconEl = document.getElementById('toast-icon');
+    const toastTextEl = document.getElementById('toast-text');
+    const helpToggleBtn = document.getElementById('help-toggle-btn');
+    const helpModal = document.getElementById('help-modal');
+    const helpBackdrop = document.getElementById('help-backdrop');
+    const helpCloseBtn = document.getElementById('help-close-btn');
+    const helpGotItBtn = document.getElementById('help-got-it-btn');
+
+    let isHintDismissed = false;
+    let toastTimer = null;
+
     const bgCtx = bgCanvas.getContext('2d');
     const revealCtx = revealCanvas.getContext('2d');
 
@@ -116,6 +152,7 @@
         brushRadius: 75,             // 默认画笔半径 (px)
         minBrushRadius: 35,          // 最小画笔半径
         maxBrushRadius: 160,         // 最大画笔半径
+        colorRatio: 1.0,             // 划过唤醒显色比例 (0.2 ~ 1.0, 默认 1.0 即 100%)
         singlePassGain: 0.26,        // 单次划过最大显色增量 (需多划 3~4 次才满彩)
         hoverChargeGain: 0.12,       // 悬停充能增量 (每 45ms 递增)
         totalDurationSeconds: 12,    // 默认色彩留存总时长 (12 秒)
@@ -151,6 +188,26 @@
     let isInitialized = false;
     let isFullColorLocked = false;
 
+    // 高性能按需渲染控制与增量统计
+    let isDirty = true;
+    let isRenderingActive = false;
+    let scratchedCellsCount = 0;             // O(1) 维护漫游模式已擦除单元格总数
+    const SCRATCH_MASK_THRESHOLD = 0.35;     // 判定为透出底层新画的遮罩阈值
+    let lastRenderedHudPct = -1;             // 缓存已渲染 HUD 百分比，杜绝高频 DOM 重排
+    let isQuoteSubtle = false;               // 名言透明度 DOM 状态缓存
+    let isCursorActive = false;              // 光标状态缓存
+
+    /**
+     * 标记画布需要重绘，并按需唤醒帧渲染循环 (静止时 0 开销)
+     */
+    function markDirty() {
+        isDirty = true;
+        if (!isRenderingActive) {
+            isRenderingActive = true;
+            requestAnimationFrame(renderLoop);
+        }
+    }
+
     // 传世名画博览馆数据库 (由 data/masterpieces.js 注入全量名作)
     const masterpieces = (window.MASTERPIECES && window.MASTERPIECES.length) ? window.MASTERPIECES : [];
 
@@ -172,6 +229,7 @@
         gridAlpha = new Float32Array(totalCells);
         gridLastTouch = new Float64Array(totalCells);
         gridLastStroke = new Int32Array(totalCells);
+        scratchedCellsCount = 0;
 
         maskSmallCanvas.width = gridCols;
         maskSmallCanvas.height = gridRows;
@@ -186,6 +244,8 @@
             data[p + 2] = 255;
             data[p + 3] = 0;
         }
+
+        markDirty();
     }
 
     /**
@@ -304,6 +364,8 @@
             renderGrayscaleBackground();
             if (isFullColorLocked) {
                 revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
+                revealCtx.save();
+                revealCtx.globalAlpha = config.colorRatio;
                 revealCtx.drawImage(
                     gardenImage,
                     imageBounds.x,
@@ -311,8 +373,10 @@
                     imageBounds.w,
                     imageBounds.h
                 );
+                revealCtx.restore();
             }
         }
+        markDirty();
     }
 
     /**
@@ -465,6 +529,9 @@
             const maxCol = Math.min(gridCols - 1, Math.floor((px + radius) / cellSize));
             const minRow = Math.max(0, Math.floor((py - radius) / cellSize));
             const maxRow = Math.min(gridRows - 1, Math.floor((py + radius) / cellSize));
+            const radius2 = radius * radius;
+
+            let modified = false;
 
             for (let r = minRow; r <= maxRow; r++) {
                 const cellCenterY = (r + 0.5) * cellSize;
@@ -476,21 +543,30 @@
                     const dx = cellCenterX - px;
                     const dist2 = dx * dx + dy2;
 
-                    if (dist2 <= radius * radius) {
+                    if (dist2 <= radius2) {
                         const dist = Math.sqrt(dist2);
                         const idx = r * gridCols + c;
-                        const normalizedDist = dist / radius;
-                        const weight = 0.5 * (1 + Math.cos(normalizedDist * Math.PI));
+                        const t = dist / radius;
+                        // 经典 Smoothstep 曲线: 代替昂贵的 Math.cos，过渡极其平滑自然
+                        const weight = 1 - t * t * (3 - 2 * t);
 
-                        // 擦除当前画遮罩 (从 1.0 降低至 0.0，使底层下一幅画透出)
+                        const oldVal = gridAlpha[idx];
                         const eraseAmount = 0.65 * weight;
-                        gridAlpha[idx] = Math.max(0.0, gridAlpha[idx] - eraseAmount);
+                        const newVal = Math.max(0.0, oldVal - eraseAmount);
+                        gridAlpha[idx] = newVal;
+
+                        // O(1) 增量维护已擦除单元格计数器
+                        if (oldVal >= SCRATCH_MASK_THRESHOLD && newVal < SCRATCH_MASK_THRESHOLD) {
+                            scratchedCellsCount++;
+                        }
+                        modified = true;
                     }
                 }
             }
 
-            // 实时计算已擦除露出面积比例
-            updateScratchRatio();
+            if (modified) {
+                markDirty();
+            }
             return;
         }
 
@@ -502,6 +578,9 @@
         const maxCol = Math.min(gridCols - 1, Math.floor((px + radius) / cellSize));
         const minRow = Math.max(0, Math.floor((py - radius) / cellSize));
         const maxRow = Math.min(gridRows - 1, Math.floor((py + radius) / cellSize));
+        const radius2 = radius * radius;
+
+        let modified = false;
 
         for (let r = minRow; r <= maxRow; r++) {
             const cellCenterY = (r + 0.5) * cellSize;
@@ -513,8 +592,7 @@
                 const dx = cellCenterX - px;
                 const dist2 = dx * dx + dy2;
 
-                if (dist2 <= radius * radius) {
-                    const dist = Math.sqrt(dist2);
+                if (dist2 <= radius2) {
                     const idx = r * gridCols + c;
 
                     if (strokeId !== null && gridLastStroke[idx] === strokeId) {
@@ -525,14 +603,20 @@
                         gridLastStroke[idx] = strokeId;
                     }
 
-                    const normalizedDist = dist / radius;
-                    const weight = 0.5 * (1 + Math.cos(normalizedDist * Math.PI));
+                    const dist = Math.sqrt(dist2);
+                    const t = dist / radius;
+                    const weight = 1 - t * t * (3 - 2 * t);
 
                     const increment = gainBase * weight;
-                    gridAlpha[idx] = Math.min(1.0, gridAlpha[idx] + increment);
+                    gridAlpha[idx] = Math.min(config.colorRatio, gridAlpha[idx] + increment);
                     gridLastTouch[idx] = now;
+                    modified = true;
                 }
             }
+        }
+
+        if (modified) {
+            markDirty();
         }
     }
 
@@ -551,6 +635,9 @@
 
         if (dist <= 0) {
             applyDab(to.x, to.y, strokeId, config.singlePassGain, now);
+            if (appMode === 'scratch') {
+                updateScratchRatio();
+            }
             return;
         }
 
@@ -559,31 +646,37 @@
             const t = i / steps;
             applyDab(from.x + dx * t, from.y + dy * t, strokeId, config.singlePassGain, now);
         }
+
+        if (appMode === 'scratch') {
+            updateScratchRatio();
+        }
     }
 
     /**
-     * 统计随机漫游模式下的已擦除露出面积比例
+     * 节流更新 HUD 进度条与文字展示 (仅在数值变化时操作 DOM，避免高频回流)
+     */
+    function syncScratchHud(ratio) {
+        const pct = Math.min(100, Math.round(ratio * 100));
+        if (pct === lastRenderedHudPct) return;
+        lastRenderedHudPct = pct;
+
+        if (scratchHudPercent) scratchHudPercent.textContent = `${pct}%`;
+        if (scratchHudFill) scratchHudFill.style.width = `${pct}%`;
+        if (scratchRatioDisplay) scratchRatioDisplay.textContent = `${pct}%`;
+        if (scratchMiniBarFill) scratchMiniBarFill.style.width = `${pct}%`;
+    }
+
+    /**
+     * 统计随机漫游模式下的已擦除露出面积比例 (O(1) 瞬时计算)
      */
     function updateScratchRatio() {
         if (appMode !== 'scratch' || scratchConfig.isLocked || scratchConfig.isTransitioning) return;
         if (totalCells <= 0) return;
 
-        let scratchedInside = 0;
-        for (let i = 0; i < totalCells; i++) {
-            // 当遮罩低于 0.35 时，判定为透出背后的画
-            if (gridAlpha[i] < 0.35) {
-                scratchedInside++;
-            }
-        }
-
-        const ratio = scratchedInside / totalCells;
+        const ratio = scratchedCellsCount / totalCells;
         scratchConfig.ratio = ratio;
 
-        const pct = Math.min(100, Math.round(ratio * 100));
-        if (scratchHudPercent) scratchHudPercent.textContent = `${pct}%`;
-        if (scratchHudFill) scratchHudFill.style.width = `${pct}%`;
-        if (scratchRatioDisplay) scratchRatioDisplay.textContent = `${pct}%`;
-        if (scratchMiniBarFill) scratchMiniBarFill.style.width = `${pct}%`;
+        syncScratchHud(ratio);
 
         // 达到设定阈值 (默认 85%)，立即锁定并触发完全展示
         if (ratio >= scratchConfig.threshold) {
@@ -615,14 +708,18 @@
                 gridAlpha[i] = startAlphas[i] * (1 - ease);
             }
 
+            markDirty();
+
             if (progress < 1.0) {
                 requestAnimationFrame(step);
             } else {
                 gridAlpha.fill(0);
+                scratchedCellsCount = totalCells;
                 finalizeScratchTransition();
             }
         }
 
+        markDirty();
         requestAnimationFrame(step);
     }
 
@@ -651,12 +748,15 @@
         if (currentArtArtist) currentArtArtist.textContent = `${art.artist} · 🔍 检索画廊`;
         if (masterpieceIndexBadge) masterpieceIndexBadge.textContent = `${currentMasterpieceIndex + 1} / ${masterpieces.length}`;
         updateActiveCardHighlight(currentMasterpieceIndex);
+        updateStoryContent(art);
 
         // 4. 重置顶层遮罩为 100% 不透明 (新画完好展现)
         gridAlpha.fill(1.0);
+        scratchedCellsCount = 0;
         scratchConfig.ratio = 0;
 
         // 5. 重置 HUD 进度
+        lastRenderedHudPct = 0;
         if (scratchHudPercent) scratchHudPercent.textContent = '0%';
         if (scratchHudFill) scratchHudFill.style.width = '0%';
         if (scratchRatioDisplay) scratchRatioDisplay.textContent = '0%';
@@ -669,6 +769,7 @@
             hasUnlocked = true;
             scratchConfig.isLocked = false;
             scratchConfig.isTransitioning = false;
+            markDirty();
         };
 
         // 6. 后台立即挑选并预加载下一幅全新的随机名画，渲染到底层 bgCanvas
@@ -680,6 +781,7 @@
 
         // 7. 600ms 超时保底解锁，保证交互绝对流畅不卡顿
         setTimeout(doUnlock, 600);
+        markDirty();
     }
 
     /**
@@ -695,6 +797,9 @@
         const maxCol = Math.min(gridCols - 1, Math.floor((px + radius) / cellSize));
         const minRow = Math.max(0, Math.floor((py - radius) / cellSize));
         const maxRow = Math.min(gridRows - 1, Math.floor((py + radius) / cellSize));
+        const radius2 = radius * radius;
+
+        let modified = false;
 
         for (let r = minRow; r <= maxRow; r++) {
             const cellCenterY = (r + 0.5) * cellSize;
@@ -706,66 +811,79 @@
                 const dx = cellCenterX - px;
                 const dist2 = dx * dx + dy2;
 
-                if (dist2 <= radius * radius) {
+                if (dist2 <= radius2) {
                     const dist = Math.sqrt(dist2);
                     const idx = r * gridCols + c;
-
-                    const normalizedDist = dist / radius;
-                    const weight = 0.5 * (1 + Math.cos(normalizedDist * Math.PI));
+                    const t = dist / radius;
+                    const weight = 1 - t * t * (3 - 2 * t);
 
                     const increment = config.hoverChargeGain * weight;
-                    gridAlpha[idx] = Math.min(1.0, gridAlpha[idx] + increment);
+                    gridAlpha[idx] = Math.min(config.colorRatio, gridAlpha[idx] + increment);
                     gridLastTouch[idx] = now;
+                    modified = true;
                 }
             }
+        }
+
+        if (modified) {
+            markDirty();
         }
     }
 
     /**
-     * 核心渲染主循环
+     * 核心渲染主循环 (按需渲染 + 静止休眠)
      */
     function renderLoop(currentTime) {
         if (appMode === 'scratch') {
             // ================= 🎲 随机漫游擦画渲染管线 =================
-            const data = maskSmallImageData ? maskSmallImageData.data : null;
-            if (data && totalCells > 0) {
-                for (let i = 0; i < totalCells; i++) {
-                    const a = gridAlpha[i];
-                    data[i * 4 + 3] = Math.min(255, Math.round(a * 255));
+            const needsRender = isDirty || scratchConfig.isTransitioning;
+
+            if (needsRender) {
+                const data = maskSmallImageData ? maskSmallImageData.data : null;
+                if (data && totalCells > 0) {
+                    for (let i = 0; i < totalCells; i++) {
+                        data[i * 4 + 3] = (gridAlpha[i] * 255 + 0.5) | 0;
+                    }
                 }
+
+                revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
+
+                if (isImageLoaded && data) {
+                    maskSmallCtx.putImageData(maskSmallImageData, 0, 0);
+
+                    maskCtx.clearRect(0, 0, viewportWidth, viewportHeight);
+                    maskCtx.save();
+                    maskCtx.imageSmoothingEnabled = true;
+                    maskCtx.imageSmoothingQuality = 'high';
+                    maskCtx.drawImage(maskSmallCanvas, 0, 0, viewportWidth, viewportHeight);
+                    maskCtx.restore();
+
+                    // 顶层绘制当前画作 (原画真实色彩，无需灰度)，通过 destination-in 抠出擦除洞，透出底层
+                    revealCtx.save();
+                    revealCtx.fillStyle = '#0d0f12';
+                    revealCtx.fillRect(0, 0, viewportWidth, viewportHeight);
+
+                    revealCtx.drawImage(
+                        gardenImage,
+                        imageBounds.x,
+                        imageBounds.y,
+                        imageBounds.w,
+                        imageBounds.h
+                    );
+                    revealCtx.globalCompositeOperation = 'destination-in';
+                    revealCtx.drawImage(maskCanvas, 0, 0, viewportWidth, viewportHeight);
+                    revealCtx.restore();
+                }
+
+                isDirty = false;
             }
 
-            revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
-
-            if (isImageLoaded && data) {
-                maskSmallCtx.putImageData(maskSmallImageData, 0, 0);
-
-                maskCtx.clearRect(0, 0, viewportWidth, viewportHeight);
-                maskCtx.save();
-                maskCtx.imageSmoothingEnabled = true;
-                maskCtx.imageSmoothingQuality = 'high';
-                maskCtx.drawImage(maskSmallCanvas, 0, 0, viewportWidth, viewportHeight);
-                maskCtx.restore();
-
-                // 顶层绘制当前画作 (原画真实色彩，无需灰度)，通过 destination-in 抠出擦除洞，透出底层
-                revealCtx.save();
-                // 顶层全屏填充古典画廊暗色底色，确保在 contain 完整模式或缩小缩放时四周严密遮挡，绝不漏出底层
-                revealCtx.fillStyle = '#0d0f12';
-                revealCtx.fillRect(0, 0, viewportWidth, viewportHeight);
-
-                revealCtx.drawImage(
-                    gardenImage,
-                    imageBounds.x,
-                    imageBounds.y,
-                    imageBounds.w,
-                    imageBounds.h
-                );
-                revealCtx.globalCompositeOperation = 'destination-in';
-                revealCtx.drawImage(maskCanvas, 0, 0, viewportWidth, viewportHeight);
-                revealCtx.restore();
+            // 如果正在进行完全展开动画过渡，继续下一帧；否则完全静止休眠，消耗归零
+            if (scratchConfig.isTransitioning) {
+                requestAnimationFrame(renderLoop);
+            } else {
+                isRenderingActive = false;
             }
-
-            requestAnimationFrame(renderLoop);
             return;
         }
 
@@ -779,57 +897,79 @@
             }
         }
 
-        // 2. 衰减与留存计算
+        // 2. 一键全彩模式处理 (按当前显色比例绘制一次即休眠)
+        if (isFullColorLocked) {
+            if (isDirty) {
+                revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
+                if (isImageLoaded) {
+                    revealCtx.save();
+                    revealCtx.globalAlpha = config.colorRatio;
+                    revealCtx.drawImage(
+                        gardenImage,
+                        imageBounds.x,
+                        imageBounds.y,
+                        imageBounds.w,
+                        imageBounds.h
+                    );
+                    revealCtx.restore();
+                }
+                isDirty = false;
+            }
+            isRenderingActive = false;
+            return;
+        }
+
+        // 3. 衰减与留存计算
         const data = maskSmallImageData ? maskSmallImageData.data : null;
-        let hasActiveColor = false;
+        let hasAnyActiveColor = false;
+        let hasFadingColor = false;
 
         if (data && totalCells > 0) {
-            if (isFullColorLocked) {
-                hasActiveColor = true;
-                for (let i = 0; i < totalCells; i++) {
-                    data[i * 4 + 3] = 255;
+            const solidMs = config.solidDurationMs;
+            const fadeMs = config.fadeDurationMs;
+
+            for (let i = 0; i < totalCells; i++) {
+                const rawAlpha = gridAlpha[i];
+                if (rawAlpha <= 0.001) {
+                    data[i * 4 + 3] = 0;
+                    continue;
                 }
-            } else {
-                const solidMs = config.solidDurationMs;
-                const fadeMs = config.fadeDurationMs;
+                const alpha = Math.min(config.colorRatio, rawAlpha);
 
-                for (let i = 0; i < totalCells; i++) {
-                    const alpha = gridAlpha[i];
-                    if (alpha <= 0.001) {
-                        data[i * 4 + 3] = 0;
-                        continue;
-                    }
+                const elapsed = currentTime - gridLastTouch[i];
+                let currentAlpha = alpha;
 
-                    const elapsed = currentTime - gridLastTouch[i];
-                    let currentAlpha = alpha;
-
-                    if (elapsed <= solidMs) {
-                        currentAlpha = alpha;
+                if (elapsed <= solidMs) {
+                    currentAlpha = alpha;
+                    hasAnyActiveColor = true;
+                    hasFadingColor = true;
+                } else {
+                    const fadeProgress = (elapsed - solidMs) / fadeMs;
+                    if (fadeProgress >= 1.0) {
+                        gridAlpha[i] = 0;
+                        currentAlpha = 0;
                     } else {
-                        const fadeProgress = (elapsed - solidMs) / fadeMs;
-                        if (fadeProgress >= 1.0) {
-                            gridAlpha[i] = 0;
-                            currentAlpha = 0;
-                        } else {
-                            const decayFactor = 0.5 * (1 + Math.cos(fadeProgress * Math.PI));
-                            currentAlpha = alpha * decayFactor;
-                        }
+                        // Smoothstep 衰减曲线
+                        const p = fadeProgress;
+                        const decayFactor = 1 - p * p * (3 - 2 * p);
+                        currentAlpha = alpha * decayFactor;
+                        hasFadingColor = true;
                     }
+                }
 
-                    if (currentAlpha > 0.002) {
-                        hasActiveColor = true;
-                        data[i * 4 + 3] = Math.min(255, Math.round(currentAlpha * 255));
-                    } else {
-                        data[i * 4 + 3] = 0;
-                    }
+                if (currentAlpha > 0.002) {
+                    hasAnyActiveColor = true;
+                    data[i * 4 + 3] = (currentAlpha * 255 + 0.5) | 0;
+                } else {
+                    data[i * 4 + 3] = 0;
                 }
             }
         }
 
-        // 3. 将小尺寸网格遮罩通过 GPU 双线性平滑插值投射到全屏遮罩
+        // 4. 将小尺寸网格遮罩通过 GPU 双线性平滑插值投射到全屏遮罩
         revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
 
-        if (isImageLoaded && hasActiveColor) {
+        if (isImageLoaded && hasAnyActiveColor) {
             maskSmallCtx.putImageData(maskSmallImageData, 0, 0);
 
             maskCtx.clearRect(0, 0, viewportWidth, viewportHeight);
@@ -852,7 +992,13 @@
             revealCtx.restore();
         }
 
-        requestAnimationFrame(renderLoop);
+        // 5. 判断是否需要继续下一帧：若有颜色正在衰减或光标保持活动，持续渲染；若完全归于沉睡，则自动休眠
+        if (hasFadingColor || (isPointerActive && currentPointerPos)) {
+            requestAnimationFrame(renderLoop);
+        } else {
+            isDirty = false;
+            isRenderingActive = false;
+        }
     }
 
     /**
@@ -898,6 +1044,24 @@
         if (brushDurationDisplay) {
             brushDurationDisplay.textContent = `${config.totalDurationSeconds}秒`;
         }
+    }
+
+    /**
+     * 更新划过唤醒原画显色比例 (0.2 ~ 1.0)
+     * @param {number} newRatio 
+     */
+    function updateColorRatio(newRatio) {
+        config.colorRatio = Math.max(0.2, Math.min(1.0, newRatio));
+        const pct = Math.round(config.colorRatio * 100);
+
+        if (colorRatioSlider) {
+            colorRatioSlider.value = pct;
+        }
+        if (colorRatioDisplay) {
+            colorRatioDisplay.textContent = `${pct}%`;
+        }
+
+        markDirty();
     }
 
     /**
@@ -956,6 +1120,8 @@
             scratchConfig.isLocked = false;
             scratchConfig.isTransitioning = false;
             scratchConfig.ratio = 0;
+            scratchedCellsCount = 0;
+            lastRenderedHudPct = 0;
             if (gridAlpha) gridAlpha.fill(1.0); // 顶层全遮挡不透明
             if (scratchHudPercent) scratchHudPercent.textContent = '0%';
             if (scratchHudFill) scratchHudFill.style.width = '0%';
@@ -970,7 +1136,11 @@
             prepareNextRandomArtwork(() => {
                 computeNextImageBounds();
                 renderScratchBackground();
+                markDirty();
             });
+            updateHintText('scratch');
+            showToast('已切换为 🎲 随机漫游擦画模式', '🎲');
+            markDirty();
         } else {
             // 切换回经典沉睡唤醒模式
             computeImageBounds();
@@ -981,6 +1151,9 @@
             if (toggleFullColorBtn) toggleFullColorBtn.classList.remove('active');
             renderGrayscaleBackground();
             revealCtx.clearRect(0, 0, viewportWidth, viewportHeight);
+            updateHintText('sleep');
+            showToast('已切换为 🌸 沉睡唤醒古典模式', '🌸');
+            markDirty();
         }
     }
 
@@ -1046,6 +1219,14 @@
             brushDurationSlider.addEventListener('click', (e) => e.stopPropagation());
         }
 
+        // 显色比例滑块拖动实时调节
+        if (colorRatioSlider) {
+            colorRatioSlider.addEventListener('input', (e) => {
+                updateColorRatio(parseInt(e.target.value, 10) / 100);
+            });
+            colorRatioSlider.addEventListener('click', (e) => e.stopPropagation());
+        }
+
         // 绑定一键全彩盛放按钮
         if (toggleFullColorBtn) {
             toggleFullColorBtn.addEventListener('click', (e) => {
@@ -1094,8 +1275,9 @@
         brushPopup.addEventListener('mousemove', (e) => e.stopPropagation());
         brushToggleBtn.addEventListener('mousemove', (e) => e.stopPropagation());
 
-        // 初始化画笔大小、留存时间、规格模式与缩放
+        // 初始化画笔大小、显色比例、留存时间、规格模式与缩放
         updateBrushSize(config.brushRadius);
+        updateColorRatio(config.colorRatio);
         updateDuration(config.totalDurationSeconds);
         setFitMode(config.fitMode);
         setScale(config.scale);
@@ -1111,8 +1293,8 @@
         isFullColorLocked = targetState;
 
         if (isFullColorLocked) {
-            // 瞬间将全网格充满至 100% 满彩
-            if (gridAlpha) gridAlpha.fill(1.0);
+            // 瞬间将全网格充满至当前设定的显色比例
+            if (gridAlpha) gridAlpha.fill(config.colorRatio);
             if (gridLastTouch) gridLastTouch.fill(performance.now());
 
             if (fullColorBtnText) fullColorBtnText.textContent = '恢复黑白沉睡';
@@ -1138,6 +1320,7 @@
                 toggleFullColorBtn.title = '一键将整幅画还原为原始真彩';
             }
         }
+        markDirty();
     }
 
     /**
@@ -1178,9 +1361,11 @@
         // 1. 重置显色状态网格与离屏采样遮罩
         if (appMode === 'scratch') {
             if (gridAlpha) gridAlpha.fill(1.0); // 随机漫游模式：顶层保持 100% 遮罩遮挡新画
+            scratchedCellsCount = 0;
             scratchConfig.ratio = 0;
             scratchConfig.isLocked = false;
             scratchConfig.isTransitioning = false;
+            lastRenderedHudPct = 0;
             if (scratchHudPercent) scratchHudPercent.textContent = '0%';
             if (scratchHudFill) scratchHudFill.style.width = '0%';
             if (scratchRatioDisplay) scratchRatioDisplay.textContent = '0%';
@@ -1213,10 +1398,12 @@
 
         // 5. 同步更新画廊展厅卡片激活高亮状态
         updateActiveCardHighlight(index);
+        updateStoryContent(art);
 
         // 6. 载入新名画原图并重新渲染古典灰阶底图
         isImageLoaded = false;
         gardenImage.src = art.src;
+        markDirty();
     }
 
     /**
@@ -1296,17 +1483,135 @@
     /**
      * 重新渲染画廊抽屉列表
      */
+    // 展厅超高性能增量分批渲染引擎
+    let galleryFilteredItems = [];
+    let galleryRenderedCount = 0;
+    const GALLERY_BATCH_SIZE = 24; // 每次追加 24 项 (约 1.5~2 屏)
+    let gallerySentinelEl = null;
+    let galleryObserver = null;
+
+    /**
+     * 创建单个名画卡片 DOM 节点 (高度复用与异步解码属性优化)
+     */
+    function createGalleryCard({ art, index }) {
+        const isCurrent = index === currentMasterpieceIndex;
+        const card = document.createElement('div');
+        card.className = `gallery-card ${isCurrent ? 'is-active' : ''}`;
+        card.setAttribute('data-index', index);
+        card.setAttribute('role', 'listitem');
+        card.title = `点击切换欣赏：《${art.title}》· ${art.artist}`;
+
+        let catLabel = '';
+        if (window.ART_CATEGORIES) {
+            const catObj = window.ART_CATEGORIES.find(c => c.id === art.category);
+            if (catObj) catLabel = catObj.name.split('(')[0].trim();
+        }
+
+        card.innerHTML = `
+            <div class="card-thumb-box">
+                <img class="card-thumb-img" src="${art.src}" alt="${art.title}" loading="lazy" decoding="async" fetchpriority="low" width="54" height="54">
+            </div>
+            <div class="card-details">
+                <div class="card-header-row">
+                    <div class="card-title">${index + 1}. ${art.title}</div>
+                    ${isCurrent ? '<span class="card-badge-viewing">👑 观赏中</span>' : ''}
+                </div>
+                ${art.enTitle ? `<div class="card-entitle">${art.enTitle}</div>` : ''}
+                <div class="card-artist">${art.artist}</div>
+                <div class="card-tags-row">
+                    ${art.genre ? `<span class="card-tag card-tag-genre">${art.genre}</span>` : ''}
+                    ${catLabel ? `<span class="card-tag card-tag-cat">${catLabel}</span>` : ''}
+                </div>
+            </div>
+        `;
+
+        card.addEventListener('click', () => {
+            switchMasterpiece(index);
+            if (window.innerWidth <= 640) {
+                closeGallery();
+            }
+        });
+
+        return card;
+    }
+
+    /**
+     * 追加渲染下一批画作卡片
+     */
+    function appendGalleryBatch() {
+        if (!galleryListContainer || galleryRenderedCount >= galleryFilteredItems.length) {
+            if (gallerySentinelEl && gallerySentinelEl.parentNode) {
+                gallerySentinelEl.style.display = 'none';
+            }
+            return;
+        }
+
+        const nextCount = Math.min(galleryFilteredItems.length, galleryRenderedCount + GALLERY_BATCH_SIZE);
+        const frag = document.createDocumentFragment();
+
+        for (let i = galleryRenderedCount; i < nextCount; i++) {
+            frag.appendChild(createGalleryCard(galleryFilteredItems[i]));
+        }
+
+        galleryRenderedCount = nextCount;
+
+        if (gallerySentinelEl && gallerySentinelEl.parentNode === galleryListContainer) {
+            galleryListContainer.insertBefore(frag, gallerySentinelEl);
+            gallerySentinelEl.style.display = (galleryRenderedCount < galleryFilteredItems.length) ? 'block' : 'none';
+        } else {
+            galleryListContainer.appendChild(frag);
+            if (galleryRenderedCount < galleryFilteredItems.length) {
+                ensureGallerySentinel();
+            }
+        }
+    }
+
+    function ensureGallerySentinel() {
+        if (!gallerySentinelEl) {
+            gallerySentinelEl = document.createElement('div');
+            gallerySentinelEl.className = 'gallery-scroll-sentinel';
+            gallerySentinelEl.style.height = '40px';
+            gallerySentinelEl.style.width = '100%';
+            gallerySentinelEl.style.pointerEvents = 'none';
+        }
+        gallerySentinelEl.style.display = 'block';
+        galleryListContainer.appendChild(gallerySentinelEl);
+        initGalleryObserver();
+    }
+
+    function initGalleryObserver() {
+        if (galleryObserver) {
+            galleryObserver.disconnect();
+        }
+        if (!gallerySentinelEl || !('IntersectionObserver' in window)) return;
+
+        galleryObserver = new IntersectionObserver((entries) => {
+            if (entries[0] && entries[0].isIntersecting) {
+                appendGalleryBatch();
+            }
+        }, {
+            root: galleryListContainer,
+            rootMargin: '300px 0px',
+            threshold: 0.01
+        });
+
+        galleryObserver.observe(gallerySentinelEl);
+    }
+
+    /**
+     * 重新渲染画廊抽屉列表 (高性能分批增量渲染)
+     */
     function renderGalleryList() {
         if (!galleryListContainer) return;
 
-        const filtered = getFilteredMasterpieces();
+        galleryFilteredItems = getFilteredMasterpieces();
         const hasActiveFilter = galleryFilterState.query.trim() !== '' ||
             galleryFilterState.genre !== 'all' ||
             galleryFilterState.artist !== 'all' ||
             galleryFilterState.category !== 'all';
 
         // 更新结果统计与重置按钮
-        if (galleryResultCount) galleryResultCount.textContent = filtered.length;
+        if (galleryResultCount) galleryResultCount.textContent = galleryFilteredItems.length;
         if (galleryResetBtn) {
             galleryResetBtn.style.display = hasActiveFilter ? 'inline-block' : 'none';
         }
@@ -1326,9 +1631,14 @@
             galleryFilterDesc.textContent = parts.length > 0 ? `(${parts.join(' · ')})` : '';
         }
 
-        galleryListContainer.innerHTML = '';
+        if (galleryObserver) {
+            galleryObserver.disconnect();
+        }
 
-        if (filtered.length === 0) {
+        galleryListContainer.innerHTML = '';
+        galleryRenderedCount = 0;
+
+        if (galleryFilteredItems.length === 0) {
             // 空状态展示
             const emptyEl = document.createElement('div');
             emptyEl.className = 'gallery-empty-state';
@@ -1346,53 +1656,26 @@
             return;
         }
 
-        // 渲染画作卡片
+        // 智能计算初次渲染批次：
+        // 若当前名画在列表更后位置（如第 70 幅），则初次渲染恰好覆盖到该画作，确保自动居中滚入时无缝可用；
+        // 否则仅渲染首批 24 幅，极速秒开！
+        let initialLimit = GALLERY_BATCH_SIZE;
+        const currentArtIndexInList = galleryFilteredItems.findIndex(item => item.index === currentMasterpieceIndex);
+        if (currentArtIndexInList >= 0 && currentArtIndexInList >= GALLERY_BATCH_SIZE) {
+            initialLimit = Math.min(galleryFilteredItems.length, Math.ceil((currentArtIndexInList + 8) / GALLERY_BATCH_SIZE) * GALLERY_BATCH_SIZE);
+        }
+
         const frag = document.createDocumentFragment();
-        filtered.forEach(({ art, index }) => {
-            const isCurrent = index === currentMasterpieceIndex;
-            const card = document.createElement('div');
-            card.className = `gallery-card ${isCurrent ? 'is-active' : ''}`;
-            card.setAttribute('data-index', index);
-            card.setAttribute('role', 'listitem');
-            card.title = `点击切换欣赏：《${art.title}》· ${art.artist}`;
-
-            // 获取画派分类友好名称
-            let catLabel = '';
-            if (window.ART_CATEGORIES) {
-                const catObj = window.ART_CATEGORIES.find(c => c.id === art.category);
-                if (catObj) catLabel = catObj.name.split('(')[0].trim();
-            }
-
-            card.innerHTML = `
-                <div class="card-thumb-box">
-                    <img class="card-thumb-img" src="${art.src}" alt="${art.title}" loading="lazy">
-                </div>
-                <div class="card-details">
-                    <div class="card-header-row">
-                        <div class="card-title">${index + 1}. ${art.title}</div>
-                        ${isCurrent ? '<span class="card-badge-viewing">👑 观赏中</span>' : ''}
-                    </div>
-                    ${art.enTitle ? `<div class="card-entitle">${art.enTitle}</div>` : ''}
-                    <div class="card-artist">${art.artist}</div>
-                    <div class="card-tags-row">
-                        ${art.genre ? `<span class="card-tag card-tag-genre">${art.genre}</span>` : ''}
-                        ${catLabel ? `<span class="card-tag card-tag-cat">${catLabel}</span>` : ''}
-                    </div>
-                </div>
-            `;
-
-            card.addEventListener('click', () => {
-                switchMasterpiece(index);
-                // 移动端选择后自动轻柔收起展厅
-                if (window.innerWidth <= 640) {
-                    closeGallery();
-                }
-            });
-
-            frag.appendChild(card);
-        });
-
+        const limit = Math.min(galleryFilteredItems.length, initialLimit);
+        for (let i = 0; i < limit; i++) {
+            frag.appendChild(createGalleryCard(galleryFilteredItems[i]));
+        }
+        galleryRenderedCount = limit;
         galleryListContainer.appendChild(frag);
+
+        if (galleryRenderedCount < galleryFilteredItems.length) {
+            ensureGallerySentinel();
+        }
     }
 
     /**
@@ -1466,6 +1749,7 @@
         document.body.classList.remove('gallery-open');
         galleryDrawer.classList.remove('open');
         galleryDrawer.setAttribute('aria-hidden', 'true');
+        isCursorActive = false;
     }
 
     /**
@@ -1666,24 +1950,294 @@
             });
         }
 
-        // 9. 全局键盘快捷键: 按 G 或 / 打开展厅，按 ESC 关闭
+        // 9. 全局键盘快捷键: 支持盲操、背景故事、画作切换、展厅与帮助指南
         window.addEventListener('keydown', (e) => {
             const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement && document.activeElement.tagName);
             if (e.key === 'Escape') {
-                if (galleryDrawer && galleryDrawer.classList.contains('open')) {
+                if (helpModal && helpModal.classList.contains('open')) {
+                    closeHelp();
+                } else if (storyDrawer && storyDrawer.classList.contains('open')) {
+                    closeStory();
+                } else if (galleryDrawer && galleryDrawer.classList.contains('open')) {
                     closeGallery();
                 } else if (brushPopup && brushPopup.classList.contains('open')) {
                     brushPopup.classList.remove('open');
                     if (brushToggleBtn) brushToggleBtn.classList.remove('active');
                 }
-            } else if (!isTyping && (e.key === 'g' || e.key === 'G' || e.key === '/')) {
-                e.preventDefault();
-                openGallery();
+            } else if (!isTyping) {
+                if (e.key === '?' || e.key === 'h' || e.key === 'H') {
+                    e.preventDefault();
+                    toggleHelp();
+                } else if (e.key === 's' || e.key === 'S' || e.key === 'i' || e.key === 'I') {
+                    e.preventDefault();
+                    toggleStory();
+                } else if (e.key === 'g' || e.key === 'G' || e.key === '/') {
+                    e.preventDefault();
+                    openGallery();
+                } else if (e.code === 'Space') {
+                    e.preventDefault();
+                    toggleFullColor();
+                    showToast(isFullColorLocked ? '已一键盛放全幅色彩' : '已重置画布色彩', isFullColorLocked ? '🌸' : '🔄');
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    const prevIdx = (currentMasterpieceIndex - 1 + masterpieces.length) % masterpieces.length;
+                    switchMasterpiece(prevIdx);
+                    showToast(`《${masterpieces[prevIdx].title}》`, '🖼️');
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    const nextIdx = (currentMasterpieceIndex + 1) % masterpieces.length;
+                    switchMasterpiece(nextIdx);
+                    showToast(`《${masterpieces[nextIdx].title}》`, '🖼️');
+                }
             }
         });
 
+        // 滚动时无感追加下一批画作 (兼顾滚动高性能与无白屏体验)
+        if (galleryListContainer) {
+            galleryListContainer.addEventListener('scroll', () => {
+                if (galleryRenderedCount < galleryFilteredItems.length) {
+                    const remaining = galleryListContainer.scrollHeight - (galleryListContainer.scrollTop + galleryListContainer.clientHeight);
+                    if (remaining < 450) {
+                        appendGalleryBatch();
+                    }
+                }
+            }, { passive: true });
+        }
+
         // 初始渲染卡片列表
         renderGalleryList();
+    }
+
+    /**
+     * 更新名画故事抽屉的内容
+     */
+    function updateStoryContent(art) {
+        if (!art || !window.getArtworkStory) return;
+        const story = window.getArtworkStory(art);
+        if (!story) return;
+
+        if (storyTitle) storyTitle.textContent = story.title;
+        if (storyEntitle) storyEntitle.textContent = story.enTitle || '';
+        if (storyArtist) storyArtist.textContent = story.artist;
+        if (storyPeriod) storyPeriod.textContent = story.period;
+        if (storyGenre) storyGenre.textContent = story.genre;
+        if (storyLocation) storyLocation.textContent = story.location;
+        if (storyContext) storyContext.textContent = story.context;
+        if (storyAppreciation) storyAppreciation.textContent = story.appreciation;
+        if (storyQuoteText) storyQuoteText.textContent = story.quote;
+        if (storyQuoteAuthor) storyQuoteAuthor.textContent = story.quoteAuthor;
+    }
+
+    /**
+     * 打开名画背景故事抽屉
+     */
+    function openStory() {
+        if (!storyDrawer) return;
+
+        // 若画笔弹窗展开，顺畅收起
+        if (brushPopup && brushPopup.classList.contains('open')) {
+            brushPopup.classList.remove('open');
+            if (brushToggleBtn) brushToggleBtn.classList.remove('active');
+        }
+
+        const currentArt = masterpieces[currentMasterpieceIndex];
+        if (currentArt) {
+            updateStoryContent(currentArt);
+        }
+
+        document.body.classList.add('story-open');
+        storyDrawer.classList.add('open');
+        storyDrawer.setAttribute('aria-hidden', 'false');
+    }
+
+    /**
+     * 关闭名画背景故事抽屉
+     */
+    function closeStory() {
+        if (!storyDrawer) return;
+        document.body.classList.remove('story-open');
+        storyDrawer.classList.remove('open');
+        storyDrawer.setAttribute('aria-hidden', 'true');
+        isCursorActive = false;
+    }
+
+    /**
+     * 切换名画背景故事抽屉展开/收起
+     */
+    function toggleStory() {
+        if (storyDrawer && storyDrawer.classList.contains('open')) {
+            closeStory();
+        } else {
+            openStory();
+        }
+    }
+
+    /**
+     * 初始化故事交互事件监听
+     */
+    function setupStoryUI() {
+        if (storyToggleBtn) {
+            storyToggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleStory();
+            });
+        }
+
+        if (brushStoryBtn) {
+            brushStoryBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // 打开鉴赏故事抽屉时，收起画笔面板以保持开阔的鉴赏阅读视野
+                if (brushPopup && brushPopup.classList.contains('open')) {
+                    brushPopup.classList.remove('open');
+                    if (brushToggleBtn) brushToggleBtn.classList.remove('active');
+                }
+                openStory();
+            });
+        }
+
+        if (storyCloseBtn) {
+            storyCloseBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closeStory();
+            });
+        }
+
+        if (storyBackdrop) {
+            storyBackdrop.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closeStory();
+            });
+        }
+
+        if (storyPrevBtn) {
+            storyPrevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const nextIdx = (currentMasterpieceIndex - 1 + masterpieces.length) % masterpieces.length;
+                switchMasterpiece(nextIdx);
+                updateStoryContent(masterpieces[nextIdx]);
+            });
+        }
+
+        if (storyNextBtn) {
+            storyNextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const nextIdx = (currentMasterpieceIndex + 1) % masterpieces.length;
+                switchMasterpiece(nextIdx);
+                updateStoryContent(masterpieces[nextIdx]);
+            });
+        }
+    }
+
+    /**
+     * 显示轻量优雅的 Toast 提示 (自动淡出)
+     * @param {string} msg 
+     * @param {string} icon 
+     */
+    function showToast(msg, icon = '✨') {
+        if (!modeToast) return;
+        if (toastTimer) {
+            clearTimeout(toastTimer);
+            toastTimer = null;
+        }
+        if (toastIconEl) toastIconEl.textContent = icon;
+        if (toastTextEl) toastTextEl.textContent = msg;
+        modeToast.classList.add('visible', 'show');
+        toastTimer = setTimeout(() => {
+            modeToast.classList.remove('visible', 'show');
+            toastTimer = null;
+        }, 2500);
+    }
+
+    /**
+     * 消除首次入场操作提示 (自然淡出过渡)
+     */
+    function dismissInitialHint() {
+        if (isHintDismissed) return;
+        isHintDismissed = true;
+        if (interactiveHint) {
+            interactiveHint.classList.add('dismissed');
+            setTimeout(() => {
+                if (interactiveHint && interactiveHint.parentNode) {
+                    interactiveHint.style.display = 'none';
+                }
+            }, 800);
+        }
+    }
+
+    /**
+     * 根据当前体验模式动态切换操作提示语
+     * @param {'sleep' | 'scratch'} mode 
+     */
+    function updateHintText(mode) {
+        if (!hintTextEl) return;
+        if (mode === 'scratch') {
+            hintTextEl.textContent = '用鼠标擦拭画面 · 透出下一幅随机名画';
+        } else {
+            hintTextEl.textContent = '用鼠标轻拂屏幕唤醒色彩 · 悬停可充能绽放';
+        }
+    }
+
+    /**
+     * 打开操作与快捷键指南弹窗
+     */
+    function openHelp() {
+        if (!helpModal) return;
+        document.body.classList.add('help-open');
+        helpModal.classList.add('open');
+        helpModal.setAttribute('aria-hidden', 'false');
+    }
+
+    /**
+     * 关闭操作与快捷键指南弹窗
+     */
+    function closeHelp() {
+        if (!helpModal) return;
+        document.body.classList.remove('help-open');
+        helpModal.classList.remove('open');
+        helpModal.setAttribute('aria-hidden', 'true');
+        isCursorActive = false;
+    }
+
+    /**
+     * 切换操作与快捷键指南弹窗
+     */
+    function toggleHelp() {
+        if (!helpModal) return;
+        if (helpModal.classList.contains('open')) {
+            closeHelp();
+        } else {
+            openHelp();
+        }
+    }
+
+    /**
+     * 绑定操作指南弹窗事件
+     */
+    function setupHelpUI() {
+        if (helpToggleBtn) {
+            helpToggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleHelp();
+            });
+        }
+        if (helpCloseBtn) {
+            helpCloseBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closeHelp();
+            });
+        }
+        if (helpGotItBtn) {
+            helpGotItBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closeHelp();
+            });
+        }
+        if (helpBackdrop) {
+            helpBackdrop.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closeHelp();
+            });
+        }
     }
 
     /**
@@ -1694,17 +2248,35 @@
 
         // 鼠标移动
         window.addEventListener('mousemove', (e) => {
+            // 检查鼠标当前是否位于展厅侧边栏、背景故事抽屉、操作指南弹窗或画笔设置面板内部
+            const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup'));
+
+            if (isOverModal) {
+                // 鼠标位于侧边栏/弹窗交互界面：隐藏自定义艺术光标（显示原生系统手型/指针），并彻底停止对底层画面的涂抹运算
+                if (cursor) {
+                    cursor.style.opacity = '0';
+                    cursor.classList.remove('active');
+                }
+                isCursorActive = false;
+                lastPointerPos = null;
+                return;
+            }
+
+            dismissInitialHint();
             const now = performance.now();
             const pos = { x: e.clientX, y: e.clientY };
             currentPointerPos = pos;
             isPointerActive = true;
             lastMoveTime = now;
 
-            // 更新极简艺术光标
+            // 更新极简艺术光标 (使用 translate3d 触发 GPU 独立合成层加速)
             if (cursor) {
-                cursor.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
-                cursor.style.opacity = '1';
-                cursor.classList.add('active');
+                cursor.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+                if (!isCursorActive) {
+                    isCursorActive = true;
+                    cursor.style.opacity = '1';
+                    cursor.classList.add('active');
+                }
             }
 
             if (lastPointerPos) {
@@ -1734,8 +2306,9 @@
 
             lastPointerPos = pos;
 
-            // 交互时莫奈名言自然微弱淡隐
-            if (artQuote) {
+            // 交互时莫奈名言自然微弱淡隐 (状态缓存避免高频写 DOM)
+            if (!isQuoteSubtle && artQuote) {
+                isQuoteSubtle = true;
                 artQuote.classList.add('subtle');
             }
         });
@@ -1747,6 +2320,8 @@
             currentPointerPos = null;
             lastMoveVector = { x: 0, y: 0 };
             currentStrokeId++;
+            isCursorActive = false;
+            isQuoteSubtle = false;
 
             if (cursor) {
                 cursor.style.opacity = '0';
@@ -1759,6 +2334,13 @@
 
         // 移动端触控支持
         window.addEventListener('touchstart', (e) => {
+            const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup'));
+            if (isOverModal) {
+                lastPointerPos = null;
+                return;
+            }
+
+            dismissInitialHint();
             if (e.touches.length > 0) {
                 const now = performance.now();
                 const t = e.touches[0];
@@ -1774,6 +2356,12 @@
         }, { passive: true });
 
         window.addEventListener('touchmove', (e) => {
+            const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup'));
+            if (isOverModal) {
+                lastPointerPos = null;
+                return;
+            }
+
             if (e.touches.length > 0) {
                 const now = performance.now();
                 const t = e.touches[0];
@@ -1819,7 +2407,12 @@
         handleResize();
         setupBrushUI();
         setupGalleryUI();
+        setupStoryUI();
+        setupHelpUI();
         setupEvents();
+
+        // 首次入场提示在 5 秒后如晨雾般优雅自动淡出
+        setTimeout(dismissInitialHint, 5000);
 
         gardenImage.onload = () => {
             isImageLoaded = true;
@@ -1831,12 +2424,13 @@
             }
             // 预加载下一幅候选名画，让漫游擦画即刻就绪
             prepareNextRandomArtwork();
+            markDirty();
         };
 
         // 默认载入首幅传世名画
         switchMasterpiece(0);
 
-        requestAnimationFrame(renderLoop);
+        markDirty();
     }
 
     // 暴露诊断与调试接口
@@ -1848,9 +2442,19 @@
         setBrushRadius: updateBrushSize,
         getDuration: () => config.totalDurationSeconds,
         setDuration: updateDuration,
+        getColorRatio: () => config.colorRatio,
+        setColorRatio: updateColorRatio,
         getMasterpieces: () => masterpieces,
         getCurrentIndex: () => currentMasterpieceIndex,
         setMasterpiece: switchMasterpiece,
+        openStory: openStory,
+        closeStory: closeStory,
+        toggleStory: toggleStory,
+        openHelp: openHelp,
+        closeHelp: closeHelp,
+        toggleHelp: toggleHelp,
+        showToast: showToast,
+        dismissHint: dismissInitialHint,
         getNextMasterpieceIndex: () => nextMasterpieceIndex,
         getScratchRatio: () => scratchConfig.ratio,
         getScratchThreshold: () => scratchConfig.threshold,

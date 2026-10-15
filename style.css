@@ -105,7 +105,8 @@ html, body {
     left: 0;
     pointer-events: none;
     z-index: 9999;
-    transform: translate(-50%, -50%);
+    transform: translate3d(-50%, -50%, 0);
+    will-change: transform;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -398,10 +399,78 @@ html, body {
     padding-left: 2px;
 }
 
+/* 画笔弹窗内的名画鉴赏故事专属入口按钮 */
+.brush-story-entry-btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: linear-gradient(135deg, rgba(238, 214, 170, 0.12) 0%, rgba(20, 25, 34, 0.75) 100%);
+    border: 1px solid rgba(238, 214, 170, 0.38);
+    border-radius: 8px;
+    color: #eed6aa;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.brush-story-entry-btn:hover {
+    background: linear-gradient(135deg, rgba(238, 214, 170, 0.24) 0%, rgba(30, 38, 52, 0.9) 100%);
+    border-color: rgba(238, 214, 170, 0.85);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(238, 214, 170, 0.22);
+}
+
+.brush-story-entry-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+}
+
+.brush-story-entry-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.brush-story-entry-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.brush-story-entry-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+}
+
+.brush-story-entry-sub {
+    font-size: 0.72rem;
+    color: rgba(238, 214, 170, 0.8);
+    letter-spacing: 0.04em;
+}
+
+.brush-story-entry-arrow {
+    font-size: 1.15rem;
+    color: rgba(238, 214, 170, 0.7);
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.brush-story-entry-btn:hover .brush-story-entry-arrow {
+    color: #eed6aa;
+    transform: translateX(3px);
+}
+
 .masterpiece-nav-row {
     display: flex;
     gap: 8px;
     width: 100%;
+    margin-top: 8px;
 }
 
 .art-nav-btn {
@@ -562,17 +631,65 @@ html, body {
     cursor: default;
 }
 
-body.gallery-open {
+body.gallery-open,
+body.story-open,
+body.help-open {
     cursor: default !important;
 }
 
-body.gallery-open * {
+body.gallery-open *,
+body.story-open *,
+body.help-open * {
     cursor: auto;
 }
 
-body.gallery-open #custom-cursor {
+body.gallery-open #custom-cursor,
+body.story-open #custom-cursor,
+body.help-open #custom-cursor {
     opacity: 0 !important;
     display: none !important;
+}
+
+/* 浮层面板强制原生系统指针 (彻底杜绝任何面板内部光标消失问题) */
+.story-panel,
+.gallery-panel,
+.help-dialog,
+.brush-popup {
+    cursor: default !important;
+}
+
+.story-panel *,
+.gallery-panel *,
+.help-dialog *,
+.brush-popup * {
+    cursor: auto;
+}
+
+.story-panel button,
+.gallery-panel button,
+.help-dialog button,
+.brush-popup button,
+.story-panel a,
+.gallery-panel a,
+.help-dialog a,
+.brush-popup a,
+.story-panel input,
+.gallery-panel input,
+.help-dialog input,
+.brush-popup input,
+.story-panel select,
+.gallery-panel select {
+    cursor: pointer !important;
+}
+
+.story-panel .story-content-text,
+.story-panel p,
+.story-panel .story-quote-box,
+.story-panel h3,
+.story-panel h4 {
+    cursor: text;
+    user-select: text;
+    -webkit-user-select: text;
 }
 
 .gallery-backdrop {
@@ -948,7 +1065,7 @@ body.gallery-open #custom-cursor {
     color: #ffffff;
 }
 
-/* 名画卡片滚动容器 */
+/* 名画卡片滚动容器 (开启 GPU 合成隔离与顺畅滚动) */
 .gallery-list-container {
     flex: 1;
     min-height: 0;
@@ -958,6 +1075,10 @@ body.gallery-open #custom-cursor {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    will-change: scroll-position;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    contain: layout paint;
 }
 
 .gallery-list-container::-webkit-scrollbar {
@@ -973,7 +1094,7 @@ body.gallery-open #custom-cursor {
     background: rgba(238, 214, 170, 0.45);
 }
 
-/* 单个名画卡片 (Artwork Card) */
+/* 单个名画卡片 (Artwork Card - 独立图层加速) */
 .gallery-card {
     display: flex;
     align-items: center;
@@ -985,9 +1106,14 @@ body.gallery-open #custom-cursor {
     border: 1px solid rgba(255, 255, 255, 0.09);
     border-radius: 10px;
     cursor: pointer !important;
-    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.18s ease, border-color 0.18s ease;
     position: relative;
     overflow: hidden;
+    content-visibility: auto;
+    contain-intrinsic-size: 72px;
+    contain: content;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .gallery-card * {
@@ -997,7 +1123,7 @@ body.gallery-open #custom-cursor {
 .gallery-card:hover {
     background: rgba(255, 255, 255, 0.07);
     border-color: rgba(238, 214, 170, 0.55);
-    transform: translateY(-1px) translateX(2px);
+    transform: translateY(-1px) translateX(2px) translateZ(0);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
@@ -1027,6 +1153,7 @@ body.gallery-open #custom-cursor {
     background: #080a0d;
     border: 1px solid rgba(255, 255, 255, 0.15);
     position: relative;
+    contain: strict;
 }
 
 .card-thumb-img {
@@ -1034,7 +1161,9 @@ body.gallery-open #custom-cursor {
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.3s ease;
+    transition: transform 0.25s ease;
+    will-change: transform;
+    image-rendering: auto;
 }
 
 .gallery-card:hover .card-thumb-img {
@@ -1319,5 +1448,822 @@ body.gallery-open #custom-cursor {
     border-radius: 3px;
     box-shadow: 0 0 10px rgba(238, 214, 170, 0.8);
     transition: width 0.15s ease-out;
+}
+
+/* ==========================================================================
+   名画背景故事与艺术鉴赏系统 (Masterpiece Story & Secrets Sheet)
+   ========================================================================== */
+
+/* 1. 悬浮名言下方的极简鉴赏故事胶囊徽章 */
+.story-toggle-btn {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 5px 14px;
+    background: rgba(15, 18, 22, 0.65);
+    border: 1px solid rgba(238, 214, 170, 0.35);
+    border-radius: 20px;
+    color: #eed6aa;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.92rem;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.story-toggle-btn:hover {
+    background: rgba(238, 214, 170, 0.18);
+    border-color: rgba(238, 214, 170, 0.8);
+    color: #ffffff;
+    transform: translateY(-1px) scale(1.03);
+    box-shadow: 0 4px 16px rgba(238, 214, 170, 0.25);
+}
+
+.story-btn-icon {
+    font-size: 0.95rem;
+}
+
+.story-btn-text {
+    font-weight: 500;
+}
+
+/* 画笔面板中的名画故事按钮 */
+.art-story-btn {
+    flex: 1.2;
+    padding: 7px 10px;
+    background: rgba(238, 214, 170, 0.1);
+    border: 1px solid rgba(238, 214, 170, 0.35);
+    border-radius: 6px;
+    color: #eed6aa;
+    font-size: 0.82rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+}
+
+.art-story-btn:hover {
+    background: rgba(238, 214, 170, 0.22);
+    border-color: rgba(238, 214, 170, 0.7);
+    color: #ffffff;
+}
+
+/* 2. 名画背景故事抽屉整体容器 (全屏绝对穿透，不遮挡未展开区域) */
+.story-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.story-drawer.open {
+    pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 典雅微光半透明背景幕 */
+.story-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 12, 16, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: opacity 0.3s ease;
+}
+
+/* 右侧滑出的古典信笺磨砂面板 */
+.story-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+    background: rgba(13, 16, 20, 0.92);
+    border-left: 1px solid rgba(238, 214, 170, 0.25);
+    box-shadow: -10px 0 35px rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 2;
+}
+
+.story-drawer.open .story-panel {
+    transform: translateX(0);
+}
+
+/* 抽屉头部 */
+.story-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 24px 26px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.story-header-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.story-header-icon {
+    font-size: 1.5rem;
+    margin-top: 2px;
+}
+
+.story-header-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.story-sub-label {
+    font-size: 0.76rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #c5a059;
+}
+
+.story-main-title {
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.3;
+}
+
+.story-entitle {
+    font-size: 0.88rem;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.story-close-btn {
+    width: 34px;
+    height: 34px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.story-close-btn:hover {
+    background: rgba(238, 214, 170, 0.2);
+    border-color: rgba(238, 214, 170, 0.6);
+    color: #eed6aa;
+    transform: rotate(90deg);
+}
+
+/* 抽屉主体可滚动区域 */
+.story-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 22px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.story-body::-webkit-scrollbar {
+    width: 5px;
+}
+
+.story-body::-webkit-scrollbar-thumb {
+    background: rgba(238, 214, 170, 0.2);
+    border-radius: 3px;
+}
+
+/* 元标签行 */
+.story-badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.story-tag {
+    padding: 4px 10px;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.story-tag-artist {
+    color: #eed6aa;
+    background: rgba(238, 214, 170, 0.08);
+    border-color: rgba(238, 214, 170, 0.3);
+    font-weight: 500;
+}
+
+.story-tag-period {
+    color: #90cdf4;
+    background: rgba(144, 205, 244, 0.08);
+    border-color: rgba(144, 205, 244, 0.25);
+}
+
+.story-tag-genre {
+    color: #feb2b2;
+    background: rgba(254, 178, 178, 0.08);
+    border-color: rgba(254, 178, 178, 0.25);
+}
+
+/* 馆藏地栏 */
+.story-location-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    font-size: 0.84rem;
+}
+
+.location-icon {
+    font-size: 0.95rem;
+}
+
+.location-label {
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.location-val {
+    color: #eed6aa;
+    font-weight: 500;
+}
+
+/* 故事内容卡片区块 */
+.story-card-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 18px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(238, 214, 170, 0.15);
+    border-radius: 8px;
+    position: relative;
+}
+
+.story-block-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #eed6aa;
+    letter-spacing: 0.08em;
+}
+
+.block-icon {
+    font-size: 1.05rem;
+}
+
+.story-block-text {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.82);
+    letter-spacing: 0.02em;
+    text-align: justify;
+}
+
+/* 大师名言卡片 */
+.story-quote-box {
+    position: relative;
+    padding: 16px 18px 14px;
+    background: linear-gradient(135deg, rgba(238, 214, 170, 0.08) 0%, rgba(20, 24, 30, 0.4) 100%);
+    border-left: 3px solid #eed6aa;
+    border-radius: 0 8px 8px 0;
+    margin-top: 4px;
+}
+
+.story-quote-symbol {
+    position: absolute;
+    top: 6px;
+    right: 14px;
+    font-size: 3rem;
+    font-family: Georgia, serif;
+    color: rgba(238, 214, 170, 0.12);
+    pointer-events: none;
+    line-height: 1;
+}
+
+.story-quote-text {
+    font-size: 0.94rem;
+    font-style: italic;
+    color: #ffffff;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.story-quote-author {
+    font-size: 0.82rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #eed6aa;
+    text-align: right;
+}
+
+/* 抽屉底部快捷翻页栏 */
+.story-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(10, 12, 16, 0.7);
+}
+
+.story-nav-btn {
+    padding: 7px 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: #eed6aa;
+    font-size: 0.84rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.story-nav-btn:hover {
+    background: rgba(238, 214, 170, 0.2);
+    border-color: rgba(238, 214, 170, 0.6);
+    color: #ffffff;
+}
+
+.story-footer-tip {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.05em;
+}
+
+@media (max-width: 640px) {
+    .story-panel {
+        max-width: 100%;
+    }
+    .story-header {
+        padding: 18px 20px 14px;
+    }
+    .story-body {
+        padding: 18px 20px;
+    }
+}
+
+/* ==========================================================================
+   操作引导系统 (Onboarding, Interactive Hints & Shortcuts Guide)
+   ========================================================================== */
+
+/* 1. 入场首次操作情境呼吸引导提示胶囊 */
+.interactive-hint {
+    position: absolute;
+    bottom: 38px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 20px 8px 14px;
+    background: rgba(13, 16, 20, 0.76);
+    border: 1px solid rgba(238, 214, 170, 0.45);
+    border-radius: 30px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.55), 0 0 16px rgba(238, 214, 170, 0.2);
+    pointer-events: none;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: hint-breathe 3.5s infinite ease-in-out;
+}
+
+.interactive-hint.dismissed {
+    opacity: 0 !important;
+    transform: translateX(-50%) translateY(14px) scale(0.95);
+    pointer-events: none;
+}
+
+@keyframes hint-breathe {
+    0%, 100% {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.55), 0 0 12px rgba(238, 214, 170, 0.2);
+        border-color: rgba(238, 214, 170, 0.4);
+    }
+    50% {
+        box-shadow: 0 6px 28px rgba(0, 0, 0, 0.65), 0 0 24px rgba(238, 214, 170, 0.45);
+        border-color: rgba(238, 214, 170, 0.75);
+    }
+}
+
+.hint-ripple-icon {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hint-symbol {
+    font-size: 1rem;
+    position: relative;
+    z-index: 2;
+}
+
+.hint-ripple-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1.5px solid rgba(238, 214, 170, 0.8);
+    animation: ripple-wave 2s infinite ease-out;
+}
+
+@keyframes ripple-wave {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+}
+
+.hint-text {
+    font-size: 0.92rem;
+    color: #ffffff;
+    letter-spacing: 0.08em;
+    font-weight: 400;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
+}
+
+/* 2. 模式切换轻量即时 Toast 反馈 */
+.mode-toast {
+    position: absolute;
+    bottom: 96px;
+    left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    z-index: 60;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 18px;
+    background: rgba(15, 18, 22, 0.88);
+    border: 1px solid rgba(238, 214, 170, 0.5);
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #eed6aa;
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mode-toast.show,
+.mode-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast-icon {
+    font-size: 1rem;
+}
+
+/* 3. 屏幕左下角极简操作指南按钮 */
+.help-trigger-wrap {
+    position: absolute;
+    bottom: 24px;
+    left: 28px;
+    z-index: 40;
+}
+
+.help-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 15px;
+    background: rgba(15, 18, 22, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    color: rgba(255, 255, 255, 0.75);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.help-toggle-btn:hover {
+    background: rgba(238, 214, 170, 0.16);
+    border-color: rgba(238, 214, 170, 0.6);
+    color: #eed6aa;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(238, 214, 170, 0.2);
+}
+
+.help-btn-icon {
+    font-size: 0.92rem;
+}
+
+.help-btn-text {
+    font-weight: 500;
+}
+
+/* 4. 全局操作与快捷键指南对话框 (Cheat Sheet Modal) */
+.help-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.help-modal.open {
+    pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+}
+
+.help-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 12, 16, 0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.help-dialog {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    background: rgba(16, 20, 26, 0.94);
+    border: 1px solid rgba(238, 214, 170, 0.3);
+    border-radius: 14px;
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.7), 0 0 30px rgba(238, 214, 170, 0.15);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 2;
+}
+
+.help-modal.open .help-dialog {
+    transform: scale(1) translateY(0);
+}
+
+.help-dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.help-header-title-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.help-header-icon {
+    font-size: 1.5rem;
+}
+
+.help-main-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: 0.06em;
+}
+
+.help-sub-title {
+    font-size: 0.78rem;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.5);
+    display: block;
+    margin-top: 2px;
+}
+
+.help-close-btn {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.help-close-btn:hover {
+    background: rgba(238, 214, 170, 0.2);
+    border-color: rgba(238, 214, 170, 0.6);
+    color: #eed6aa;
+    transform: rotate(90deg);
+}
+
+.help-dialog-body {
+    padding: 22px 24px;
+    overflow-y: auto;
+    max-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.help-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.help-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #eed6aa;
+    letter-spacing: 0.08em;
+}
+
+.help-section-icon {
+    font-size: 1rem;
+}
+
+.help-mechanics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.mechanic-card {
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mechanic-badge {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #eed6aa;
+    margin-bottom: 4px;
+}
+
+.mechanic-row {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.mechanic-term {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.help-shortcuts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.shortcut-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+}
+
+.shortcut-keys {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #eed6aa;
+    flex-shrink: 0;
+}
+
+kbd {
+    padding: 2px 6px;
+    background: rgba(238, 214, 170, 0.12);
+    border: 1px solid rgba(238, 214, 170, 0.35);
+    border-radius: 4px;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.shortcut-desc {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.35;
+}
+
+.help-dialog-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(12, 15, 19, 0.7);
+}
+
+.help-footer-quote {
+    font-size: 0.78rem;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.45);
+    max-width: 420px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.help-got-it-btn {
+    padding: 7px 18px;
+    background: rgba(238, 214, 170, 0.15);
+    border: 1px solid rgba(238, 214, 170, 0.5);
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 0.86rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.help-got-it-btn:hover {
+    background: rgba(238, 214, 170, 0.3);
+    border-color: rgba(238, 214, 170, 0.8);
+    color: #eed6aa;
+}
+
+@media (max-width: 640px) {
+    .help-mechanics-grid,
+    .help-shortcuts-grid {
+        grid-template-columns: 1fr;
+    }
+    .help-footer-quote {
+        display: none;
+    }
+    .help-dialog-footer {
+        justify-content: flex-end;
+    }
+    .interactive-hint {
+        bottom: 24px;
+        padding: 6px 14px;
+        font-size: 0.84rem;
+    }
+    .help-trigger-wrap {
+        bottom: 18px;
+        left: 18px;
+    }
 }
 
