@@ -5,9 +5,22 @@
 - **项目主路径**：`d:\Antigravity_Workspaces\art-web`
 - **版本控制状态**：
   - 分支：`main`
-  - 最新功能：`feat: 实现画作局部微距探秘放大镜与画布级双指平移缩放 (Pinch-to-zoom & Artisan Brass Loupe)`
+  - 最新功能：`refactor: 完成原生 ESM 模块化工程重构与智能预加载池架构 (v4.6.0)`
 
 ## 2. 关键架构决策与确认项
+- **原生 ES Module (Zero-build Native ESM) 模块化架构**：
+  - 将原 3186 行巨型单文件 `app.js` 彻底拆解为职责单一、高内聚低耦合的现代化原生 ESM 模块体系，无需 Webpack/Vite 等任何外部繁重构建工具；
+  - `js/state.js`: 统管响应式全局配置 `config`、`scratchConfig`、`galleryFilterState`、空间网格、几何参数与运行态数据；
+  - `js/utils/preload-pool.js`: 智能双向名画预加载队列（当前画作 Index $\pm 1$ 与随机漫游候选），LRU 内存淘汰，消除切画黑屏；
+  - `js/engine/canvas-engine.js`: 视口 DPR 自适应、网格空间透明度衰减、离屏双线性采样、双层画布对齐与帧渲染主循环 `renderLoop`；
+  - `js/engine/macro-loupe.js`: 双指缩放几何计算、抓手漫游平移、古典黄铜透镜高精原画切片渲染与滚轮/芯片倍率调焦；
+  - `js/engine/scratch-machine.js`: 随机漫游擦画状态机（O(1) 擦除比例统计、平滑揭开动画、防重复队列）；
+  - `js/ui/gallery-drawer.js`: 315 幅名画展厅搜索、多维题材药丸、大师去重选择器与列表虚拟分批加载；
+  - `js/ui/story-drawer.js`: 名画创作背景、艺术密码、馆藏与名言抽屉控制器；
+  - `js/ui/brush-panel.js`: 画笔调节面板、模式切换、滑块联动与透镜倍率选项盒；
+  - `js/ui/help-modal.js`: 操作指南与快捷键弹窗控制器及 Toast 轻提示；
+  - `js/events/input-controller.js`: 统一管理鼠标移动/抓手拖拽、滚轮缩放、触控手势（双指捏合与 350ms 冷却互锁）、双击分流与键盘快捷键矩阵；
+  - `js/main.js`: 主入口装配中枢，自启动各子系统并挂载 `window.__gardenEngine`。
 - **双层绝对对齐画布引擎**：底层 Classical Grayscale / Next Canvas（灰阶或背底名画），顶层 Dynamic Reveal Canvas（真彩唤醒/遮罩），通过物理像素级对齐实现零畸变涂抹。
 - **微距细节探索系统 (Macro Exploration Engine)**：
   - **画布级双指 Pinch-to-zoom & 平移漫游 (Pan)**：
@@ -31,16 +44,25 @@
 ## 3. 模块实现与实测状态
 - [x] **315 幅传世名画数据库** (`data/masterpieces.js`，全部通过高分辨率与元数据审计)
 - [x] **深度鉴赏智库与故事档案** (`data/art_stories.js`，315 幅作品的创作背景、艺术看点与大师名言)
-- [x] **多维展厅分类与搜索系统**（支持 6 大核心题材药丸、58 位大师下拉、时期画派与热门巨匠快捷筛选）
-- [x] **画布级双指平移缩放 (Pinch-to-zoom & Pan)** (`app.js` & `style.css`，`node -c app.js` 零报错，手势平滑顺畅)
-- [x] **古典黄铜透镜 · 艺术微距探秘放大镜** (`app.js` & `style.css`，原画高精切片真彩直出，支持 2.0x / 3.5x / 5.0x 切换)
+- [x] **原生 ESM 模块化拆分重构** (`js/` 11 大模块，通过 `node -c` 与 Chrome DevTools E2E 全链路回归测试)
+- [x] **智能双向预加载池** (`js/utils/preload-pool.js`，Index $\pm 1$ 预载与 LRU 缓存，切画零黑屏)
+- [x] **多维展厅分类与搜索系统** (`js/ui/gallery-drawer.js`，支持 6 大核心题材药丸、58 位大师下拉、时期画派与热门巨匠快捷筛选)
+- [x] **画布级双指平移缩放 (Pinch-to-zoom & Pan)** (`js/engine/macro-loupe.js`，手势平滑顺畅)
+- [x] **古典黄铜透镜 · 艺术微距探秘放大镜** (`js/engine/macro-loupe.js`，原画高精切片真彩直出，支持 2.0x / 3.5x / 5.0x 切换)
 - [x] **微距缩放浮动指示胶囊与一键平滑复位** (`#macro-zoom-hud`，点击或双击弹性复位)
 - [x] **手机端触控防下拉刷新与手势防误触互锁**（单指涂抹、双指缩放、双击复位、左右轻扫协同工作）
-- [x] **操作指南手势与快捷键指引**（更新了双指缩放、平移与微距透镜快捷键 `M`/`Z`、复位快捷键 `0`/`R`）
+- [x] **操作指南手势与快捷键指引** (`js/ui/help-modal.js`)
 
 ## 4. 关键配置文件与资源位置
-- **核心入口页面**：`index.html` (已配置 `viewport-fit=cover` 与微距结构)
-- **核心逻辑引擎**：`app.js` (画布对齐、微距几何、双指捏合、透镜渲染、涂抹算法)
+- **核心入口页面**：`index.html` (使用 `<script type="module" src="js/main.js?v=4.6.0"></script>`)
+- **主模块目录**：`js/`
+  - `js/state.js` (状态与配置)
+  - `js/engine/` (渲染与微距透镜)
+  - `js/ui/` (展厅、鉴赏故事、画笔调节面板、帮助弹窗)
+  - `js/events/` (多模态输入总线)
+  - `js/utils/` (智能预加载池)
+  - `js/main.js` (装配中枢与调试入口)
+- **单文件历史参考**：`app.js` (保留备份)
 - **核心样式表**：`style.css` (动态视口高度、微距胶囊、黄铜透镜、安全区避让)
 - **名画数据源**：`data/masterpieces.js`
 - **名画故事源**：`data/art_stories.js`
@@ -68,7 +90,7 @@
 ## 6. 新窗口快速唤醒 Prompt 与本地运行指令
 
 **在新会话窗口直接粘贴：**
-> 我正在进行 Masterpiece Garden（传世名画博览馆）的开发与维护，当前已完成 PC 端与手机端屏幕比例自适应、触控手势、鉴赏故事智库，以及局部微距探秘放大镜与双指细节缩放。请先阅读根目录下的 `HANDOFF.md` 了解当前状态与架构，然后继续执行。
+> 我正在进行 Masterpiece Garden（传世名画博览馆）的开发与维护，当前已完成 PC 端与手机端屏幕比例自适应、触控手势、鉴赏故事智库、局部微距探秘放大镜、双指细节缩放及原生 ESM 模块化架构（v4.6.0）。请先阅读根目录下的 `HANDOFF.md` 了解当前状态与架构，然后继续执行。
 
 **本地运行与验证指令：**
 ```powershell
