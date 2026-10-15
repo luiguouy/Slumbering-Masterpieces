@@ -2425,5 +2425,247 @@ kbd {
     .story-footer {
         padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
     }
+
+    /* 移动端微距缩放胶囊指示器与透镜尺寸微调 */
+    .macro-zoom-hud {
+        top: max(16px, calc(10px + env(safe-area-inset-top, 10px)));
+    }
+
+    .macro-loupe {
+        width: 180px;
+        height: 180px;
+    }
+}
+
+/* ==========================================================================
+   🏛️ 传世名画微距细节探索系统 (Macro Zoom & Artisan Brass Loupe)
+   ========================================================================== */
+
+/* 1. 微距缩放胶囊指示器 (Pinch-to-zoom HUD) */
+.macro-zoom-hud {
+    position: fixed;
+    top: max(22px, calc(14px + env(safe-area-inset-top, 14px)));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 95;
+    pointer-events: auto;
+    animation: macroHudFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes macroHudFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -10px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+    }
+}
+
+.macro-zoom-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px 6px 16px;
+    background: rgba(13, 16, 22, 0.88);
+    border: 1px solid rgba(238, 214, 170, 0.42);
+    border-radius: 9999px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(197, 160, 89, 0.2);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: #eed6aa;
+    font-size: 0.86rem;
+    letter-spacing: 0.04em;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.macro-zoom-icon {
+    font-size: 0.95rem;
+}
+
+.macro-zoom-val {
+    font-weight: 600;
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
+}
+
+.macro-zoom-label {
+    font-size: 0.78rem;
+    color: rgba(238, 214, 170, 0.75);
+    letter-spacing: 0.06em;
+}
+
+.macro-zoom-reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: 4px;
+    padding: 3px 9px;
+    background: rgba(238, 214, 170, 0.15);
+    border: 1px solid rgba(238, 214, 170, 0.45);
+    border-radius: 9999px;
+    color: #eed6aa;
+    font-size: 0.76rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.macro-zoom-reset-btn:hover {
+    background: rgba(238, 214, 170, 0.3);
+    border-color: #eed6aa;
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+.macro-zoom-reset-btn:active {
+    transform: scale(0.95);
+}
+
+/* 2. 古典黄铜透镜 · 艺术微距探秘放大镜 (Artisan Brass Loupe) */
+.macro-loupe {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 120;
+    overflow: visible;
+    box-shadow: 
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        0 0 0 4px #8b6834,
+        0 0 0 6px #eed6aa,
+        0 0 0 8px #59411e,
+        inset 0 0 20px rgba(0, 0, 0, 0.75),
+        0 20px 45px rgba(0, 0, 0, 0.8),
+        0 0 25px rgba(197, 160, 89, 0.4);
+    transform: translate(-50%, -50%);
+    transition: opacity 0.2s ease, transform 0.08s ease-out;
+    opacity: 0;
+}
+
+.macro-loupe.active {
+    opacity: 1;
+}
+
+#macro-loupe-canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: block;
+    background: #0d0f12;
+}
+
+/* 镜面月牙弧形反光 (增强古典玻璃球弧度质感) */
+.loupe-rim-highlight {
+    position: absolute;
+    top: 6px;
+    left: 18px;
+    right: 18px;
+    height: 48px;
+    border-radius: 50% 50% 40% 40%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.02) 100%);
+    pointer-events: none;
+    filter: blur(1px);
+}
+
+/* 微米级艺术十字准星 */
+.loupe-reticle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 26px;
+    height: 26px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.loupe-reticle::before,
+.loupe-reticle::after {
+    content: '';
+    position: absolute;
+    background: rgba(238, 214, 170, 0.75);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+}
+
+/* 横向线 */
+.loupe-reticle::before {
+    top: 12px;
+    left: 0;
+    width: 26px;
+    height: 1px;
+}
+
+/* 纵向线 */
+.loupe-reticle::after {
+    top: 0;
+    left: 12px;
+    width: 1px;
+    height: 26px;
+}
+
+/* 透镜倍率切换小徽章 */
+.loupe-zoom-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    pointer-events: auto;
+    padding: 3px 8px;
+    background: linear-gradient(135deg, #eed6aa 0%, #c5a059 100%);
+    border: 1px solid #fff2d6;
+    border-radius: 9999px;
+    color: #1a140d;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    user-select: none;
+    -webkit-user-select: none;
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.loupe-zoom-badge:hover {
+    transform: scale(1.12);
+    filter: brightness(1.15);
+}
+
+.loupe-zoom-badge:active {
+    transform: scale(0.95);
+}
+
+/* 3. 画笔面板微距开关样式 */
+.loupe-control-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.loupe-toggle-pill-btn {
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 9999px;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.loupe-toggle-pill-btn:hover {
+    background: rgba(238, 214, 170, 0.15);
+    border-color: rgba(238, 214, 170, 0.4);
+    color: #eed6aa;
+}
+
+.loupe-toggle-pill-btn.active {
+    background: rgba(238, 214, 170, 0.25);
+    border-color: #eed6aa;
+    color: #eed6aa;
+    box-shadow: 0 0 10px rgba(238, 214, 170, 0.25);
+    font-weight: 600;
 }
 

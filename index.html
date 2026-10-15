@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=4.5.0">
+    <link rel="stylesheet" href="style.css?v=4.6.0">
 </head>
 <body>
     <div id="art-stage">
@@ -43,7 +43,27 @@
             </div>
         </div>
 
-        <!-- 入场首次操作情境呼吸引导提示 (首次划动或数秒后自然晨雾般淡出) -->
+        <!-- 微距细节探索 · 实时缩放胶囊指示器 (仅在放大状态出现，支持一键复位) -->
+        <div id="macro-zoom-hud" class="macro-zoom-hud" style="display: none;">
+            <div class="macro-zoom-pill">
+                <span class="macro-zoom-icon">🔍</span>
+                <span id="macro-zoom-percent" class="macro-zoom-val">100%</span>
+                <span class="macro-zoom-label">微距探索</span>
+                <button id="macro-zoom-reset-btn" class="macro-zoom-reset-btn" type="button" title="点击平滑复位至全景 (或双击屏幕)">
+                    <span>复位 ⟲</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 古典黄铜透镜 · 艺术微距探秘放大镜 (Artisan Brass Loupe) -->
+        <div id="macro-loupe" class="macro-loupe" style="display: none;">
+            <canvas id="macro-loupe-canvas" width="220" height="220"></canvas>
+            <div class="loupe-reticle"></div>
+            <div class="loupe-rim-highlight"></div>
+            <button id="loupe-zoom-badge" class="loupe-zoom-badge" type="button" title="点击切换放大倍率 (2.0x / 3.5x / 5.0x)">3.5×</button>
+        </div>
+
+        <!-- 入场首次操作情境呼呼吸引导提示 (首次划动或数秒后自然晨雾般淡出) -->
         <div id="interactive-hint" class="interactive-hint">
             <div class="hint-ripple-icon">
                 <span class="hint-symbol">✨</span>
@@ -134,24 +154,24 @@
                         </h4>
                         <div class="help-shortcuts-grid">
                             <div class="shortcut-item">
+                                <span class="shortcut-keys"><span class="gesture-pill">双指捏合 / 拖拽</span></span>
+                                <span class="shortcut-desc">自由放大缩放 (1.0×~4.5×) 与漫游平移，探秘油画笔触与裂纹</span>
+                            </div>
+                            <div class="shortcut-item">
                                 <span class="shortcut-keys"><span class="gesture-pill">单指轻抚</span></span>
                                 <span class="shortcut-desc">划动屏幕唤醒原画瑰丽真彩 / 擦拭透出下一幅</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-keys"><span class="gesture-pill">双击屏幕</span></span>
+                                <span class="shortcut-desc">放大时一键平滑复位全景；平时一键全彩盛放/恢复沉睡</span>
                             </div>
                             <div class="shortcut-item">
                                 <span class="shortcut-keys"><span class="gesture-pill">指尖长按</span></span>
                                 <span class="shortcut-desc">停驻原地持续充能聚光、花瓣般盛开绽放</span>
                             </div>
                             <div class="shortcut-item">
-                                <span class="shortcut-keys"><span class="gesture-pill">双击屏幕</span></span>
-                                <span class="shortcut-desc">快速一键全彩盛放 / 恢复静谧素描沉睡</span>
-                            </div>
-                            <div class="shortcut-item">
                                 <span class="shortcut-keys"><span class="gesture-pill">左右轻扫</span></span>
                                 <span class="shortcut-desc">水平滑动随心翻阅上一幅 / 下一幅名画杰作</span>
-                            </div>
-                            <div class="shortcut-item">
-                                <span class="shortcut-keys"><span class="gesture-pill">右上画笔 🎨</span></span>
-                                <span class="shortcut-desc">打开名画展厅检索、分类与深度赏析档案</span>
                             </div>
                             <div class="shortcut-item">
                                 <span class="shortcut-keys"><span class="gesture-pill">旋转手机</span></span>
@@ -166,6 +186,14 @@
                             <span class="help-section-icon">⌨️</span> 键盘快捷键 (随时盲操)
                         </h4>
                         <div class="help-shortcuts-grid">
+                            <div class="shortcut-item">
+                                <span class="shortcut-keys"><kbd>M</kbd> / <kbd>Z</kbd></span>
+                                <span class="shortcut-desc">开启 / 关闭古典微距探秘放大镜 (透视真彩)</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-keys"><kbd>滚轮</kbd> / <kbd>右键拖拽</kbd></span>
+                                <span class="shortcut-desc">以光标为中心微距平滑缩放与全画漫游平移</span>
+                            </div>
                             <div class="shortcut-item">
                                 <span class="shortcut-keys"><kbd>S</kbd> / <kbd>I</kbd></span>
                                 <span class="shortcut-desc">展开当前名画背景故事与艺术鉴赏</span>
@@ -299,6 +327,12 @@
                 </div>
                 <div class="brush-slider-container">
                     <input type="range" id="fit-scale-slider" min="60" max="140" value="100" step="2">
+                </div>
+                <div class="brush-popup-row loupe-control-row" style="margin-top: 10px;">
+                    <span class="brush-label">🔍 微距探秘放大镜</span>
+                    <button id="toggle-loupe-btn" class="loupe-toggle-pill-btn" type="button" title="开启/关闭古典真彩微距探秘透镜 (快捷键: M)">
+                        <span id="loupe-pill-status" class="loupe-pill-status">已关闭</span>
+                    </button>
                 </div>
                 <div class="brush-popup-divider"></div>
                 <div class="brush-popup-row">

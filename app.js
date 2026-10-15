@@ -58,6 +58,17 @@
     const fitScaleSlider = document.getElementById('fit-scale-slider');
     const fitScaleDisplay = document.getElementById('fit-scale-display');
 
+    // 微距细节探索与古典黄铜透镜 UI 元素
+    const macroZoomHud = document.getElementById('macro-zoom-hud');
+    const macroZoomPercent = document.getElementById('macro-zoom-percent');
+    const macroZoomResetBtn = document.getElementById('macro-zoom-reset-btn');
+    const macroLoupe = document.getElementById('macro-loupe');
+    const macroLoupeCanvas = document.getElementById('macro-loupe-canvas');
+    const macroLoupeCtx = macroLoupeCanvas ? macroLoupeCanvas.getContext('2d') : null;
+    const loupeZoomBadge = document.getElementById('loupe-zoom-badge');
+    const toggleLoupeBtn = document.getElementById('toggle-loupe-btn');
+    const loupePillStatus = document.getElementById('loupe-pill-status');
+
     // 名画画廊切换 UI 元素 (画笔面板卡片)
     const masterpieceIndexBadge = document.getElementById('masterpiece-index');
     const openGalleryModalBtn = document.getElementById('open-gallery-modal-btn');
@@ -194,8 +205,18 @@
     let scratchedCellsCount = 0;             // O(1) 维护漫游模式已擦除单元格总数
     const SCRATCH_MASK_THRESHOLD = 0.35;     // 判定为透出底层新画的遮罩阈值
     let lastRenderedHudPct = -1;             // 缓存已渲染 HUD 百分比，杜绝高频 DOM 重排
-    let isQuoteSubtle = false;               // 名言透明度 DOM 状态缓存
-    let isCursorActive = false;              // 光标状态缓存
+    // 微距细节探索与画布平移漫游核心状态 (Pinch-to-zoom & Canvas Pan)
+    let macroZoom = 1.0;                     // 微距缩放倍率 (1.0 ~ 4.5)
+    let panOffset = { x: 0, y: 0 };          // 画布平移偏移量 (px)
+    let zoomAnimRaf = null;                  // 复位动画 RAF 句柄
+
+    // 古典黄铜透镜 · 艺术微距探秘放大镜核心状态 (Artisan Brass Loupe)
+    let isLoupeEnabled = false;              // 透镜是否开启
+    let loupeZoom = 3.5;                     // 当前透镜倍率 (2.0 / 3.5 / 5.0)
+    const loupeZoomLevels = [2.0, 3.5, 5.0];
+    let loupeZoomIndex = 1;
+    let lastLoupePointerPos = { x: -9999, y: -9999 };
+    let isLoupeVisible = false;
 
     /**
      * 标记画布需要重绘，并按需唤醒帧渲染循环 (静止时 0 开销)
@@ -320,11 +341,34 @@
         drawW *= config.scale;
         drawH *= config.scale;
 
-        // 视口绝对中心对称对齐
-        const drawX = (viewportWidth - drawW) / 2;
-        const drawY = (viewportHeight - drawH) / 2;
+        // 应用微距探索缩放倍率 (macroZoom: 1.0 ~ 4.5)
+        const finalW = drawW * macroZoom;
+        const finalH = drawH * macroZoom;
 
-        imageBounds = { x: drawX, y: drawY, w: drawW, h: drawH, effectiveMode: effectiveMode };
+        // 边界阻尼约束：微距放大时限制平移范围，防止画作被拖出视口消失
+        if (macroZoom <= 1.01) {
+            panOffset.x = 0;
+            panOffset.y = 0;
+        } else {
+            const maxPanX = Math.max(0, (finalW - viewportWidth) / 2 + viewportWidth * 0.25);
+            const maxPanY = Math.max(0, (finalH - viewportHeight) / 2 + viewportHeight * 0.25);
+            panOffset.x = Math.max(-maxPanX, Math.min(maxPanX, panOffset.x));
+            panOffset.y = Math.max(-maxPanY, Math.min(maxPanY, panOffset.y));
+        }
+
+        // 视口绝对中心对称对齐加上平移偏移量
+        const drawX = (viewportWidth - finalW) / 2 + panOffset.x;
+        const drawY = (viewportHeight - finalH) / 2 + panOffset.y;
+
+        imageBounds = {
+            x: drawX,
+            y: drawY,
+            w: finalW,
+            h: finalH,
+            baseW: drawW,
+            baseH: drawH,
+            effectiveMode: effectiveMode
+        };
     }
 
     /**
@@ -388,10 +432,195 @@
         drawW *= config.scale;
         drawH *= config.scale;
 
-        const drawX = (viewportWidth - drawW) / 2;
-        const drawY = (viewportHeight - drawH) / 2;
+        const finalW = drawW * macroZoom;
+        const finalH = drawH * macroZoom;
+        const drawX = (viewportWidth - finalW) / 2 + panOffset.x;
+        const drawY = (viewportHeight - finalH) / 2 + panOffset.y;
 
-        nextImageBounds = { x: drawX, y: drawY, w: drawW, h: drawH, effectiveMode: effectiveMode };
+        nextImageBounds = {
+            x: drawX,
+            y: drawY,
+            w: finalW,
+            h: finalH,
+            baseW: drawW,
+            baseH: drawH,
+            effectiveMode: effectiveMode
+        };
+    }
+
+    /**
+     * 更新微距缩放浮动指示器 (HUD)
+     */
+    function updateMacroZoomHud() {
+        if (!macroZoomHud || !macroZoomPercent) return;
+        if (macroZoom > 1.05 || Math.abs(panOffset.x) > 5 || Math.abs(panOffset.y) > 5) {
+            macroZoomHud.style.display = 'block';
+            macroZoomPercent.textContent = Math.round(macroZoom * 100) + '%';
+        } else {
+            macroZoomHud.style.display = 'none';
+        }
+    }
+
+    /**
+     * 平滑弹性复位微距缩放与平移漫游回到 100% 全景
+     * @param {boolean} instant 是否立即瞬时复位（切画时使用）
+     */
+    function resetMacroZoom(instant = false) {
+        if (zoomAnimRaf) {
+            cancelAnimationFrame(zoomAnimRaf);
+            zoomAnimRaf = null;
+        }
+
+        if (instant) {
+            macroZoom = 1.0;
+            panOffset.x = 0;
+            panOffset.y = 0;
+            refreshLayout();
+            updateMacroZoomHud();
+            if (isLoupeEnabled && lastLoupePointerPos.x > 0) {
+                renderMacroLoupe(lastLoupePointerPos.x, lastLoupePointerPos.y);
+            }
+            return;
+        }
+
+        const startZoom = macroZoom;
+        const startPanX = panOffset.x;
+        const startPanY = panOffset.y;
+        const startTime = performance.now();
+        const duration = 280; // 280ms 优雅回弹
+
+        function step(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(1.0, elapsed / duration);
+            // 经典三次方缓动曲线 easeOutCubic
+            const ease = 1 - Math.pow(1 - progress, 3);
+
+            macroZoom = startZoom + (1.0 - startZoom) * ease;
+            panOffset.x = startPanX + (0 - startPanX) * ease;
+            panOffset.y = startPanY + (0 - startPanY) * ease;
+
+            refreshLayout();
+            updateMacroZoomHud();
+
+            if (isLoupeEnabled && lastLoupePointerPos.x > 0) {
+                renderMacroLoupe(lastLoupePointerPos.x, lastLoupePointerPos.y);
+            }
+
+            if (progress < 1.0) {
+                zoomAnimRaf = requestAnimationFrame(step);
+            } else {
+                macroZoom = 1.0;
+                panOffset.x = 0;
+                panOffset.y = 0;
+                refreshLayout();
+                updateMacroZoomHud();
+                zoomAnimRaf = null;
+            }
+        }
+        zoomAnimRaf = requestAnimationFrame(step);
+    }
+
+    /**
+     * 古典黄铜透镜 · 艺术微距探秘放大镜渲染管线
+     * 实时采集光标下方对应名画的高清原始像素切片，以 100% 真彩与超高放大倍率呈现
+     */
+    function renderMacroLoupe(screenX, screenY) {
+        if (!isLoupeEnabled || !macroLoupe || !macroLoupeCanvas || !macroLoupeCtx || !isImageLoaded) return;
+
+        // 若光标超出视口，平滑隐匿
+        if (screenX < 0 || screenX > viewportWidth || screenY < 0 || screenY > viewportHeight) {
+            macroLoupe.classList.remove('active');
+            isLoupeVisible = false;
+            return;
+        }
+
+        macroLoupe.style.left = screenX + 'px';
+        macroLoupe.style.top = screenY + 'px';
+        if (!isLoupeVisible) {
+            macroLoupe.classList.add('active');
+            isLoupeVisible = true;
+        }
+
+        // 计算准星对应在名画矩形中的归一化 UV 坐标
+        const relU = (screenX - imageBounds.x) / imageBounds.w;
+        const relV = (screenY - imageBounds.y) / imageBounds.h;
+
+        const natW = gardenImage.naturalWidth || 2560;
+        const natH = gardenImage.naturalHeight || 1440;
+
+        const centerNatX = relU * natW;
+        const centerNatY = relV * natH;
+
+        const canvasW = macroLoupeCanvas.width;
+        const canvasH = macroLoupeCanvas.height;
+
+        // 依据透镜放大倍率计算在原画高精底图上的采样矩形跨度
+        const screenPxToNatPx = natW / imageBounds.w;
+        const srcSpanW = (canvasW * screenPxToNatPx) / loupeZoom;
+        const srcSpanH = (canvasH * screenPxToNatPx) / loupeZoom;
+
+        const srcX = centerNatX - srcSpanW / 2;
+        const srcY = centerNatY - srcSpanH / 2;
+
+        macroLoupeCtx.clearRect(0, 0, canvasW, canvasH);
+        macroLoupeCtx.save();
+        // 垫一层典雅古典暗色底，防止画幅边缘透明穿帮
+        macroLoupeCtx.fillStyle = '#0d0f12';
+        macroLoupeCtx.fillRect(0, 0, canvasW, canvasH);
+
+        macroLoupeCtx.imageSmoothingEnabled = true;
+        macroLoupeCtx.imageSmoothingQuality = 'high';
+        macroLoupeCtx.drawImage(
+            gardenImage,
+            srcX,
+            srcY,
+            srcSpanW,
+            srcSpanH,
+            0,
+            0,
+            canvasW,
+            canvasH
+        );
+        macroLoupeCtx.restore();
+    }
+
+    /**
+     * 开启 / 关闭古典微距探秘放大镜
+     */
+    function toggleLoupe(forcedState) {
+        isLoupeEnabled = (forcedState !== undefined) ? forcedState : !isLoupeEnabled;
+        if (toggleLoupeBtn) {
+            toggleLoupeBtn.classList.toggle('active', isLoupeEnabled);
+        }
+        if (loupePillStatus) {
+            loupePillStatus.textContent = isLoupeEnabled ? '已开启' : '已关闭';
+        }
+        if (macroLoupe) {
+            macroLoupe.style.display = isLoupeEnabled ? 'block' : 'none';
+            if (!isLoupeEnabled) {
+                macroLoupe.classList.remove('active');
+                isLoupeVisible = false;
+            }
+        }
+        showToast(isLoupeEnabled ? '🔍 已开启古典真彩微距探秘放大镜' : '🔍 已关闭微距放大镜');
+        if (isLoupeEnabled && lastLoupePointerPos.x > 0) {
+            renderMacroLoupe(lastLoupePointerPos.x, lastLoupePointerPos.y);
+        }
+    }
+
+    /**
+     * 循环切换微距放大镜倍率 (2.0× -> 3.5× -> 5.0×)
+     */
+    function cycleLoupeZoom() {
+        loupeZoomIndex = (loupeZoomIndex + 1) % loupeZoomLevels.length;
+        loupeZoom = loupeZoomLevels[loupeZoomIndex];
+        if (loupeZoomBadge) {
+            loupeZoomBadge.textContent = loupeZoom.toFixed(1) + '×';
+        }
+        showToast('🔍 微距放大倍率已切换为 ' + loupeZoom.toFixed(1) + '×');
+        if (isLoupeVisible && lastLoupePointerPos.x > 0) {
+            renderMacroLoupe(lastLoupePointerPos.x, lastLoupePointerPos.y);
+        }
     }
 
     /**
@@ -1318,6 +1547,31 @@
             fitScaleSlider.addEventListener('click', (e) => e.stopPropagation());
         }
 
+        // 绑定古典微距探秘放大镜开关按钮
+        if (toggleLoupeBtn) {
+            toggleLoupeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleLoupe();
+            });
+        }
+
+        // 绑定微距透镜倍率切换徽章
+        if (loupeZoomBadge) {
+            loupeZoomBadge.addEventListener('click', (e) => {
+                e.stopPropagation();
+                cycleLoupeZoom();
+            });
+        }
+
+        // 绑定微距缩放胶囊指示器一键复位按钮
+        if (macroZoomResetBtn) {
+            macroZoomResetBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                resetMacroZoom();
+                showToast('🔍 已平滑复位至全景');
+            });
+        }
+
         // 点击外部空白区域自动收起调节弹窗
         window.addEventListener('click', (e) => {
             if (!brushPopup.contains(e.target) && !brushToggleBtn.contains(e.target)) {
@@ -1408,10 +1662,11 @@
         currentMasterpieceIndex = index;
         const art = masterpieces[index];
 
-        // 切换名画时复位全彩模式
+        // 切换名画时复位全彩模式与微距缩放
         if (isFullColorLocked) {
             toggleFullColor(false);
         }
+        resetMacroZoom(true);
 
         // 1. 重置显色状态网格与离屏采样遮罩
         if (appMode === 'scratch') {
@@ -2033,6 +2288,15 @@
                     e.preventDefault();
                     toggleFullColor();
                     showToast(isFullColorLocked ? '已一键盛放全幅色彩' : '已重置画布色彩', isFullColorLocked ? '🌸' : '🔄');
+                } else if (e.key === 'm' || e.key === 'M' || e.key === 'z' || e.key === 'Z') {
+                    e.preventDefault();
+                    toggleLoupe();
+                } else if (e.key === '0' || e.key === 'r' || e.key === 'R') {
+                    e.preventDefault();
+                    if (macroZoom > 1.05 || Math.abs(panOffset.x) > 5 || Math.abs(panOffset.y) > 5) {
+                        resetMacroZoom();
+                        showToast('🔍 已平滑复位至全景');
+                    }
                 } else if (e.key === 'ArrowLeft') {
                     e.preventDefault();
                     const prevIdx = (currentMasterpieceIndex - 1 + masterpieces.length) % masterpieces.length;
@@ -2301,16 +2565,37 @@
     function setupEvents() {
         window.addEventListener('resize', handleResize);
 
+        // 鼠标右键/中键拖拽平移漫游状态
+        let isRightDragging = false;
+        let dragStartMouse = { x: 0, y: 0 };
+        let dragStartPan = { x: 0, y: 0 };
+
         // 鼠标移动
         window.addEventListener('mousemove', (e) => {
+            // 处理右键/中键拖拽画布漫游
+            if (isRightDragging) {
+                panOffset.x = dragStartPan.x + (e.clientX - dragStartMouse.x);
+                panOffset.y = dragStartPan.y + (e.clientY - dragStartMouse.y);
+                refreshLayout();
+                updateMacroZoomHud();
+                if (isLoupeEnabled) {
+                    renderMacroLoupe(e.clientX, e.clientY);
+                }
+                return;
+            }
+
             // 检查鼠标当前是否位于展厅侧边栏、背景故事抽屉、操作指南弹窗或画笔设置面板内部
             const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup'));
 
             if (isOverModal) {
-                // 鼠标位于侧边栏/弹窗交互界面：隐藏自定义艺术光标（显示原生系统手型/指针），并彻底停止对底层画面的涂抹运算
+                // 鼠标位于侧边栏/弹窗交互界面：隐藏自定义艺术光标与微距透镜，停止底层画面涂抹
                 if (cursor) {
                     cursor.style.opacity = '0';
                     cursor.classList.remove('active');
+                }
+                if (isLoupeEnabled && macroLoupe) {
+                    macroLoupe.classList.remove('active');
+                    isLoupeVisible = false;
                 }
                 isCursorActive = false;
                 lastPointerPos = null;
@@ -2323,6 +2608,12 @@
             currentPointerPos = pos;
             isPointerActive = true;
             lastMoveTime = now;
+
+            // 若开启了古典黄铜微距透镜，实时渲染透镜并跟随光标
+            if (isLoupeEnabled) {
+                lastLoupePointerPos = pos;
+                renderMacroLoupe(pos.x, pos.y);
+            }
 
             // 更新极简艺术光标 (使用 translate3d 触发 GPU 独立合成层加速)
             if (cursor) {
@@ -2368,9 +2659,74 @@
             }
         });
 
+        // 鼠标按下：右键或中键在微距放大状态下开启平移拖拽
+        window.addEventListener('mousedown', (e) => {
+            const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup'));
+            if (isOverModal) return;
+
+            if (e.button === 2 || e.button === 1) {
+                if (macroZoom > 1.02) {
+                    isRightDragging = true;
+                    dragStartMouse = { x: e.clientX, y: e.clientY };
+                    dragStartPan = { x: panOffset.x, y: panOffset.y };
+                    e.preventDefault();
+                }
+            }
+        });
+
+        // 鼠标松开：结束拖拽
+        window.addEventListener('mouseup', (e) => {
+            if (isRightDragging && (e.button === 2 || e.button === 1)) {
+                isRightDragging = false;
+            }
+        });
+
+        // 仅在画布放大状态下屏蔽右键上下文菜单，防止打断平移漫游
+        window.addEventListener('contextmenu', (e) => {
+            const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup'));
+            if (!isOverModal && macroZoom > 1.02) {
+                e.preventDefault();
+            }
+        });
+
+        // 桌面端鼠标滚轮微距平滑缩放 (以鼠标光标所在点为焦点)
+        window.addEventListener('wheel', (e) => {
+            const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup'));
+            if (isOverModal) return;
+
+            if (e.cancelable) e.preventDefault();
+            const zoomFactor = e.deltaY < 0 ? 1.12 : 0.89;
+            const oldZoom = macroZoom;
+            const newZoom = Math.max(1.0, Math.min(4.5, macroZoom * zoomFactor));
+
+            if (Math.abs(newZoom - oldZoom) > 0.004) {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                const cx = viewportWidth / 2 + panOffset.x;
+                const cy = viewportHeight / 2 + panOffset.y;
+                const scaleChange = newZoom / oldZoom;
+                panOffset.x = mouseX - (mouseX - cx) * scaleChange - viewportWidth / 2;
+                panOffset.y = mouseY - (mouseY - cy) * scaleChange - viewportHeight / 2;
+                macroZoom = newZoom;
+
+                if (macroZoom < 1.03) {
+                    macroZoom = 1.0;
+                    panOffset.x = 0;
+                    panOffset.y = 0;
+                }
+
+                refreshLayout();
+                updateMacroZoomHud();
+                if (isLoupeEnabled) {
+                    renderMacroLoupe(e.clientX, e.clientY);
+                }
+            }
+        }, { passive: false });
+
         // 鼠标离开视口
         window.addEventListener('mouseleave', () => {
             isPointerActive = false;
+            isRightDragging = false;
             lastPointerPos = null;
             currentPointerPos = null;
             lastMoveVector = { x: 0, y: 0 };
@@ -2382,17 +2738,27 @@
                 cursor.style.opacity = '0';
                 cursor.classList.remove('active');
             }
+            if (isLoupeEnabled && macroLoupe) {
+                macroLoupe.classList.remove('active');
+                isLoupeVisible = false;
+            }
             if (artQuote) {
                 artQuote.classList.remove('subtle');
             }
         });
 
-        // 移动端专用触控手势与状态追踪
+        // 移动端专用触控手势与状态追踪 (包含双指 Pinch-to-zoom 与 Canvas Pan)
         let touchStartX = 0;
         let touchStartY = 0;
         let touchStartTime = 0;
         let lastTapTime = 0;
         let lastTapPos = { x: 0, y: 0 };
+
+        let isPinching = false;
+        let pinchStartDist = 0;
+        let pinchStartZoom = 1.0;
+        let pinchStartPan = { x: 0, y: 0 };
+        let pinchCenter = { x: 0, y: 0 };
 
         // 移动端触控支持 (Touch Events)
         window.addEventListener('touchstart', (e) => {
@@ -2403,7 +2769,29 @@
             }
 
             dismissInitialHint();
-            if (e.touches.length > 0) {
+
+            // 1. 双指触控：进入微距捏合缩放与平移漫游模式
+            if (e.touches.length === 2) {
+                isPinching = true;
+                isPointerActive = false; // 严密锁定单指涂抹
+                currentPointerPos = null;
+                lastPointerPos = null;
+
+                const t1 = e.touches[0];
+                const t2 = e.touches[1];
+                pinchStartDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY) || 1;
+                pinchStartZoom = macroZoom;
+                pinchStartPan = { x: panOffset.x, y: panOffset.y };
+                pinchCenter = {
+                    x: (t1.clientX + t2.clientX) / 2,
+                    y: (t1.clientY + t2.clientY) / 2
+                };
+                if (e.cancelable) e.preventDefault();
+                return;
+            }
+
+            // 2. 单指触控：名画唤醒涂抹 / 擦除漫游 / 微距透镜
+            if (e.touches.length === 1 && !isPinching) {
                 const now = performance.now();
                 const t = e.touches[0];
                 const pos = { x: t.clientX, y: t.clientY };
@@ -2418,9 +2806,15 @@
                 lastMoveTime = now;
                 currentStrokeId++;
                 strokeMoveDistance = 0;
-                applyDab(pos.x, pos.y, currentStrokeId, config.singlePassGain, now);
+
+                if (isLoupeEnabled) {
+                    lastLoupePointerPos = pos;
+                    renderMacroLoupe(pos.x, pos.y);
+                } else {
+                    applyDab(pos.x, pos.y, currentStrokeId, config.singlePassGain, now);
+                }
             }
-        }, { passive: true });
+        }, { passive: false });
 
         window.addEventListener('touchmove', (e) => {
             const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup'));
@@ -2434,13 +2828,48 @@
                 e.preventDefault();
             }
 
-            if (e.touches.length > 0) {
+            // 1. 双指捏合缩放与平移漫游
+            if (e.touches.length === 2) {
+                isPinching = true;
+                isPointerActive = false;
+
+                const t1 = e.touches[0];
+                const t2 = e.touches[1];
+                const currentDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+                const currentCenter = {
+                    x: (t1.clientX + t2.clientX) / 2,
+                    y: (t1.clientY + t2.clientY) / 2
+                };
+
+                const distRatio = currentDist / pinchStartDist;
+                const newZoom = Math.max(1.0, Math.min(4.5, pinchStartZoom * distRatio));
+
+                // 中心点位移累加到平移偏移量
+                const panDx = currentCenter.x - pinchCenter.x;
+                const panDy = currentCenter.y - pinchCenter.y;
+                panOffset.x = pinchStartPan.x + panDx;
+                panOffset.y = pinchStartPan.y + panDy;
+                macroZoom = newZoom;
+
+                refreshLayout();
+                updateMacroZoomHud();
+                return;
+            }
+
+            // 2. 单指划动涂抹或移动透镜
+            if (e.touches.length === 1 && !isPinching) {
                 const now = performance.now();
                 const t = e.touches[0];
                 const pos = { x: t.clientX, y: t.clientY };
                 currentPointerPos = pos;
                 isPointerActive = true;
                 lastMoveTime = now;
+
+                if (isLoupeEnabled) {
+                    lastLoupePointerPos = pos;
+                    renderMacroLoupe(pos.x, pos.y);
+                    return;
+                }
 
                 if (lastPointerPos) {
                     const moveDx = pos.x - lastPointerPos.x;
@@ -2462,10 +2891,25 @@
         }, { passive: false });
 
         window.addEventListener('touchend', (e) => {
+            // 若刚结束双指操作
+            if (e.touches.length < 2 && isPinching) {
+                isPinching = false;
+                // 若缩放接近 1.0，则平滑复位至全貌
+                if (macroZoom < 1.06) {
+                    resetMacroZoom();
+                }
+                return;
+            }
+
             isPointerActive = false;
             lastPointerPos = null;
             currentPointerPos = null;
             currentStrokeId++;
+
+            if (isLoupeEnabled && macroLoupe) {
+                macroLoupe.classList.remove('active');
+                isLoupeVisible = false;
+            }
 
             const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup'));
             if (isOverModal) return;
@@ -2480,13 +2924,18 @@
                 const touchDuration = now - touchStartTime;
                 const touchDistance = Math.hypot(touchDx, touchDy);
 
-                // 1. 手机端双击屏幕 (Double Tap)：一键全彩盛放 / 恢复沉睡
+                // 1. 手机端双击屏幕 (Double Tap) 智能分流：
+                // 若当前处于微距放大状态，双击触发平滑弹性复位至 100% 全景；若处于 100% 全貌，双击一键全彩盛放/恢复沉睡
                 if (touchDistance < 22 && touchDuration < 280) {
                     const timeSinceLastTap = now - lastTapTime;
                     const tapDistFromLast = Math.hypot(endX - lastTapPos.x, endY - lastTapPos.y);
                     if (timeSinceLastTap < 320 && tapDistFromLast < 35) {
-                        // 判定为双击屏幕
-                        toggleFullColor();
+                        if (macroZoom > 1.05 || Math.abs(panOffset.x) > 6 || Math.abs(panOffset.y) > 6) {
+                            resetMacroZoom();
+                            showToast('🔍 已平滑复位至全景');
+                        } else {
+                            toggleFullColor();
+                        }
                         lastTapTime = 0;
                         return;
                     }
@@ -2494,14 +2943,12 @@
                     lastTapPos = { x: endX, y: endY };
                 }
 
-                // 2. 手机端水平快速轻扫手势 (Swipe Left / Swipe Right)：随心切换名画
-                if (touchDuration < 420 && Math.abs(touchDx) > 68 && Math.abs(touchDx) > Math.abs(touchDy) * 1.6) {
+                // 2. 手机端水平快速轻扫手势 (仅在非放大状态下触发切画，防止放大漫游时意外误切画作)
+                if (macroZoom <= 1.05 && touchDuration < 420 && Math.abs(touchDx) > 68 && Math.abs(touchDx) > Math.abs(touchDy) * 1.6) {
                     if (touchDx < 0) {
-                        // 向左轻扫：下一幅杰作
                         const nextIdx = (currentMasterpieceIndex + 1) % masterpieces.length;
                         switchMasterpiece(nextIdx);
                     } else {
-                        // 向右轻扫：上一幅杰作
                         const prevIdx = (currentMasterpieceIndex - 1 + masterpieces.length) % masterpieces.length;
                         switchMasterpiece(prevIdx);
                     }
@@ -2607,6 +3054,24 @@
         getNextImgInfo: () => ({ src: nextGardenImage.src, complete: nextGardenImage.complete, nw: nextGardenImage.naturalWidth, nh: nextGardenImage.naturalHeight }),
         toggleFullColor: toggleFullColor,
         isFullColor: () => isFullColorLocked,
+        getMacroZoom: () => macroZoom,
+        setMacroZoom: (z) => {
+            macroZoom = Math.max(1.0, Math.min(4.5, z));
+            refreshLayout();
+            updateMacroZoomHud();
+        },
+        getPanOffset: () => ({ ...panOffset }),
+        setPanOffset: (x, y) => {
+            panOffset.x = x;
+            panOffset.y = y;
+            refreshLayout();
+            updateMacroZoomHud();
+        },
+        resetMacroZoom: resetMacroZoom,
+        isLoupeEnabled: () => isLoupeEnabled,
+        toggleLoupe: toggleLoupe,
+        getLoupeZoom: () => loupeZoom,
+        cycleLoupeZoom: cycleLoupeZoom,
         stroke: (x1, y1, x2, y2) => {
             currentStrokeId++;
             strokeLine({ x: x1, y: y1 }, { x: x2, y: y2 }, currentStrokeId, performance.now());
