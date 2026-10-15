@@ -15,7 +15,7 @@ html, body {
     min-height: -webkit-fill-available;
     overflow: hidden;
     background-color: #0d0f12;
-    cursor: none; /* 统一使用极简艺术光标 */
+    cursor: default; /* 保证原生鼠标光标无论何时均绝不意外消失 */
     user-select: none;
     -webkit-user-select: none;
     font-family: 'Cormorant Garamond', Georgia, serif;
@@ -29,6 +29,16 @@ html, body {
     height: 100dvh;
     overflow: hidden;
     touch-action: none; /* 彻底阻止移动端默认滚动与下拉刷新阻碍画布挥毫涂抹 */
+    cursor: default;
+}
+
+/* 微距探索放大时的抓手漫游指针 */
+#art-stage.macro-panning {
+    cursor: grab !important;
+}
+
+#art-stage.macro-panning-active {
+    cursor: grabbing !important;
 }
 
 /* 底层：古典灰阶花园 Canvas */
@@ -2608,36 +2618,7 @@ kbd {
     height: 26px;
 }
 
-/* 透镜倍率切换小徽章 */
-.loupe-zoom-badge {
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    pointer-events: auto;
-    padding: 3px 8px;
-    background: linear-gradient(135deg, #eed6aa 0%, #c5a059 100%);
-    border: 1px solid #fff2d6;
-    border-radius: 9999px;
-    color: #1a140d;
-    font-size: 0.72rem;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-    user-select: none;
-    -webkit-user-select: none;
-    transition: transform 0.15s ease, filter 0.15s ease;
-}
-
-.loupe-zoom-badge:hover {
-    transform: scale(1.12);
-    filter: brightness(1.15);
-}
-
-.loupe-zoom-badge:active {
-    transform: scale(0.95);
-}
-
-/* 3. 画笔面板微距开关样式 */
+/* 3. 画笔面板微距开关与倍率芯片样式 */
 .loupe-control-row {
     display: flex;
     align-items: center;
@@ -2659,6 +2640,58 @@ kbd {
     background: rgba(238, 214, 170, 0.15);
     border-color: rgba(238, 214, 170, 0.4);
     color: #eed6aa;
+}
+
+.loupe-toggle-pill-btn.active {
+    background: rgba(238, 214, 170, 0.25);
+    border-color: #eed6aa;
+    color: #eed6aa;
+    box-shadow: 0 0 10px rgba(238, 214, 170, 0.25);
+    font-weight: 600;
+}
+
+.loupe-options-box {
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+}
+
+.loupe-zoom-pills {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.loupe-zoom-label {
+    font-size: 0.74rem;
+    color: rgba(238, 214, 170, 0.7);
+    margin-right: 2px;
+}
+
+.loupe-zoom-chip {
+    padding: 3px 9px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 9999px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.74rem;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.loupe-zoom-chip:hover {
+    background: rgba(238, 214, 170, 0.2);
+    border-color: rgba(238, 214, 170, 0.5);
+    color: #eed6aa;
+}
+
+.loupe-zoom-chip.active {
+    background: rgba(238, 214, 170, 0.32);
+    border-color: #eed6aa;
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 0 8px rgba(197, 160, 89, 0.3);
 }
 
 .loupe-toggle-pill-btn.active {

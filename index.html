@@ -60,7 +60,6 @@
             <canvas id="macro-loupe-canvas" width="220" height="220"></canvas>
             <div class="loupe-reticle"></div>
             <div class="loupe-rim-highlight"></div>
-            <button id="loupe-zoom-badge" class="loupe-zoom-badge" type="button" title="点击切换放大倍率 (2.0x / 3.5x / 5.0x)">3.5×</button>
         </div>
 
         <!-- 入场首次操作情境呼呼吸引导提示 (首次划动或数秒后自然晨雾般淡出) -->
@@ -329,10 +328,18 @@
                     <input type="range" id="fit-scale-slider" min="60" max="140" value="100" step="2">
                 </div>
                 <div class="brush-popup-row loupe-control-row" style="margin-top: 10px;">
-                    <span class="brush-label">🔍 微距探秘放大镜</span>
+                    <span class="brush-label">🔍 微距探秘透镜</span>
                     <button id="toggle-loupe-btn" class="loupe-toggle-pill-btn" type="button" title="开启/关闭古典真彩微距探秘透镜 (快捷键: M)">
                         <span id="loupe-pill-status" class="loupe-pill-status">已关闭</span>
                     </button>
+                </div>
+                <div id="loupe-options-box" class="loupe-options-box" style="display: none; margin-top: 8px;">
+                    <div class="loupe-zoom-pills">
+                        <span class="loupe-zoom-label">透镜倍率:</span>
+                        <button class="loupe-zoom-chip" data-zoom="2.0" type="button">2.0×</button>
+                        <button class="loupe-zoom-chip active" data-zoom="3.5" type="button">3.5×</button>
+                        <button class="loupe-zoom-chip" data-zoom="5.0" type="button">5.0×</button>
+                    </div>
                 </div>
                 <div class="brush-popup-divider"></div>
                 <div class="brush-popup-row">
