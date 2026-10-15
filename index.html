@@ -2,13 +2,13 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Masterpiece Garden · 传世名画博览馆</title>
     <!-- 引入传世名画级古典优雅衬线字体 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=4.0.0">
+    <link rel="stylesheet" href="style.css?v=4.5.0">
 </head>
 <body>
     <div id="art-stage">
@@ -49,7 +49,7 @@
                 <span class="hint-symbol">✨</span>
                 <span class="hint-ripple-ring"></span>
             </div>
-            <span id="hint-text" class="hint-text">用鼠标轻拂屏幕唤醒色彩 · 悬停可充能绽放</span>
+            <span id="hint-text" class="hint-text">轻拂屏幕唤醒色彩 · 悬停或长按充能绽放</span>
         </div>
 
         <!-- 模式切换与操作即时反馈轻量 Toast -->
@@ -127,8 +127,41 @@
                         </div>
                     </div>
 
+                    <!-- 手机触屏手势指南 (移动端专属优雅指引) -->
+                    <div class="help-section mobile-gesture-section">
+                        <h4 class="help-section-title">
+                            <span class="help-section-icon">📱</span> 手机触屏手势 (随时随心)
+                        </h4>
+                        <div class="help-shortcuts-grid">
+                            <div class="shortcut-item">
+                                <span class="shortcut-keys"><span class="gesture-pill">单指轻抚</span></span>
+                                <span class="shortcut-desc">划动屏幕唤醒原画瑰丽真彩 / 擦拭透出下一幅</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-keys"><span class="gesture-pill">指尖长按</span></span>
+                                <span class="shortcut-desc">停驻原地持续充能聚光、花瓣般盛开绽放</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-keys"><span class="gesture-pill">双击屏幕</span></span>
+                                <span class="shortcut-desc">快速一键全彩盛放 / 恢复静谧素描沉睡</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-keys"><span class="gesture-pill">左右轻扫</span></span>
+                                <span class="shortcut-desc">水平滑动随心翻阅上一幅 / 下一幅名画杰作</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-keys"><span class="gesture-pill">右上画笔 🎨</span></span>
+                                <span class="shortcut-desc">打开名画展厅检索、分类与深度赏析档案</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-keys"><span class="gesture-pill">旋转手机</span></span>
+                                <span class="shortcut-desc">横屏自动无缝切换为影院级宽屏全景比例</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- 键盘盲操快捷键指南 -->
-                    <div class="help-section">
+                    <div class="help-section pc-shortcut-section">
                         <h4 class="help-section-title">
                             <span class="help-section-icon">⌨️</span> 键盘快捷键 (随时盲操)
                         </h4>
@@ -467,10 +500,10 @@
     </div>
 
     <!-- 传世名画博览馆数据库 -->
-    <script src="data/masterpieces.js?v=4.3.0"></script>
+    <script src="data/masterpieces.js?v=4.5.0"></script>
     <!-- 名画背景故事与艺术鉴赏智库 -->
-    <script src="data/art_stories.js?v=4.3.0"></script>
+    <script src="data/art_stories.js?v=4.5.0"></script>
     <!-- 核心渲染与交互脚本 -->
-    <script src="app.js?v=4.3.0"></script>
+    <script src="app.js?v=4.5.0"></script>
 </body>
 </html>

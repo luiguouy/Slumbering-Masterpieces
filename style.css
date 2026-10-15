@@ -11,19 +11,24 @@
 html, body {
     width: 100%;
     height: 100%;
+    height: 100dvh;
+    min-height: -webkit-fill-available;
     overflow: hidden;
     background-color: #0d0f12;
     cursor: none; /* 统一使用极简艺术光标 */
     user-select: none;
     -webkit-user-select: none;
     font-family: 'Cormorant Garamond', Georgia, serif;
+    -webkit-tap-highlight-color: transparent;
 }
 
 #art-stage {
     position: relative;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
+    height: 100dvh;
     overflow: hidden;
+    touch-action: none; /* 彻底阻止移动端默认滚动与下拉刷新阻碍画布挥毫涂抹 */
 }
 
 /* 底层：古典灰阶花园 Canvas */
@@ -2245,25 +2250,180 @@ kbd {
     color: #eed6aa;
 }
 
+.gesture-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 8px;
+    background: rgba(238, 214, 170, 0.16);
+    border: 1px solid rgba(238, 214, 170, 0.45);
+    border-radius: 12px;
+    color: #eed6aa;
+    font-size: 0.76rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+/* ==========================================================================
+   📱 移动端与手机屏幕比例深度响应式适配 (Mobile Screen & Safe-Area Adaptation)
+   ========================================================================== */
 @media (max-width: 640px) {
+    /* 1. 悬浮名言：手机竖屏下紧凑典雅，避免遮挡画作主体 */
+    .art-quote-container {
+        top: max(8%, calc(env(safe-area-inset-top, 0px) + 38px));
+        max-width: 92vw;
+        padding: 8px 16px;
+    }
+
+    .quote-text {
+        font-size: clamp(1.05rem, 4vw, 1.45rem);
+        line-height: 1.35;
+        margin-bottom: 4px;
+    }
+
+    .quote-author {
+        font-size: clamp(0.72rem, 2.4vw, 0.88rem);
+        letter-spacing: 0.16em;
+    }
+
+    /* 2. 画笔控制按钮与设置弹窗：适配小屏手机宽度与指尖触控热区 */
+    .brush-control-panel {
+        top: max(14px, env(safe-area-inset-top, 14px));
+        right: max(14px, env(safe-area-inset-right, 14px));
+    }
+
+    .brush-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+    .brush-popup {
+        width: min(296px, calc(100vw - 28px));
+        max-height: calc(82dvh - env(safe-area-inset-top, 0px));
+        padding: 14px 14px;
+        gap: 10px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* 移动端滑块触控手柄增大，指尖拖动更轻松准确 */
+    .brush-slider-container input[type="range"]::-webkit-slider-thumb {
+        width: 22px;
+        height: 22px;
+    }
+    .brush-slider-container input[type="range"]::-moz-range-thumb {
+        width: 22px;
+        height: 22px;
+    }
+
+    .mode-tabs .fit-tab-btn,
+    .fit-mode-tabs .fit-tab-btn {
+        padding: 8px 4px;
+        font-size: 0.82rem;
+    }
+
+    .full-color-btn,
+    .art-nav-btn {
+        padding: 9px 8px;
+        font-size: 0.85rem;
+    }
+
+    /* 3. 操作指南对话框在手机屏幕下的舒适呈现 */
+    .help-dialog {
+        width: min(92vw, 460px);
+        max-height: 84dvh;
+        padding: 18px 16px;
+    }
+
+    .help-dialog-header {
+        padding-bottom: 12px;
+    }
+
+    .help-main-title {
+        font-size: 1.12rem;
+    }
+
+    .help-sub-title {
+        font-size: 0.74rem;
+    }
+
+    .help-dialog-body {
+        max-height: calc(84dvh - 110px);
+        padding-right: 4px;
+        gap: 16px;
+    }
+
     .help-mechanics-grid,
     .help-shortcuts-grid {
         grid-template-columns: 1fr;
+        gap: 8px;
     }
+
     .help-footer-quote {
         display: none;
     }
+
     .help-dialog-footer {
         justify-content: flex-end;
+        padding-top: 10px;
     }
+
+    /* 4. 底部引导胶囊、帮助按钮与擦画 HUD 安全区避让 */
     .interactive-hint {
-        bottom: 24px;
+        bottom: max(16px, calc(10px + env(safe-area-inset-bottom, 10px)));
         padding: 6px 14px;
-        font-size: 0.84rem;
+        font-size: 0.82rem;
+        max-width: 90vw;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
+
     .help-trigger-wrap {
-        bottom: 18px;
-        left: 18px;
+        bottom: max(16px, env(safe-area-inset-bottom, 16px));
+        left: max(14px, env(safe-area-inset-left, 14px));
+    }
+
+    .scratch-hud {
+        bottom: max(18px, calc(14px + env(safe-area-inset-bottom, 14px)));
+        padding: 6px 14px 8px;
+    }
+
+    /* 5. 展厅与故事抽屉安全区与紧凑排版 */
+    .gallery-panel,
+    .story-panel {
+        width: 100vw;
+        max-width: 100vw;
+    }
+
+    .gallery-header,
+    .story-header {
+        padding-top: max(16px, env(safe-area-inset-top, 16px));
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .gallery-search-wrap,
+    .gallery-filter-panel {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .filter-dropdowns-row {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .gallery-meta-bar,
+    .gallery-list-container,
+    .story-body,
+    .story-footer {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .story-footer {
+        padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
     }
 }
 

@@ -249,7 +249,7 @@
     }
 
     /**
-     * 计算名画在视口中的几何布局参数 (支持智能自适应/完整呈现/居中铺满与无级缩放)
+     * 计算名画在视口中的几何布局参数 (深度优化：手机竖屏/横屏/电脑宽屏智能自适应)
      */
     function computeImageBounds() {
         if (!isImageLoaded) return;
@@ -260,34 +260,59 @@
 
         let effectiveMode = config.fitMode;
         if (effectiveMode === 'auto') {
-            // 智能判定：横屏遇到竖幅或方幅名画 (如 1:1 的日本桥) 自动采用完整呈现 (Contain)，避免上下重要画面被剧烈裁剪！
-            if (screenAspect > 1.2 && imgAspect < 1.22) {
-                effectiveMode = 'contain';
-            } else if (screenAspect < 0.88 && imgAspect > 1.1) {
-                effectiveMode = 'contain';
+            if (screenAspect >= 1.0) {
+                // 1. 桌面端 / 平板横屏 / 手机横屏 (宽屏视野)
+                if (screenAspect > 1.2 && imgAspect < 1.22) {
+                    effectiveMode = 'contain';
+                } else {
+                    effectiveMode = 'cover';
+                }
             } else {
-                effectiveMode = 'cover';
+                // 2. 手机竖屏模式 (screenAspect 通常在 0.45 ~ 0.65 之间，屏幕极窄极高)
+                // 竖幅肖像、方幅与横幅画作在手机竖屏下均采用智能完整呈现，杜绝大幅裁剪主体
+                effectiveMode = 'contain';
             }
         }
 
         let drawW, drawH;
         if (effectiveMode === 'contain') {
-            // 完整呈现模式：整幅名画 100% 完整容纳于视口内，四周留有雅致古典画廊留白
+            // 完整呈现模式：
+            // 手机竖屏时采用 0.98 贴合留白，桌面宽屏采用 0.94 雅致画廊留白
+            const containRatio = (screenAspect < 1.0) ? 0.98 : 0.94;
             if (screenAspect > imgAspect) {
-                drawH = viewportHeight * 0.94;
+                drawH = viewportHeight * containRatio;
                 drawW = drawH * imgAspect;
             } else {
-                drawW = viewportWidth * 0.94;
+                drawW = viewportWidth * containRatio;
                 drawH = drawW / imgAspect;
             }
         } else {
-            // 居中铺满模式：无黑边充满视口，且真正绝对居中锚定
-            if (screenAspect > imgAspect) {
-                drawW = viewportWidth;
-                drawH = viewportWidth / imgAspect;
+            // 居中铺满模式 (Cover)：
+            if (screenAspect >= 1.0) {
+                if (screenAspect > imgAspect) {
+                    drawW = viewportWidth;
+                    drawH = viewportWidth / imgAspect;
+                } else {
+                    drawH = viewportHeight;
+                    drawW = viewportHeight * imgAspect;
+                }
             } else {
-                drawH = viewportHeight;
-                drawW = viewportHeight * imgAspect;
+                // 手机竖屏下的铺满优化：
+                // 如果是横幅画作，避免直接按视口高度完全拉伸导致左右裁剪超过 75%
+                if (imgAspect > 1.15) {
+                    // 横幅画在手机竖屏下的铺满：兼顾沉浸感与构图主体
+                    drawH = Math.max(viewportHeight * 0.72, viewportWidth);
+                    drawW = drawH * imgAspect;
+                } else {
+                    // 方幅与竖幅名画自然铺满
+                    if (screenAspect > imgAspect) {
+                        drawW = viewportWidth;
+                        drawH = viewportWidth / imgAspect;
+                    } else {
+                        drawH = viewportHeight;
+                        drawW = viewportHeight * imgAspect;
+                    }
+                }
             }
         }
 
@@ -314,31 +339,49 @@
 
         let effectiveMode = config.fitMode;
         if (effectiveMode === 'auto') {
-            if (screenAspect > 1.2 && imgAspect < 1.22) {
-                effectiveMode = 'contain';
-            } else if (screenAspect < 0.88 && imgAspect > 1.1) {
-                effectiveMode = 'contain';
+            if (screenAspect >= 1.0) {
+                if (screenAspect > 1.2 && imgAspect < 1.22) {
+                    effectiveMode = 'contain';
+                } else {
+                    effectiveMode = 'cover';
+                }
             } else {
-                effectiveMode = 'cover';
+                effectiveMode = 'contain';
             }
         }
 
         let drawW, drawH;
         if (effectiveMode === 'contain') {
+            const containRatio = (screenAspect < 1.0) ? 0.98 : 0.94;
             if (screenAspect > imgAspect) {
-                drawH = viewportHeight * 0.94;
+                drawH = viewportHeight * containRatio;
                 drawW = drawH * imgAspect;
             } else {
-                drawW = viewportWidth * 0.94;
+                drawW = viewportWidth * containRatio;
                 drawH = drawW / imgAspect;
             }
         } else {
-            if (screenAspect > imgAspect) {
-                drawW = viewportWidth;
-                drawH = viewportWidth / imgAspect;
+            if (screenAspect >= 1.0) {
+                if (screenAspect > imgAspect) {
+                    drawW = viewportWidth;
+                    drawH = viewportWidth / imgAspect;
+                } else {
+                    drawH = viewportHeight;
+                    drawW = viewportHeight * imgAspect;
+                }
             } else {
-                drawH = viewportHeight;
-                drawW = viewportHeight * imgAspect;
+                if (imgAspect > 1.15) {
+                    drawH = Math.max(viewportHeight * 0.72, viewportWidth);
+                    drawW = drawH * imgAspect;
+                } else {
+                    if (screenAspect > imgAspect) {
+                        drawW = viewportWidth;
+                        drawH = viewportWidth / imgAspect;
+                    } else {
+                        drawH = viewportHeight;
+                        drawW = viewportHeight * imgAspect;
+                    }
+                }
             }
         }
 
@@ -475,12 +518,18 @@
     }
 
     /**
-     * 视口尺寸变化与高清 Retina DPI 适配
+     * 视口尺寸变化与高清 Retina DPI 适配 (兼顾移动端动态地址栏与旋转)
      */
     function handleResize() {
-        viewportWidth = window.innerWidth;
-        viewportHeight = window.innerHeight;
-        dpr = window.devicePixelRatio || 1;
+        if (window.visualViewport) {
+            viewportWidth = Math.round(window.visualViewport.width);
+            viewportHeight = Math.round(window.visualViewport.height);
+        } else {
+            viewportWidth = window.innerWidth;
+            viewportHeight = window.innerHeight;
+        }
+        // 限制移动端极端高分屏 (3x/4x) DPR，避免显存爆仓与掉帧
+        dpr = Math.min(window.devicePixelRatio || 1, 2.5);
 
         // 设置高清物理画布像素
         bgCanvas.width = Math.round(viewportWidth * dpr);
@@ -501,7 +550,13 @@
 
         initGrid();
         computeImageBounds();
-        renderGrayscaleBackground();
+        computeNextImageBounds();
+
+        if (appMode === 'scratch') {
+            renderScratchBackground();
+        } else {
+            renderGrayscaleBackground();
+        }
     }
 
     /**
@@ -2332,7 +2387,14 @@
             }
         });
 
-        // 移动端触控支持
+        // 移动端专用触控手势与状态追踪
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchStartTime = 0;
+        let lastTapTime = 0;
+        let lastTapPos = { x: 0, y: 0 };
+
+        // 移动端触控支持 (Touch Events)
         window.addEventListener('touchstart', (e) => {
             const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup'));
             if (isOverModal) {
@@ -2345,6 +2407,11 @@
                 const now = performance.now();
                 const t = e.touches[0];
                 const pos = { x: t.clientX, y: t.clientY };
+                
+                touchStartX = pos.x;
+                touchStartY = pos.y;
+                touchStartTime = now;
+
                 currentPointerPos = pos;
                 lastPointerPos = pos;
                 isPointerActive = true;
@@ -2360,6 +2427,11 @@
             if (isOverModal) {
                 lastPointerPos = null;
                 return;
+            }
+
+            // 核心关键：在名画画布操作区域彻底阻止手机浏览器默认的下拉刷新与页面弹性拖动
+            if (e.cancelable) {
+                e.preventDefault();
             }
 
             if (e.touches.length > 0) {
@@ -2387,14 +2459,72 @@
                 }
                 lastPointerPos = pos;
             }
-        }, { passive: true });
+        }, { passive: false });
 
-        window.addEventListener('touchend', () => {
+        window.addEventListener('touchend', (e) => {
             isPointerActive = false;
             lastPointerPos = null;
             currentPointerPos = null;
             currentStrokeId++;
+
+            const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup'));
+            if (isOverModal) return;
+
+            const now = performance.now();
+            const changedTouch = e.changedTouches && e.changedTouches[0];
+            if (changedTouch) {
+                const endX = changedTouch.clientX;
+                const endY = changedTouch.clientY;
+                const touchDx = endX - touchStartX;
+                const touchDy = endY - touchStartY;
+                const touchDuration = now - touchStartTime;
+                const touchDistance = Math.hypot(touchDx, touchDy);
+
+                // 1. 手机端双击屏幕 (Double Tap)：一键全彩盛放 / 恢复沉睡
+                if (touchDistance < 22 && touchDuration < 280) {
+                    const timeSinceLastTap = now - lastTapTime;
+                    const tapDistFromLast = Math.hypot(endX - lastTapPos.x, endY - lastTapPos.y);
+                    if (timeSinceLastTap < 320 && tapDistFromLast < 35) {
+                        // 判定为双击屏幕
+                        toggleFullColor();
+                        lastTapTime = 0;
+                        return;
+                    }
+                    lastTapTime = now;
+                    lastTapPos = { x: endX, y: endY };
+                }
+
+                // 2. 手机端水平快速轻扫手势 (Swipe Left / Swipe Right)：随心切换名画
+                if (touchDuration < 420 && Math.abs(touchDx) > 68 && Math.abs(touchDx) > Math.abs(touchDy) * 1.6) {
+                    if (touchDx < 0) {
+                        // 向左轻扫：下一幅杰作
+                        const nextIdx = (currentMasterpieceIndex + 1) % masterpieces.length;
+                        switchMasterpiece(nextIdx);
+                    } else {
+                        // 向右轻扫：上一幅杰作
+                        const prevIdx = (currentMasterpieceIndex - 1 + masterpieces.length) % masterpieces.length;
+                        switchMasterpiece(prevIdx);
+                    }
+                }
+            }
         });
+
+        // 监听移动端屏幕旋转与虚拟视口尺寸变动
+        window.addEventListener('orientationchange', () => {
+            setTimeout(handleResize, 180);
+        });
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', handleResize);
+        }
+
+        // 触控设备专属文案自适应
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+        if (isTouchDevice) {
+            const hintTextEl = document.getElementById('hint-text');
+            if (hintTextEl) {
+                hintTextEl.textContent = '轻触划动指尖唤醒色彩 · 长按可充能绽放';
+            }
+        }
     }
 
     /**
