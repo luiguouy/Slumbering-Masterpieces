@@ -50,16 +50,31 @@ export function dismissInitialHint() {
 }
 
 /**
+ * 当前设备是否为粗指针（触屏）
+ *
+ * 提示文案必须区分「鼠标」与「指尖」：触摸设备上出现「用鼠标轻拂」属于明显错位。
+ * 该判定在每次调用时求值，避免设备旋转/外接鼠标后文案陈旧。
+ */
+function isCoarsePointer() {
+    return !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+}
+
+/**
  * 根据当前体验模式动态切换操作提示语
  * @param {'sleep' | 'scratch'} mode 体验模式
  */
 export function updateHintText(mode) {
     const { hintTextEl } = elements;
     if (!hintTextEl) return;
+    const touch = isCoarsePointer();
     if (mode === 'scratch') {
-        hintTextEl.textContent = '用鼠标擦拭画面 · 透出下一幅随机名画';
+        hintTextEl.textContent = touch
+            ? '用指尖擦拭画面 · 透出下一幅随机名画'
+            : '用鼠标擦拭画面 · 透出下一幅随机名画';
     } else {
-        hintTextEl.textContent = '用鼠标轻拂屏幕唤醒色彩 · 悬停可充能绽放';
+        hintTextEl.textContent = touch
+            ? '轻触划动指尖唤醒色彩 · 长按可充能绽放'
+            : '用鼠标轻拂屏幕唤醒色彩 · 悬停可充能绽放';
     }
 }
 

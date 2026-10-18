@@ -112,8 +112,21 @@ export function setScale(scaleVal) {
 
 /**
  * 切换一键全彩盛放状态 (还原为原始全彩 或 恢复沉睡黑白)
+ *
+ * 该操作只对沉睡唤醒模式有意义：它通过把 gridAlpha 整体写成 colorRatio / 0
+ * 来切换「全彩常驻」与「全灰阶」两种静态态。
+ * 随机漫游模式本就是原彩直出，且其 gridAlpha 语义为「顶层遮罩不透明度」（1=完整遮挡），
+ * 一旦被整体改写就会与 scratchedCellsCount / scratchConfig.ratio 脱节：
+ * 填 1 会把已擦出的洞补满，填 0 会让整幅顶层瞬透直接露底，
+ * 两种结果都不会走 finalizeScratchTransition，索引与画面随即错位。
+ * 因此在此入口统一拦截，避免双击 / 空格等所有调用路径逐个补守卫。
  */
 export function toggleFullColor(forceState) {
+    if (appState.appMode === 'scratch') {
+        showToast('🎲 随机漫游已是原彩直出，请擦拭画面或点击「立即完全展开」', '🎲');
+        return false;
+    }
+
     const targetState = (forceState !== undefined) ? forceState : !appState.isFullColorLocked;
     appState.isFullColorLocked = targetState;
 
@@ -147,6 +160,7 @@ export function toggleFullColor(forceState) {
         }
     }
     markDirty();
+    return true;
 }
 
 /**
@@ -171,6 +185,12 @@ export function setAppMode(mode) {
     if (scratchHud) scratchHud.style.display = (mode === 'scratch') ? 'flex' : 'none';
 
     if (mode === 'scratch') {
+        // 沉睡模式遗留的全彩锁定态对随机漫游无意义：该模式本就原彩直出，
+        // 保留锁定态会让切回沉睡时按钮文案与实际画面不一致。
+        appState.isFullColorLocked = false;
+        if (fullColorBtnText) fullColorBtnText.textContent = '一键全彩盛放';
+        if (toggleFullColorBtn) toggleFullColorBtn.classList.remove('active');
+
         scratchConfig.isLocked = false;
         scratchConfig.isTransitioning = false;
         scratchConfig.ratio = 0;

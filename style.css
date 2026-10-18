@@ -171,7 +171,8 @@ html, body {
     position: absolute;
     top: 24px;
     right: 28px;
-    z-index: 100;
+    /* 高于 .macro-loupe(120)：透镜圆盘扫过面板时被面板自然遮住，杜绝透镜遮挡面板交互 */
+    z-index: 130;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -211,7 +212,14 @@ html, body {
 }
 
 .brush-popup {
-    margin-top: 10px;
+    /* 绝对定位而非参与父容器 flex 流：
+       未展开态为 opacity:0 + pointer-events:none，但仍占据布局空间，
+       会把 .brush-control-panel 撑到整屏大小（手机竖屏下实测 296×746），
+       而透镜的浮层判定读取的是容器矩形——结果透镜一进画作就被判为「压在面板上」而隐匿。
+       脱离文档流后容器矩形只剩按钮本身，几何判定才与视觉真实一致。 */
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
     width: 234px;
     max-height: 86vh;
     overflow-y: auto;
@@ -2457,7 +2465,8 @@ kbd {
     top: max(22px, calc(14px + env(safe-area-inset-top, 14px)));
     left: 50%;
     transform: translateX(-50%);
-    z-index: 95;
+    /* 高于 .macro-loupe(120)：透镜开启并放大时 HUD 复位按钮不被透镜盖住 */
+    z-index: 130;
     pointer-events: auto;
     animation: macroHudFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

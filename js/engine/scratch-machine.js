@@ -11,6 +11,12 @@ let onComputeBounds = null;
 let onRenderScratchBg = null;
 let onArtworkChanged = null;
 
+// 预加载令牌：单调递增，用于丢弃被后续调用取代的过期异步结果。
+// nextGardenImage.onload 为单例覆盖式赋值，先发起的加载其回调会被后发起的调用静默覆盖；
+// 若无令牌校验，过期回调仍会覆写 nextMasterpieceIndex / isNextImageLoaded，
+// 造成「索引」与「实际展示画作、故事抽屉、名言署名」错位。
+let prepareToken = 0;
+
 export function registerScratchMachineCallbacks({ markDirty, computeBounds, renderScratchBg, onArtworkChange }) {
     onMarkDirty = markDirty;
     onComputeBounds = computeBounds;
@@ -47,6 +53,8 @@ export function pickRandomNextIndex() {
  */
 export function prepareNextRandomArtwork(callback) {
     const { masterpieces, nextGardenImage } = appState;
+    // 领取本次调用的唯一令牌，异步回调凭此判断是否仍为最新一次预加载
+    const token = ++prepareToken;
     appState.nextMasterpieceIndex = pickRandomNextIndex();
     const nextArt = masterpieces[appState.nextMasterpieceIndex];
     appState.isNextImageLoaded = false;
@@ -60,6 +68,8 @@ export function prepareNextRandomArtwork(callback) {
     function finish() {
         if (handled) return;
         handled = true;
+        // 令牌已过期：本次预加载已被后发起的调用取代，丢弃结果，绝不覆写全局状态
+        if (token !== prepareToken) return;
         appState.isNextImageLoaded = true;
         if (onComputeBounds) onComputeBounds();
         if (appState.appMode === 'scratch' && onRenderScratchBg) {
@@ -67,6 +77,9 @@ export function prepareNextRandomArtwork(callback) {
         }
         if (callback) callback();
     }
+
+    // 保护「下一幅」候选不被 LRU 淘汰：它即将作为擦画底层被展示
+    preloadPool.protect([nextArt.src]);
 
     // 通过智能预加载池提前加载图片
     preloadPool.preload(nextArt.src).then((cachedImg) => {
@@ -111,7 +124,10 @@ export function updateScratchRatio() {
     if (appState.appMode !== 'scratch' || scratchConfig.isLocked || scratchConfig.isTransitioning) return;
     if (appState.totalCells <= 0) return;
 
-    const ratio = appState.scratchedCellsCount / appState.totalCells;
+    // 分母取画作实际覆盖的格子数（若尚未算出则回退为全视口网格数）。
+    // 擦拭画作外的留白区同样会计入 scratchedCellsCount，故需钳制上限，防止进度溢出 100%。
+    const denominator = appState.paintingCells > 0 ? appState.paintingCells : appState.totalCells;
+    const ratio = Math.min(1.0, appState.scratchedCellsCount / denominator);
     scratchConfig.ratio = ratio;
 
     syncScratchHud(ratio);

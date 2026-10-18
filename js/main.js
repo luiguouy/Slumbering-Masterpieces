@@ -25,7 +25,6 @@ import {
 } from './engine/macro-loupe.js';
 import {
     registerScratchMachineCallbacks,
-    prepareNextRandomArtwork,
     triggerAutoScratchReveal
 } from './engine/scratch-machine.js';
 import {
@@ -124,16 +123,38 @@ function start() {
     // 首次入场提示在 5 秒后如晨雾般优雅自动淡出
     setTimeout(dismissInitialHint, 5000);
 
+    // 名画资源载入失败降级计数器 (防止连续损坏资源引发无限切换递归)
+    let loadFailureCount = 0;
+    const MAX_CONSECUTIVE_LOAD_FAILURES = 3;
+
     appState.gardenImage.onload = () => {
         appState.isImageLoaded = true;
+        loadFailureCount = 0;
         computeImageBounds();
         if (appState.appMode === 'scratch') {
             renderScratchBackground();
         } else {
             renderGrayscaleBackground();
         }
-        prepareNextRandomArtwork();
         markDirty();
+    };
+
+    // 名画载入失败降级：跳过损坏资源并自动切至下一幅。
+    // 315 幅资源中任一 404 若不处理，isImageLoaded 将永久停留在 false，导致静默白屏且无任何反馈。
+    appState.gardenImage.onerror = () => {
+        const failedArt = appState.masterpieces[appState.currentMasterpieceIndex];
+        console.error('[GardenEngine] 载入名画资源失败:', failedArt && failedArt.src);
+
+        const total = appState.masterpieces.length;
+        if (loadFailureCount < MAX_CONSECUTIVE_LOAD_FAILURES && total > 1) {
+            loadFailureCount++;
+            showToast(`⚠️ 名画资源载入失败，已自动跳过 (${loadFailureCount}/${MAX_CONSECUTIVE_LOAD_FAILURES})`, '⚠️');
+            switchMasterpiece((appState.currentMasterpieceIndex + 1) % total);
+            return;
+        }
+
+        loadFailureCount = 0;
+        showToast('⚠️ 名画资源载入失败，请检查 assets/images 目录完整性', '⚠️');
     };
 
     // 默认载入首幅传世名画

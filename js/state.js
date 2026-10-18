@@ -3,6 +3,18 @@
  * 全局状态管理中枢与配置中心
  */
 
+// 古典黄铜透镜的 CSS 显示尺寸 (px)
+// 必须与 style.css 中 .macro-loupe 的 width / height 保持一致：
+// 透镜的后端像素缓冲按此值乘以 dpr 分配，两者不符会导致高分屏下放大模糊或采样偏移
+export const LOUPE_CSS_SIZE = 220;
+
+// 交互浮层选择器：新增任何浮层时只需在此登记一处，
+// 事件命中判定与透镜隐匿判定统一引用，避免各处硬编码导致漏改
+// 注意 .brush-control-panel 是画笔面板「容器」（含底部按钮坞），
+// .brush-popup 仅是其内部展开的弹层，两者都需登记
+export const MODAL_SELECTOR = '.gallery-panel, .story-panel, .help-dialog, .brush-control-panel, .brush-popup';
+export const MACRO_HUD_SELECTOR = '.macro-zoom-hud';
+
 // 核心画布与界面元素
 export const elements = {
     bgCanvas: document.getElementById('bg-canvas'),
@@ -191,6 +203,7 @@ export const appState = {
     gridLastTouch: null,         // Float64Array
     gridLastStroke: null,        // Int32Array
     maskSmallImageData: null,
+    paintingCells: 0,            // 画作在网格中实际覆盖的格子数 (随机漫游擦除进度的分母)
 
     // 鼠标与笔画状态
     isPointerActive: false,
@@ -223,7 +236,9 @@ export const appState = {
     loupeZoomLevels: [2.0, 3.5, 5.0],
     loupeZoomIndex: 1,
     lastLoupePointerPos: { x: -9999, y: -9999 },
+    hasLoupePointerPos: false,       // 是否已记录过透镜光标位置（替代 x > 0 的哨兵判断）
     isLoupeVisible: false,
+    loupeCssSize: LOUPE_CSS_SIZE,    // 透镜实际 CSS 尺寸，由 measureLoupeCssSize() 于 resize 时刷新
 
     // 名画图片实体与几何参数
     gardenImage: new Image(),
@@ -245,4 +260,29 @@ export const appState = {
 export function initMasterpieces() {
     appState.masterpieces = (window.MASTERPIECES && window.MASTERPIECES.length) ? window.MASTERPIECES : [];
     return appState.masterpieces;
+}
+
+/**
+ * 测量古典黄铜透镜的真实 CSS 显示尺寸
+ *
+ * LOUPE_CSS_SIZE 只是首屏与兜底值：style.css 在 max-width:640px 断点把 .macro-loupe
+ * 改为 180px。若仍按常量 220 计算，会同时错三处——
+ *   ① 采样跨度按 220 算，实际显示 180，真实放大倍率低于标注约 18%；
+ *   ② 后端缓冲按 220×dpr 分配后被 CSS 缩到 180，取景范围比准星对应区域更大；
+ *   ③ loupeArtCoverage() 用 R=110 判圆盘覆盖率，而真实半径只有 90，边缘提前隐匿。
+ *
+ * 该函数只在 resize 时调用一次（getComputedStyle 会触发样式重算，不可放进高频渲染路径），
+ * 结果缓存到 appState.loupeCssSize 供渲染与命中判定读取。
+ */
+export function measureLoupeCssSize() {
+    const el = elements.macroLoupe;
+    if (el) {
+        const w = parseFloat(getComputedStyle(el).width);
+        if (Number.isFinite(w) && w > 0) {
+            appState.loupeCssSize = w;
+            return w;
+        }
+    }
+    appState.loupeCssSize = LOUPE_CSS_SIZE;
+    return LOUPE_CSS_SIZE;
 }

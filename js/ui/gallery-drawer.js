@@ -9,6 +9,7 @@ import { resetMacroZoom } from '../engine/macro-loupe.js';
 import { toggleFullColor } from './brush-panel.js';
 import { updateStoryContent } from './story-drawer.js';
 import { preloadPool } from '../utils/preload-pool.js';
+import { prepareNextRandomArtwork } from '../engine/scratch-machine.js';
 
 let galleryFilteredItems = [];
 let galleryRenderedCount = 0;
@@ -16,12 +17,44 @@ const GALLERY_BATCH_SIZE = 24;
 let gallerySentinelEl = null;
 let galleryObserver = null;
 
+// 搜索防抖：每次按键都会触发 315 条 × 6 字段的文本归一化与整列表 DOM 重建，
+// 中文输入法组合输入还会产生额外事件，必须节流到用户停止输入后执行
+const GALLERY_SEARCH_DEBOUNCE_MS = 180;
+let gallerySearchTimer = null;
+
+/**
+ * 取消挂起的搜索防抖任务
+ * 由「立即生效」的筛选操作调用，避免随后被延时任务再重复渲染一次
+ */
+function cancelPendingGallerySearch() {
+    if (gallerySearchTimer) {
+        clearTimeout(gallerySearchTimer);
+        gallerySearchTimer = null;
+    }
+}
+
 /**
  * 规范化检索文本 (忽略空格、间隔号·、英文标点等，支持“达芬奇”匹配“达·芬奇”)
  */
 export function normalizeSearchText(str) {
     if (!str) return '';
     return String(str).toLowerCase().replace(/[\s·\-\._・/()（）,"'‘’“”]/g, '');
+}
+
+/**
+ * 转义 HTML 特殊字符
+ *
+ * 名画数据虽来自本地可信源，但标题、作者名中若含引号，
+ * 直接插值进 alt="${art.title}" 会提前闭合属性、破坏 DOM 结构。
+ * @param {*} str 待转义内容
+ */
+function escapeHtml(str) {
+    return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 }
 
 /**
@@ -82,20 +115,27 @@ export function createGalleryCard({ art, index }) {
         if (catObj) catLabel = catObj.name.split('(')[0].trim();
     }
 
+    const safeSrc = escapeHtml(art.src);
+    const safeTitle = escapeHtml(art.title);
+    const safeEnTitle = escapeHtml(art.enTitle);
+    const safeArtist = escapeHtml(art.artist);
+    const safeGenre = escapeHtml(art.genre);
+    const safeCat = escapeHtml(catLabel);
+
     card.innerHTML = `
         <div class="card-thumb-box">
-            <img class="card-thumb-img" src="${art.src}" alt="${art.title}" loading="lazy" decoding="async" fetchpriority="low" width="54" height="54">
+            <img class="card-thumb-img" src="${safeSrc}" alt="${safeTitle}" loading="lazy" decoding="async" fetchpriority="low" width="54" height="54">
         </div>
         <div class="card-details">
             <div class="card-header-row">
-                <div class="card-title">${index + 1}. ${art.title}</div>
+                <div class="card-title">${index + 1}. ${safeTitle}</div>
                 ${isCurrent ? '<span class="card-badge-viewing">👑 观赏中</span>' : ''}
             </div>
-            ${art.enTitle ? `<div class="card-entitle">${art.enTitle}</div>` : ''}
-            <div class="card-artist">${art.artist}</div>
+            ${art.enTitle ? `<div class="card-entitle">${safeEnTitle}</div>` : ''}
+            <div class="card-artist">${safeArtist}</div>
             <div class="card-tags-row">
-                ${art.genre ? `<span class="card-tag card-tag-genre">${art.genre}</span>` : ''}
-                ${catLabel ? `<span class="card-tag card-tag-cat">${catLabel}</span>` : ''}
+                ${art.genre ? `<span class="card-tag card-tag-genre">${safeGenre}</span>` : ''}
+                ${catLabel ? `<span class="card-tag card-tag-cat">${safeCat}</span>` : ''}
             </div>
         </div>
     `;
@@ -153,15 +193,18 @@ function ensureGallerySentinel() {
     }
     gallerySentinelEl.style.display = 'block';
     galleryListContainer.appendChild(gallerySentinelEl);
-    initGalleryObserver();
+    observeGallerySentinel();
 }
 
+/**
+ * 初始化画廊滚动哨兵观察器（全局仅创建一次）
+ *
+ * 原先每次追加批次都会先 disconnect 再重建 observer，
+ * 且会在其自身回调触发的链路中被反复重建，结构脆弱且带来无谓开销。
+ */
 function initGalleryObserver() {
-    if (galleryObserver) {
-        galleryObserver.disconnect();
-    }
+    if (galleryObserver || !gallerySentinelEl || !('IntersectionObserver' in window)) return;
     const { galleryListContainer } = elements;
-    if (!gallerySentinelEl || !('IntersectionObserver' in window)) return;
 
     galleryObserver = new IntersectionObserver((entries) => {
         if (entries[0] && entries[0].isIntersecting) {
@@ -172,7 +215,16 @@ function initGalleryObserver() {
         rootMargin: '300px 0px',
         threshold: 0.01
     });
+}
 
+/**
+ * 将哨兵重新纳入观察（列表重建或哨兵重新挂载后调用）
+ * 先 unobserve 再 observe，确保对同一节点重复调用不会重复注册
+ */
+function observeGallerySentinel() {
+    initGalleryObserver();
+    if (!galleryObserver || !gallerySentinelEl) return;
+    galleryObserver.unobserve(gallerySentinelEl);
     galleryObserver.observe(gallerySentinelEl);
 }
 
@@ -208,8 +260,9 @@ export function renderGalleryList() {
         galleryFilterDesc.textContent = parts.length > 0 ? `(${parts.join(' · ')})` : '';
     }
 
-    if (galleryObserver) {
-        galleryObserver.disconnect();
+    // 列表重建前停止观察哨兵（observer 实例本身保留复用，不再反复销毁重建）
+    if (galleryObserver && gallerySentinelEl) {
+        galleryObserver.unobserve(gallerySentinelEl);
     }
 
     galleryListContainer.innerHTML = '';
@@ -255,6 +308,7 @@ export function renderGalleryList() {
  * 重置所有筛选与搜索
  */
 export function resetAllFilters() {
+    cancelPendingGallerySearch();
     galleryFilterState.query = '';
     galleryFilterState.genre = 'all';
     galleryFilterState.artist = 'all';
@@ -318,9 +372,12 @@ export function switchMasterpiece(index) {
     const art = masterpieces[index];
 
     // 复位全彩模式与微距缩放
-    if (appState.isFullColorLocked) {
+    // 随机漫游模式下 toggleFullColor 已被入口拦截（该模式的遮罩语义不同），
+    // 因此这里直接清布尔标记，不做任何网格写入。
+    if (appState.isFullColorLocked && appState.appMode !== 'scratch') {
         toggleFullColor(false);
     }
+    appState.isFullColorLocked = false;
     resetMacroZoom(true);
 
     const {
@@ -379,6 +436,12 @@ export function switchMasterpiece(index) {
     // 6. 智能双向预加载池：触发 index ± 1 预加载，消除切画黑屏
     preloadPool.preloadAdjacent(masterpieces, index);
 
+    // 7. 随机漫游模式下主动切画后，需重新抽取下一幅候选名画作为擦画底层。
+    //    原先该逻辑隐式挂在 gardenImage.onload 上，已改为由切画入口显式负责，职责更清晰。
+    if (appState.appMode === 'scratch') {
+        prepareNextRandomArtwork();
+    }
+
     markDirty();
 }
 
@@ -421,6 +484,16 @@ export function closeGallery() {
     document.body.classList.remove('gallery-open');
     galleryDrawer.classList.remove('open');
     galleryDrawer.setAttribute('aria-hidden', 'true');
+
+    // 关闭后必须移出焦点。抽屉只是平移出视口，搜索框始终留在 DOM 中且可聚焦；
+    // 若焦点停在其内，全局快捷键的 isTyping 判定会持续为真，
+    // 表现为「打开过一次画廊后，H / S / G / M / 空格 / 方向键全部失灵」，
+    // 用户只能靠鼠标点击画布才能恢复。
+    const active = document.activeElement;
+    if (active && galleryDrawer.contains(active) && typeof active.blur === 'function') {
+        active.blur();
+    }
+
     appState.isCursorActive = false;
 }
 
@@ -547,7 +620,12 @@ export function setupGalleryUI() {
             if (gallerySearchClear) {
                 gallerySearchClear.style.display = e.target.value ? 'flex' : 'none';
             }
-            renderGalleryList();
+            // 清除按钮的显隐保持即时反馈，仅将耗时的全量重渲染延后
+            if (gallerySearchTimer) clearTimeout(gallerySearchTimer);
+            gallerySearchTimer = setTimeout(() => {
+                gallerySearchTimer = null;
+                renderGalleryList();
+            }, GALLERY_SEARCH_DEBOUNCE_MS);
         });
 
         gallerySearchInput.addEventListener('keydown', (e) => {
@@ -556,6 +634,7 @@ export function setupGalleryUI() {
                     gallerySearchInput.value = '';
                     galleryFilterState.query = '';
                     if (gallerySearchClear) gallerySearchClear.style.display = 'none';
+                    cancelPendingGallerySearch();
                     renderGalleryList();
                 } else {
                     closeGallery();
@@ -571,6 +650,7 @@ export function setupGalleryUI() {
             galleryFilterState.query = '';
             gallerySearchClear.style.display = 'none';
             if (gallerySearchInput) gallerySearchInput.focus();
+            cancelPendingGallerySearch();
             renderGalleryList();
         });
     }

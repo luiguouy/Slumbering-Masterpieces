@@ -3,13 +3,30 @@
  * 统一多模态输入总线控制器 (鼠标、触控手势、微距双指捏合与平移漫游、古典黄铜透镜互锁及全局快捷键矩阵)
  */
 
-import { elements, appState, config } from '../state.js';
-import { handleResize, refreshLayout, applyDab, strokeLine } from '../engine/canvas-engine.js';
-import { renderMacroLoupe, resetMacroZoom, setLoupeZoom, toggleLoupe, updateMacroZoomHud } from '../engine/macro-loupe.js';
+import { elements, appState, config, MODAL_SELECTOR, MACRO_HUD_SELECTOR } from '../state.js';
+import { handleResize, refreshLayout, applyDab, strokeLine, MACRO_ZOOM_ACTIVE_THRESHOLD, MAX_MACRO_ZOOM } from '../engine/canvas-engine.js';
+import { renderMacroLoupe, resetMacroZoom, setLoupeZoom, toggleLoupe, updateMacroZoomHud, setLoupePointer } from '../engine/macro-loupe.js';
 import { toggleFullColor } from '../ui/brush-panel.js';
 import { switchMasterpiece, openGallery, closeGallery } from '../ui/gallery-drawer.js';
 import { openStory, closeStory, toggleStory } from '../ui/story-drawer.js';
-import { openHelp, closeHelp, toggleHelp, showToast, dismissInitialHint } from '../ui/help-modal.js';
+import { openHelp, closeHelp, toggleHelp, showToast, dismissInitialHint, updateHintText } from '../ui/help-modal.js';
+
+// 双指离屏后的单指事件冷却保护期 (ms)，用于消除两指抬手时间差引发的误触
+const PINCH_COOLDOWN_MS = 350;
+
+// 双指松手后若缩放已接近全景，则自动吸附复位至 100%
+const MACRO_ZOOM_SNAP_THRESHOLD = 1.06;
+
+/**
+ * 判定事件是否命中浮层 / 弹窗区域
+ * @param {Event} e 事件对象
+ * @param {boolean} includeMacroHud 是否将微距缩放胶囊一并视为浮层
+ */
+function isEventOverModal(e, includeMacroHud = true) {
+    if (!e.target || !e.target.closest) return false;
+    const selector = includeMacroHud ? `${MODAL_SELECTOR}, ${MACRO_HUD_SELECTOR}` : MODAL_SELECTOR;
+    return Boolean(e.target.closest(selector));
+}
 
 export function setupInputEvents() {
     window.addEventListener('resize', handleResize);
@@ -44,7 +61,7 @@ export function setupInputEvents() {
         }
 
         // 2. 检查鼠标当前是否位于浮层或弹窗内部
-        const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup, .macro-zoom-hud'));
+        const isOverModal = isEventOverModal(e);
 
         if (isOverModal) {
             if (cursor) {
@@ -60,6 +77,11 @@ export function setupInputEvents() {
             }
             appState.isCursorActive = false;
             appState.lastPointerPos = null;
+            // 必须同时停用指针活跃态：renderLoop 的沉睡分支依赖它决定是否继续
+            // 执行停驻充能并保持 rAF 循环；否则光标停在面板上时画作会被持续充能，
+            // 帧循环也永不进入静止休眠状态（持续耗电）。
+            appState.isPointerActive = false;
+            appState.currentPointerPos = null;
             return;
         }
 
@@ -69,7 +91,7 @@ export function setupInputEvents() {
 
         // 3. 古典黄铜透镜模式：专心渲染真彩超清透视，绝不涂抹底层名画
         if (appState.isLoupeEnabled) {
-            appState.lastLoupePointerPos = pos;
+            setLoupePointer(pos.x, pos.y);
             renderMacroLoupe(pos.x, pos.y);
             if (cursor) {
                 cursor.style.opacity = '0';
@@ -83,7 +105,7 @@ export function setupInputEvents() {
         }
 
         // 4. 微距放大状态：呈现抓手光标 (Grab)，允许按住拖动漫游
-        if (appState.macroZoom > 1.05) {
+        if (appState.macroZoom > MACRO_ZOOM_ACTIVE_THRESHOLD) {
             if (artStageEl) {
                 artStageEl.classList.add('macro-panning');
                 artStageEl.classList.remove('macro-panning-active');
@@ -148,10 +170,10 @@ export function setupInputEvents() {
 
     // ================= 2. 鼠标按下与松开 =================
     window.addEventListener('mousedown', (e) => {
-        const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup, .macro-zoom-hud'));
+        const isOverModal = isEventOverModal(e);
         if (isOverModal) return;
 
-        if (appState.macroZoom > 1.05 && !appState.isLoupeEnabled) {
+        if (appState.macroZoom > MACRO_ZOOM_ACTIVE_THRESHOLD && !appState.isLoupeEnabled) {
             isDraggingPan = true;
             dragStartMouse = { x: e.clientX, y: e.clientY };
             dragStartPan = { x: appState.panOffset.x, y: appState.panOffset.y };
@@ -169,7 +191,7 @@ export function setupInputEvents() {
             isDraggingPan = false;
             if (artStageEl) {
                 artStageEl.classList.remove('macro-panning-active');
-                if (appState.macroZoom > 1.05) {
+                if (appState.macroZoom > MACRO_ZOOM_ACTIVE_THRESHOLD) {
                     artStageEl.classList.add('macro-panning');
                 }
             }
@@ -178,10 +200,10 @@ export function setupInputEvents() {
 
     // ================= 3. 桌面端双击分流 =================
     window.addEventListener('dblclick', (e) => {
-        const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup, .macro-zoom-hud'));
+        const isOverModal = isEventOverModal(e);
         if (isOverModal) return;
 
-        if (appState.macroZoom > 1.05 || Math.abs(appState.panOffset.x) > 6 || Math.abs(appState.panOffset.y) > 6) {
+        if (appState.macroZoom > MACRO_ZOOM_ACTIVE_THRESHOLD || Math.abs(appState.panOffset.x) > 6 || Math.abs(appState.panOffset.y) > 6) {
             resetMacroZoom();
             showToast('🔍 已平滑复位至全景');
         } else {
@@ -191,7 +213,7 @@ export function setupInputEvents() {
 
     // 屏蔽画布区域上下文菜单
     window.addEventListener('contextmenu', (e) => {
-        const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup'));
+        const isOverModal = isEventOverModal(e, false);
         if (!isOverModal) {
             e.preventDefault();
         }
@@ -199,7 +221,7 @@ export function setupInputEvents() {
 
     // ================= 4. 鼠标滚轮缩放与调焦 =================
     window.addEventListener('wheel', (e) => {
-        const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup'));
+        const isOverModal = isEventOverModal(e, false);
         if (isOverModal) return;
 
         if (e.cancelable) e.preventDefault();
@@ -212,7 +234,7 @@ export function setupInputEvents() {
 
         const zoomFactor = e.deltaY < 0 ? 1.12 : 0.89;
         const oldZoom = appState.macroZoom;
-        const newZoom = Math.max(1.0, Math.min(4.5, appState.macroZoom * zoomFactor));
+        const newZoom = Math.max(1.0, Math.min(MAX_MACRO_ZOOM, appState.macroZoom * zoomFactor));
 
         if (Math.abs(newZoom - oldZoom) > 0.004) {
             const mouseX = e.clientX;
@@ -270,7 +292,7 @@ export function setupInputEvents() {
     let lastTapPos = { x: 0, y: 0 };
 
     window.addEventListener('touchstart', (e) => {
-        const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup, .macro-zoom-hud'));
+        const isOverModal = isEventOverModal(e);
         if (isOverModal) {
             appState.lastPointerPos = null;
             return;
@@ -313,7 +335,7 @@ export function setupInputEvents() {
             touchStartTime = now;
 
             if (appState.isLoupeEnabled) {
-                appState.lastLoupePointerPos = pos;
+                setLoupePointer(pos.x, pos.y);
                 renderMacroLoupe(pos.x, pos.y);
                 return;
             }
@@ -329,7 +351,7 @@ export function setupInputEvents() {
     }, { passive: false });
 
     window.addEventListener('touchmove', (e) => {
-        const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup, .macro-zoom-hud'));
+        const isOverModal = isEventOverModal(e);
         if (isOverModal) {
             appState.lastPointerPos = null;
             return;
@@ -353,7 +375,7 @@ export function setupInputEvents() {
             };
 
             const distRatio = currentDist / pinchStartDist;
-            const newZoom = Math.max(1.0, Math.min(4.5, pinchStartZoom * distRatio));
+            const newZoom = Math.max(1.0, Math.min(MAX_MACRO_ZOOM, pinchStartZoom * distRatio));
 
             const panDx = currentCenter.x - pinchCenter.x;
             const panDy = currentCenter.y - pinchCenter.y;
@@ -377,7 +399,7 @@ export function setupInputEvents() {
             const pos = { x: t.clientX, y: t.clientY };
 
             if (appState.isLoupeEnabled) {
-                appState.lastLoupePointerPos = pos;
+                setLoupePointer(pos.x, pos.y);
                 renderMacroLoupe(pos.x, pos.y);
                 return;
             }
@@ -405,13 +427,21 @@ export function setupInputEvents() {
         }
     }, { passive: false });
 
-    window.addEventListener('touchend', (e) => {
-        // 双指捏合结束：启动 350ms 冷却保护期
+    /**
+     * 统一抬手 / 中断结算：手势状态清理 + 意图识别
+     * @param {TouchEvent} e 触摸事件
+     * @param {boolean} isCancel 是否为 touchcancel 系统中断事件
+     *        中断时必须无条件复位所有手势状态——否则 isPinching 会永久停留在 true，
+     *        导致后续 touchmove 在 isPinching 分支被全部吞掉，移动端触摸交互彻底失灵且无法恢复
+     */
+    function handleTouchEnd(e, isCancel = false) {
+        // 1. 双指捏合结束：启动冷却保护期
+        //    中断场景下 e.touches 可能仍残留触点记录，故一律强制复位
         if (isPinching) {
-            if (e.touches.length === 0) {
+            if (isCancel || e.touches.length === 0) {
                 isPinching = false;
-                pinchCooldownUntil = performance.now() + 350;
-                if (appState.macroZoom < 1.06) {
+                pinchCooldownUntil = performance.now() + PINCH_COOLDOWN_MS;
+                if (appState.macroZoom < MACRO_ZOOM_SNAP_THRESHOLD) {
                     resetMacroZoom();
                 }
             }
@@ -422,7 +452,9 @@ export function setupInputEvents() {
             return;
         }
 
+        // 2. 通用指针与笔画状态清理
         appState.isPointerActive = false;
+        isDraggingPan = false;
         appState.lastPointerPos = null;
         appState.currentPointerPos = null;
         appState.currentStrokeId++;
@@ -432,7 +464,10 @@ export function setupInputEvents() {
             appState.isLoupeVisible = false;
         }
 
-        const isOverModal = Boolean(e.target && e.target.closest && e.target.closest('.gallery-panel, .story-panel, .help-dialog, .brush-popup, .macro-zoom-hud'));
+        // 3. 系统中断事件到此为止：仅清理状态，绝不结算双击 / 轻扫等手势意图
+        if (isCancel) return;
+
+        const isOverModal = isEventOverModal(e);
         if (isOverModal) return;
 
         const now = performance.now();
@@ -450,7 +485,7 @@ export function setupInputEvents() {
                 const timeSinceLastTap = now - lastTapTime;
                 const tapDistFromLast = Math.hypot(endX - lastTapPos.x, endY - lastTapPos.y);
                 if (timeSinceLastTap < 320 && tapDistFromLast < 35) {
-                    if (appState.macroZoom > 1.05 || Math.abs(appState.panOffset.x) > 6 || Math.abs(appState.panOffset.y) > 6) {
+                    if (appState.macroZoom > MACRO_ZOOM_ACTIVE_THRESHOLD || Math.abs(appState.panOffset.x) > 6 || Math.abs(appState.panOffset.y) > 6) {
                         resetMacroZoom();
                         showToast('🔍 已平滑复位至全景');
                     } else {
@@ -464,7 +499,7 @@ export function setupInputEvents() {
             }
 
             // 手机端水平轻扫切画 (仅在非放大状态且非透镜模式下触发)
-            if (!appState.isLoupeEnabled && appState.macroZoom <= 1.05 && touchDuration < 420 && Math.abs(touchDx) > 68 && Math.abs(touchDx) > Math.abs(touchDy) * 1.6) {
+            if (!appState.isLoupeEnabled && appState.macroZoom <= MACRO_ZOOM_ACTIVE_THRESHOLD && touchDuration < 420 && Math.abs(touchDx) > 68 && Math.abs(touchDx) > Math.abs(touchDy) * 1.6) {
                 const total = appState.masterpieces.length;
                 if (touchDx < 0) {
                     const nextIdx = (appState.currentMasterpieceIndex + 1) % total;
@@ -475,7 +510,12 @@ export function setupInputEvents() {
                 }
             }
         }
-    });
+    }
+
+    window.addEventListener('touchend', handleTouchEnd);
+    // 系统手势打断 / 来电 / 多任务切换等场景下 touchend 不会触发，
+    // 必须监听 touchcancel 兜底清理，否则移动端触摸交互将永久失灵
+    window.addEventListener('touchcancel', (e) => handleTouchEnd(e, true));
 
     window.addEventListener('orientationchange', () => {
         setTimeout(handleResize, 180);
@@ -512,14 +552,17 @@ export function setupInputEvents() {
                 openGallery();
             } else if (e.code === 'Space') {
                 e.preventDefault();
-                toggleFullColor();
-                showToast(appState.isFullColorLocked ? '已一键盛放全幅色彩' : '已重置画布色彩', appState.isFullColorLocked ? '🌸' : '🔄');
+                // toggleFullColor 在随机漫游模式下会自行给出提示并返回 false；
+                // 此处不可再覆盖 toast，否则会把「模式不适用」误报成「已重置画布色彩」。
+                if (toggleFullColor()) {
+                    showToast(appState.isFullColorLocked ? '已一键盛放全幅色彩' : '已重置画布色彩', appState.isFullColorLocked ? '🌸' : '🔄');
+                }
             } else if (e.key === 'm' || e.key === 'M' || e.key === 'z' || e.key === 'Z') {
                 e.preventDefault();
                 toggleLoupe();
             } else if (e.key === '0' || e.key === 'r' || e.key === 'R') {
                 e.preventDefault();
-                if (appState.macroZoom > 1.05 || Math.abs(appState.panOffset.x) > 5 || Math.abs(appState.panOffset.y) > 5) {
+                if (appState.macroZoom > MACRO_ZOOM_ACTIVE_THRESHOLD || Math.abs(appState.panOffset.x) > 5 || Math.abs(appState.panOffset.y) > 5) {
                     resetMacroZoom();
                     showToast('🔍 已平滑复位至全景');
                 }
@@ -539,11 +582,7 @@ export function setupInputEvents() {
         }
     });
 
-    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
-    if (isTouchDevice) {
-        const hintTextEl = document.getElementById('hint-text');
-        if (hintTextEl) {
-            hintTextEl.textContent = '轻触划动指尖唤醒色彩 · 长按可充能绽放';
-        }
-    }
+    // 提示语统一由 updateHintText 生成（内部自行判定粗指针设备），
+    // 避免此处与模式切换路径各自维护一份文案而产生措辞分叉。
+    updateHintText(appState.appMode);
 }
