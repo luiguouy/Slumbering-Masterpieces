@@ -3,7 +3,7 @@
  * 传世名画博览馆 · 核心主入口装配中枢
  */
 
-import { elements, appState, config, scratchConfig, initMasterpieces } from './state.js';
+import { elements, appState, config, scratchConfig, initMasterpieces, toThumbSrc } from './state.js';
 import { preloadPool } from './utils/preload-pool.js';
 import {
     handleResize,
@@ -84,7 +84,7 @@ function initEngineInterconnect() {
             if (quoteAuthorEl) quoteAuthorEl.textContent = art.quoteAuthor;
 
             if (currentArtThumb) {
-                currentArtThumb.src = art.src;
+                currentArtThumb.src = toThumbSrc(art.src);
                 currentArtThumb.alt = art.title;
             }
             if (currentArtTitle) currentArtTitle.textContent = art.title;

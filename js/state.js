@@ -40,6 +40,9 @@ export const elements = {
     fullColorBtnText: document.getElementById('full-color-btn-text'),
 
     // 模式切换与随机漫游控制 UI 元素
+    modeSwitcher: document.getElementById('mode-switcher'),
+    mswSleepBtn: document.getElementById('msw-sleep-btn'),
+    mswScratchBtn: document.getElementById('msw-scratch-btn'),
     modeSleepBtn: document.getElementById('mode-sleep-btn'),
     modeScratchBtn: document.getElementById('mode-scratch-btn'),
     sleepModeControls: document.getElementById('sleep-mode-controls'),
@@ -102,6 +105,7 @@ export const elements = {
     storyToggleBtn: document.getElementById('story-toggle-btn'),
     brushStoryBtn: document.getElementById('brush-story-btn'),
     storyDrawer: document.getElementById('story-drawer'),
+    storySheetHandle: document.getElementById('story-sheet-handle'),
     storyBackdrop: document.getElementById('story-backdrop'),
     storyCloseBtn: document.getElementById('story-close-btn'),
     storyTitle: document.getElementById('story-title'),
@@ -256,6 +260,22 @@ export const appState = {
     currentMasterpieceIndex: 0,
     masterpieces: []
 };
+
+/**
+ * 由原图地址推导缩略图地址
+ *
+ * 画廊与画笔面板只需 54px 的缩略图，却加载 2~26MB 的原图，
+ * 滚动一屏（24 张）就会拉取几十 MB。assets/thumbs/ 下存放长边 400px 的 WebP
+ * （全部 315 张合计 7.4MB），此处做纯字符串映射，无需改动数据源。
+ * @param {string} src 原图地址，如 assets/images/foo.jpg?v=4.2.0
+ * @returns {string} 缩略图地址，如 assets/thumbs/foo.webp
+ */
+export function toThumbSrc(src) {
+    if (!src) return '';
+    return String(src)
+        .replace('/images/', '/thumbs/')
+        .replace(/\.(jpg|jpeg|png)(\?[^#]*)?$/i, '.webp');
+}
 
 // 初始化名画数据源
 export function initMasterpieces() {

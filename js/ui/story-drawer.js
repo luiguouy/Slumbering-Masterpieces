@@ -11,6 +11,36 @@ export function registerStoryCallbacks({ onSwitchArt }) {
     onSwitchMasterpiece = onSwitchArt;
 }
 
+// 底部上拉卡片仅在窄屏启用；桌面仍走右侧抽屉
+const MOBILE_SHEET_QUERY = '(max-width: 640px)';
+
+function isSheetMode() {
+    return !!(window.matchMedia && window.matchMedia(MOBILE_SHEET_QUERY).matches);
+}
+
+/**
+ * 设置移动端卡片高度档位
+ * @param {'half'|'full'} level half = 与画作同屏；full = 完全展开
+ */
+export function setSheetLevel(level) {
+    const { storyDrawer } = elements;
+    if (!storyDrawer) return;
+    if (!isSheetMode()) {
+        delete storyDrawer.dataset.sheet;
+        return;
+    }
+    storyDrawer.dataset.sheet = (level === 'full') ? 'full' : 'half';
+}
+
+/**
+ * 在半屏与全屏之间切换
+ */
+export function toggleSheetLevel() {
+    const { storyDrawer } = elements;
+    if (!storyDrawer || !isSheetMode()) return;
+    storyDrawer.dataset.sheet = (storyDrawer.dataset.sheet === 'full') ? 'half' : 'full';
+}
+
 /**
  * 更新名画故事抽屉的内容
  */
@@ -57,6 +87,8 @@ export function openStory() {
         updateStoryContent(currentArt);
     }
 
+    // 先定档位再 open，避免出现「未定档 → 面板停在屏幕外」的空帧
+    setSheetLevel('half');
     document.body.classList.add('story-open');
     storyDrawer.classList.add('open');
     storyDrawer.setAttribute('aria-hidden', 'false');
@@ -71,6 +103,7 @@ export function closeStory() {
     document.body.classList.remove('story-open');
     storyDrawer.classList.remove('open');
     storyDrawer.setAttribute('aria-hidden', 'true');
+    delete storyDrawer.dataset.sheet;
     appState.isCursorActive = false;
 }
 
@@ -90,7 +123,7 @@ export function toggleStory() {
  * 初始化故事交互事件监听
  */
 export function setupStoryUI() {
-    const { storyToggleBtn, brushStoryBtn, storyCloseBtn, storyBackdrop, storyPrevBtn, storyNextBtn } = elements;
+    const { storyToggleBtn, brushStoryBtn, storyCloseBtn, storyBackdrop, storyPrevBtn, storyNextBtn, storyDrawer, storySheetHandle } = elements;
 
     if (storyToggleBtn) {
         storyToggleBtn.addEventListener('click', (e) => {
@@ -140,6 +173,38 @@ export function setupStoryUI() {
             const total = appState.masterpieces.length;
             const nextIdx = (appState.currentMasterpieceIndex + 1) % total;
             if (onSwitchMasterpiece) onSwitchMasterpiece(nextIdx);
+        });
+    }
+
+    // 移动端上拉卡片：拖拽把手或点击标题栏在半屏 / 全屏之间切换
+    if (storySheetHandle) {
+        const toggle = (e) => {
+            e.stopPropagation();
+            toggleSheetLevel();
+        };
+        storySheetHandle.addEventListener('click', toggle);
+        storySheetHandle.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleSheetLevel();
+            }
+        });
+    }
+
+    if (storyDrawer) {
+        const header = storyDrawer.querySelector('.story-header');
+        if (header) {
+            header.addEventListener('click', (e) => {
+                // 关闭按钮等自身已有处理，不重复触发
+                if (e.target.closest('button')) return;
+                if (!isSheetMode()) return;
+                toggleSheetLevel();
+            });
+        }
+
+        // 视口变宽（切回桌面布局）时清掉档位，避免残留 data-sheet 影响右侧抽屉
+        window.addEventListener('resize', () => {
+            if (!isSheetMode()) delete storyDrawer.dataset.sheet;
         });
     }
 }

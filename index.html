@@ -60,6 +60,17 @@
             <div class="loupe-rim-highlight"></div>
         </div>
 
+        <!-- 一级模式切换：两种核心玩法常驻可见，不再藏在画笔弹层里 -->
+        <div id="mode-switcher" class="mode-switcher" role="group" aria-label="体验模式切换">
+            <button id="msw-sleep-btn" class="mode-switch-btn active" type="button" title="触摸灰阶画作，用指尖唤醒色彩">
+                <span class="mode-switch-icon">🌸</span><span class="mode-switch-label">沉睡唤醒</span>
+            </button>
+            <button id="msw-scratch-btn" class="mode-switch-btn" type="button" title="擦去当前画作，露出背后的下一幅随机名画">
+                <span class="mode-switch-icon">🎲</span><span class="mode-switch-label">随机漫游</span>
+            </button>
+            <div id="mode-switch-hint" class="mode-switch-hint">← 两种玩法，切换试试</div>
+        </div>
+
         <!-- 入场首次操作情境呼呼吸引导提示 (首次划动或数秒后自然晨雾般淡出) -->
         <div id="interactive-hint" class="interactive-hint">
             <div class="hint-ripple-icon">
@@ -78,7 +89,7 @@
         <!-- 屏幕左下角：极简典雅操作与快捷键指南按钮 -->
         <div class="help-trigger-wrap">
             <button id="help-toggle-btn" class="help-toggle-btn" type="button" title="查看操作与键盘快捷键指南 (快捷键: ? 或 H)" aria-label="操作指南">
-                <span class="help-btn-icon">⌨️</span>
+                <span class="help-btn-icon">?</span>
                 <span class="help-btn-text">操作指南</span>
             </button>
         </div>
@@ -237,13 +248,7 @@
                 </svg>
             </button>
             <div id="brush-popup" class="brush-popup">
-                <!-- 交互模式选择：沉睡唤醒 vs 随机漫游 (分段选项卡，高亮直观，无冗余重复) -->
-                <div class="mode-tabs">
-                    <button id="mode-sleep-btn" class="fit-tab-btn active" type="button" title="触碰沉睡的静谧灰阶，用指尖唤醒稍纵即逝的真彩">🌸 沉睡唤醒</button>
-                    <button id="mode-scratch-btn" class="fit-tab-btn" type="button" title="原画直出，划动擦去当前画作，露出背后的下一幅随机名画">🎲 随机漫游</button>
-                </div>
-                <div class="brush-popup-divider"></div>
-
+                <!-- 模式切换已提升为画布上的一级控件（#mode-switcher），此处不再重复 -->
                 <div class="brush-popup-row">
                     <span class="brush-label">画笔大小</span>
                     <span id="brush-size-display" class="brush-value">75px</span>
@@ -379,6 +384,8 @@
         <div id="story-drawer" class="story-drawer" aria-hidden="true">
             <div id="story-backdrop" class="story-backdrop"></div>
             <aside class="story-panel" role="dialog" aria-modal="true" aria-labelledby="story-title">
+                <!-- 移动端上拉卡片的拖拽/切换把手（桌面端隐藏，点击可切换半屏与全屏） -->
+                <div id="story-sheet-handle" class="story-sheet-handle" aria-label="切换卡片高度" role="button" tabindex="0"></div>
                 <div class="story-header">
                     <div class="story-header-left">
                         <span class="story-header-icon">📜</span>

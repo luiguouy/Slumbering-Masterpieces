@@ -3,7 +3,7 @@
  * 传世名画博览馆 · 典藏搜索、多维流派题材分类、分批虚拟滚动与卡片交互抽屉
  */
 
-import { elements, contexts, appState, config, scratchConfig, GENRE_DEFINITIONS, galleryFilterState } from '../state.js';
+import { elements, contexts, appState, config, scratchConfig, GENRE_DEFINITIONS, galleryFilterState, toThumbSrc } from '../state.js';
 import { refreshLayout, markDirty, renderGrayscaleBackground } from '../engine/canvas-engine.js';
 import { resetMacroZoom } from '../engine/macro-loupe.js';
 import { toggleFullColor } from './brush-panel.js';
@@ -116,6 +116,7 @@ export function createGalleryCard({ art, index }) {
     }
 
     const safeSrc = escapeHtml(art.src);
+    const safeThumb = escapeHtml(toThumbSrc(art.src));
     const safeTitle = escapeHtml(art.title);
     const safeEnTitle = escapeHtml(art.enTitle);
     const safeArtist = escapeHtml(art.artist);
@@ -123,8 +124,8 @@ export function createGalleryCard({ art, index }) {
     const safeCat = escapeHtml(catLabel);
 
     card.innerHTML = `
-        <div class="card-thumb-box">
-            <img class="card-thumb-img" src="${safeSrc}" alt="${safeTitle}" loading="lazy" decoding="async" fetchpriority="low" width="54" height="54">
+        <div class="card-thumb-box is-loading">
+            <img class="card-thumb-img" src="${safeThumb}" alt="${safeTitle}" loading="lazy" decoding="async" fetchpriority="low" width="54" height="54" data-full-src="${safeSrc}">
         </div>
         <div class="card-details">
             <div class="card-header-row">
@@ -139,6 +140,24 @@ export function createGalleryCard({ art, index }) {
             </div>
         </div>
     `;
+
+    // 骨架屏：缩略图加载完成后撤掉占位动画；若缩略图缺失则回退原图，
+    // 避免旧版本部署或个别生成失败时出现空缩略图。
+    const thumbImg = card.querySelector('.card-thumb-img');
+    const thumbBox = card.querySelector('.card-thumb-box');
+    if (thumbImg && thumbBox) {
+        const settle = () => thumbBox.classList.remove('is-loading');
+        thumbImg.addEventListener('load', settle);
+        thumbImg.addEventListener('error', () => {
+            const full = thumbImg.getAttribute('data-full-src');
+            if (full && thumbImg.src.indexOf(full) === -1) {
+                thumbImg.src = full;
+            } else {
+                settle();
+            }
+        });
+        if (thumbImg.complete && thumbImg.naturalWidth > 0) settle();
+    }
 
     card.addEventListener('click', () => {
         switchMasterpiece(index);
@@ -418,7 +437,8 @@ export function switchMasterpiece(index) {
 
     // 3. 更新画笔面板当前名画卡片展示与徽章
     if (currentArtThumb) {
-        currentArtThumb.src = art.src;
+        // 面板里只显示 54px，用 400px 的 WebP 缩略图即可，避免为一个小头像拉 2~26MB 原图
+        currentArtThumb.src = toThumbSrc(art.src);
         currentArtThumb.alt = art.title;
     }
     if (currentArtTitle) currentArtTitle.textContent = art.title;

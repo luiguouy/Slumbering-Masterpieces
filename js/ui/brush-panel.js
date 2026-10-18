@@ -172,6 +172,7 @@ export function setAppMode(mode) {
 
     const {
         modeSleepBtn, modeScratchBtn, sleepModeControls, scratchModeControls,
+        mswSleepBtn, mswScratchBtn,
         scratchHud, scratchHudPercent, scratchHudFill, scratchRatioDisplay,
         scratchMiniBarFill, fullColorBtnText, toggleFullColorBtn
     } = elements;
@@ -179,6 +180,9 @@ export function setAppMode(mode) {
 
     if (modeSleepBtn) modeSleepBtn.classList.toggle('active', mode === 'sleep');
     if (modeScratchBtn) modeScratchBtn.classList.toggle('active', mode === 'scratch');
+    // 一级切换控件的激活态与模式严格同步（它是主入口，不能与弹层状态脱节）
+    if (mswSleepBtn) mswSleepBtn.classList.toggle('active', mode === 'sleep');
+    if (mswScratchBtn) mswScratchBtn.classList.toggle('active', mode === 'scratch');
 
     if (sleepModeControls) sleepModeControls.style.display = (mode === 'sleep') ? 'block' : 'none';
     if (scratchModeControls) scratchModeControls.style.display = (mode === 'scratch') ? 'block' : 'none';
@@ -234,6 +238,7 @@ export function setAppMode(mode) {
 export function setupBrushUI() {
     const {
         brushToggleBtn, brushPopup, modeSleepBtn, modeScratchBtn,
+        mswSleepBtn, mswScratchBtn,
         scratchThresholdSlider, scratchThresholdDisplay, scratchHudTargetVal,
         scratchRevealNowBtn, brushSlider, brushDurationSlider, colorRatioSlider,
         toggleFullColorBtn, fitAutoBtn, fitContainBtn, fitCoverBtn,
@@ -242,7 +247,29 @@ export function setupBrushUI() {
 
     if (!brushToggleBtn || !brushPopup) return;
 
-    // 模式切换按钮
+    // 用户一旦主动切换，立即收起首次引导气泡（不等 8 秒动画结束）
+    const dismissSwitchHint = () => {
+        const hint = document.getElementById('mode-switch-hint');
+        if (hint) hint.style.display = 'none';
+    };
+
+    // 一级模式切换（画布常驻胶囊）
+    if (mswSleepBtn) {
+        mswSleepBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dismissSwitchHint();
+            setAppMode('sleep');
+        });
+    }
+    if (mswScratchBtn) {
+        mswScratchBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dismissSwitchHint();
+            setAppMode('scratch');
+        });
+    }
+
+    // 模式切换按钮（旧弹层入口，弹层内已移除，保留绑定以兼容历史入口）
     if (modeSleepBtn) {
         modeSleepBtn.addEventListener('click', (e) => {
             e.stopPropagation();
