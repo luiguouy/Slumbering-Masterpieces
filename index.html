@@ -411,7 +411,16 @@
                         <span id="story-location" class="location-val">欧洲著名国家美术馆</span>
                     </div>
 
-                    <!-- 1. 创作背景与时代典故 -->
+                    <!-- 1. 画中故事 · 画面叙事（先看画里正在发生什么，再看它怎么来的） -->
+                    <div class="story-card-block story-card-narrative">
+                        <div class="story-block-title">
+                            <span class="block-icon">🎭</span>
+                            <span>画中故事 · 画面叙事</span>
+                        </div>
+                        <p id="story-narrative" class="story-block-text"></p>
+                    </div>
+
+                    <!-- 2. 创作背景与时代典故 -->
                     <div class="story-card-block">
                         <div class="story-block-title">
                             <span class="block-icon">🏛️</span>
@@ -420,7 +429,7 @@
                         <p id="story-context" class="story-block-text"></p>
                     </div>
 
-                    <!-- 2. 艺术看点与构图密码 -->
+                    <!-- 3. 艺术看点与构图密码 -->
                     <div class="story-card-block">
                         <div class="story-block-title">
                             <span class="block-icon">🔍</span>
@@ -429,7 +438,7 @@
                         <p id="story-appreciation" class="story-block-text"></p>
                     </div>
 
-                    <!-- 3. 大师心声名言卡片 -->
+                    <!-- 4. 大师心声名言卡片 -->
                     <div class="story-quote-box">
                         <div class="story-quote-symbol">“</div>
                         <p id="story-quote-text" class="story-quote-text"></p>
@@ -540,6 +549,8 @@
 
     <!-- 传世名画博览馆数据库 -->
     <script src="data/masterpieces.js?v=4.6.0"></script>
+    <!-- 名画「画中故事」叙事库（逐幅精写，须先于 art_stories.js 加载） -->
+    <script src="data/art_narratives.js?v=4.6.0"></script>
     <!-- 名画背景故事与艺术鉴赏智库 -->
     <script src="data/art_stories.js?v=4.6.0"></script>
     <!-- 核心渲染与交互脚本 (原生 ES Module 模块化架构) -->

@@ -1775,6 +1775,20 @@ body.help-open #custom-cursor {
     text-align: justify;
 }
 
+/* 画中故事：叙事主体，用香槟金左边线与略亮的底色，与下方「创作背景」的考据内容区分 */
+.story-card-narrative {
+    background: rgba(238, 214, 170, 0.07);
+    border-color: rgba(238, 214, 170, 0.32);
+    border-left: 2px solid #eed6aa;
+    border-radius: 0 8px 8px 0;
+}
+
+.story-card-narrative .story-block-text {
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.95rem;
+    line-height: 1.85;
+}
+
 /* 大师名言卡片 */
 .story-quote-box {
     position: relative;

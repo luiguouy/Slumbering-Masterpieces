@@ -94,7 +94,7 @@
         },
 
         // --- 维米尔 ---
-        "vermeer_girl_with_a_pearl_earring": {
+        "vermeer_pearl_earring": {
             period: "荷兰黄金时代 (1665)",
             location: "荷兰海牙莫瑞泰斯皇家美术馆",
             context: "被誉为'北方的蒙娜丽莎'。这幅作品并非传统意义上的贵族订制肖像，而是一幅荷兰风俗画中典型的'面部习作'（Tronie）。少女身着异国情调的土耳其东方蓝黄头巾与棕色外套，在纯粹无杂质的深暗背景前微微回首，嘴唇微张，仿佛欲言又止，散发着跨越时空的谜样吸引力。",
@@ -128,7 +128,7 @@
             context: "艺术史的划时代原点！1872年11月的一个清晨，莫奈在法国勒阿弗尔港口的旅馆窗前，远眺晨雾中的码头起重机与桅杆，急速挥毫记录下红日初升时瞬息万变的光影。1874年这幅画在摄影师纳达尔的工作室展出时，批评家路易·勒鲁瓦嘲讽其'连未完成的墙纸都比它完整'，并轻蔑地取其标题发明了'印象主义'（Impressionism）一词，不料却开启了现代艺术的新纪元。",
             appreciation: "莫奈完全抛弃了古典学院派平滑细腻的罩染过渡，改以粗犷飞扬的断续笔触直接捕捉视觉瞬间。一轮橙红色的朝阳在灰蓝浓雾中燃烧，海浪上跳跃着短短几笔明艳夺目的桔红倒影。近处两艘小舟仅以寥寥数笔深黑剪影勾勒，却将港湾破晓时的冷暖对比、空气流动感与呼吸感演绎到了极致。"
         },
-        "monet_water_lilies": {
+        "monet_water_lilies_sunset_orangerie": {
             period: "晚年印象主义巅峰长卷 (1914-1926)",
             location: "法国巴黎橘园美术馆 / 莫奈吉维尼花园",
             context: "莫奈晚年在吉维尼隐居的花园池塘中，以日本桥与睡莲为终极主题创作了数百幅系列作品。一战爆发后，莫奈忍受着白内障几近失明的双眼折磨，在巨大画布上日夜追逐日光云影与清溪水流的呼吸，并将这批巨幅长卷作为和平纪念无偿捐赠给法兰西共和国，永久陈列于橘园美术馆的椭圆展厅。",
@@ -154,7 +154,7 @@
             context: "1888年盛夏，梵高来到法国南部阿尔勒，梦想建立'南方画室'艺术家公社。为了迎接他仰慕的挚友保罗·高更到来，梵高以狂热的激情连续绘制了一系列向日葵装饰高更的房间。向日葵在烈日下盛开、干枯、结籽，正如梵高燃烧自己全部生命能量所拥抱的艺术与友谊。",
             appreciation: "金黄色的色彩交响变奏曲。梵高几乎完全依靠明黄、中黄、土黄与赭石色系，却在极为微小的色相纯度差异中，构建出饱满丰盈的立体空间。粗犷厚重的黄色颜料层层堆叠，花盘宛如炽热微缩的太阳；从含苞待放到垂首枯槁，十四朵向日葵勾勒出生命的全部轮回与不屈的生命尊严。"
         },
-        "vangogh_cafe_terrace_at_night": {
+        "vangogh_night_cafe": {
             period: "阿尔勒星夜系列首作 (1888)",
             location: "荷兰奥特洛克罗勒-穆勒博物馆",
             context: "梵高在阿尔勒市中心论坛广场实地写生的夜晚名作。梵高曾兴奋地写信给妹妹：'这是我第一次在没有一丝黑色的情况下画夜景！夜色完全是由纯净的深蓝、紫罗兰与绿色调配出的，而受光耀的咖啡馆露台则呈现为耀眼的硫磺黄与香橼绿。'",
@@ -220,7 +220,7 @@
         },
 
         // --- 修拉 ---
-        "seurat_sunday_on_la_grande_jatte": {
+        "seurat_sunday_afternoon": {
             period: "新印象派/点彩画法巅峰 (1886)",
             location: "美国芝加哥艺术博物馆",
             context: "乔治·修拉耗时两年、画了数十幅草图完成的新印象主义宏伟宣言。描绘了巴黎市民在塞纳河畔大碗岛度过惬意周日午后的悠闲全景。画中汇聚了撑伞的贵妇、划艇的水手、遛宠物的夫妇与奔跑的孩童，整幅画呈现出古埃及浮雕般的秩序庄严感。",
@@ -241,6 +241,33 @@
             appreciation: "扭曲变形的心灵图景。前景的主角骷髅般的面孔惨白变形，双手捂住双耳，嘴巴张开成空洞的椭圆，似乎既是尖叫者，也是无法承受天地尖叫的受难者。血红色的天空如熔岩般压迫地平线，笔直向后延伸的血色木栏与波浪形扭曲的峡湾线条形成剧烈拉扯，将现代人内心孤独、异化与深渊般的恐惧刻画得淋漓尽致。"
         }
     };
+
+    /**
+     * 为「本无情节」的画作生成画面内容说明
+     *
+     * 风景、静物、肖像与部分风俗画并不叙述事件，硬编一个"故事"等于造假。
+     * 这里如实告诉观者：这类画的内容就是画面本身，并点明该题材的观看方式。
+     * 叙事类画作（神话宗教 / 历史故事）一律由 data/art_narratives.js 逐幅提供，
+     * 不走此兜底。
+     */
+    function buildGenericNarrative(art) {
+        const genre = art.genre || '';
+        const title = art.title || '这幅画';
+
+        if (genre.includes("风景") || genre.includes("自然")) {
+            return `《${title}》没有人物与情节，它画的是一片正在被看见的景色：天光、水面、草木与空气在某一刻的具体状态。风景画的「故事」不在画里，而在画家抬头的那几分钟。`;
+        }
+        if (genre.includes("静物") || genre.includes("花卉")) {
+            return `《${title}》没有事件：花枝、果实与器皿被并置在桌面上，光从一侧落下。静物画用新鲜与衰败的并置暗示时间正在流过，观者看到的其实是「正在变化的一瞬」。`;
+        }
+        if (genre.includes("肖像") || genre.includes("人物")) {
+            return `《${title}》是一个被定住的人：他（她）以特定的姿态、衣着与目光面向画外，背景被处理成衬托。肖像不讲故事，它只把某个具体的人在某一刻固定下来，其余生平留给观者去补。`;
+        }
+        if (genre.includes("风俗") || genre.includes("生活")) {
+            return `《${title}》是一幕日常：画中人在各自的活计里，动作停在最自然的那一刻。没有神话，也没有史诗，故事就是这段生活本身被完整地看了一眼。`;
+        }
+        return `《${title}》呈现了一个自足的视觉场景，画面重心落在人物与环境的关系上，情节并未展开，而是被凝固在一个静止的瞬间。`;
+    }
 
     /**
      * 智能生成算法：当画作无专属特写故事时，依据画作的艺术时代、流派、作者与题材，
@@ -323,15 +350,25 @@
         return {
             period: matchedCat.period,
             location: matchedCat.defaultLoc,
+            narrative: resolveNarrative(art),
             context: `《${title}》是世界殿堂级艺术大师 ${artist} 的传世代表佳作。${matchedCat.bgEssence} ${genreNote} 这幅画作历经数百年岁月沉淀，依然散发着摄人心魄的艺术生命力。`,
             appreciation: `${matchedCat.craftEssence} 在《${title}》中，画家以极具辨识度的笔触质感与色彩层次，建构出无可挑剔的画面韵律与视觉张力，每一个细节都经得起后世观者长久的驻足与凝视。`
         };
     }
 
     /**
+     * 解析「画中故事」的最终文案
+     * 优先级：逐幅精写的叙事库 → 题材兜底的画面说明
+     */
+    function resolveNarrative(art) {
+        const curated = window.ART_NARRATIVES && art && art.id ? window.ART_NARRATIVES[art.id] : '';
+        return curated || buildGenericNarrative(art || {});
+    }
+
+    /**
      * 统一检索接口：为任意画作提供详实专业的背景故事与鉴赏密码
      * @param {Object} art MASTERPIECES 数组中的画作对象
-     * @returns {Object} 包含 period, location, context, appreciation, quote 等属性
+     * @returns {Object} 包含 narrative, period, location, context, appreciation, quote 等属性
      */
     window.getArtworkStory = function (art) {
         if (!art) return null;
@@ -348,6 +385,7 @@
                 genre: art.genre,
                 period: featured.period,
                 location: featured.location,
+                narrative: resolveNarrative(art),
                 context: featured.context,
                 appreciation: featured.appreciation,
                 quote: art.quote || '',
@@ -364,6 +402,7 @@
             genre: art.genre,
             period: generated.period,
             location: generated.location,
+            narrative: generated.narrative,
             context: generated.context,
             appreciation: generated.appreciation,
             quote: art.quote || '',

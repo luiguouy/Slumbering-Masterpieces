@@ -110,6 +110,7 @@ export const elements = {
     storyPeriod: document.getElementById('story-period'),
     storyGenre: document.getElementById('story-genre'),
     storyLocation: document.getElementById('story-location'),
+    storyNarrative: document.getElementById('story-narrative'),
     storyContext: document.getElementById('story-context'),
     storyAppreciation: document.getElementById('story-appreciation'),
     storyQuoteText: document.getElementById('story-quote-text'),

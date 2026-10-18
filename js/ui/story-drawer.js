@@ -21,7 +21,8 @@ export function updateStoryContent(art) {
 
     const {
         storyTitle, storyEntitle, storyArtist, storyPeriod, storyGenre,
-        storyLocation, storyContext, storyAppreciation, storyQuoteText, storyQuoteAuthor
+        storyLocation, storyNarrative, storyContext, storyAppreciation,
+        storyQuoteText, storyQuoteAuthor
     } = elements;
 
     if (storyTitle) storyTitle.textContent = story.title;
@@ -30,6 +31,8 @@ export function updateStoryContent(art) {
     if (storyPeriod) storyPeriod.textContent = story.period;
     if (storyGenre) storyGenre.textContent = story.genre;
     if (storyLocation) storyLocation.textContent = story.location;
+    // 画中故事：讲画面里正在发生什么（与下方「创作背景」互补：一个讲画的内容，一个讲画的来历）
+    if (storyNarrative) storyNarrative.textContent = story.narrative || '';
     if (storyContext) storyContext.textContent = story.context;
     if (storyAppreciation) storyAppreciation.textContent = story.appreciation;
     if (storyQuoteText) storyQuoteText.textContent = story.quote;
