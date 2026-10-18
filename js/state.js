@@ -27,6 +27,7 @@ export const elements = {
     artStage: document.getElementById('art-stage'),
 
     // 画笔控制 UI 元素
+    brushControl: document.getElementById('brush-control'),
     brushToggleBtn: document.getElementById('brush-toggle-btn'),
     brushPopup: document.getElementById('brush-popup'),
     brushSlider: document.getElementById('brush-size-slider'),
@@ -223,6 +224,9 @@ export const appState = {
     isFullColorLocked: false,
     isCursorActive: false,
     isQuoteSubtle: false,
+    // 正在拖拽浮动控件（画笔按钮）时为真：拖拽全程必须屏蔽画布涂抹与透镜判定，
+    // 否则指针划过画布会被当成「挥毫涂抹」，留下一道意外的笔迹。
+    isFloatingPanelDragging: false,
 
     // 渲染循环控制
     isDirty: true,

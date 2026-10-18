@@ -190,11 +190,29 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+    /* 可自由拖拽：grab 手势提示「这里能抓住」，touch-action:none 让触屏拖动不被滚动手势抢走 */
+    cursor: grab;
+    touch-action: none;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 拖拽中：切抓手光标，并冻结 hover 的放大与滤镜，避免跟随移动时抖动 */
+body.is-panel-dragging .brush-btn,
+body.is-panel-dragging .brush-btn:hover {
+    cursor: grabbing;
+    transform: none;
+    background: rgba(28, 34, 44, 0.9);
+    border-color: rgba(238, 214, 170, 0.85);
+    color: #eed6aa;
+    transition: none;
+}
+
+/* 自定义位置后取消右锚点，交由内联 left/top 决定 */
+.brush-control-panel.is-custom-position {
+    right: auto;
 }
 
 .brush-btn:hover {

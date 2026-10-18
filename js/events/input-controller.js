@@ -23,6 +23,8 @@ const MACRO_ZOOM_SNAP_THRESHOLD = 1.06;
  * @param {boolean} includeMacroHud 是否将微距缩放胶囊一并视为浮层
  */
 function isEventOverModal(e, includeMacroHud = true) {
+    // 拖拽浮动控件期间，指针会掠过画布，但任何命中都不应被当作画面交互
+    if (appState.isFloatingPanelDragging) return true;
     if (!e.target || !e.target.closest) return false;
     const selector = includeMacroHud ? `${MODAL_SELECTOR}, ${MACRO_HUD_SELECTOR}` : MODAL_SELECTOR;
     return Boolean(e.target.closest(selector));

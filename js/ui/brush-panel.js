@@ -232,6 +232,254 @@ export function setAppMode(mode) {
     }
 }
 
+/* ==========================================================================
+ * 🖐️ 画笔按钮自由拖拽
+ * 右上角的画笔按钮默认锚定右上角，但每位观者顺手的位置不同（左利手、平板握持、
+ * 竖屏单手操作……）。这里允许把它拖到画布任意位置，并持久化相对位置。
+ *
+ * 三个不变量：
+ *   1. 拖拽全程置 appState.isFloatingPanelDragging，屏蔽画布涂抹与透镜判定；
+ *   2. 位置始终夹在视口内，且按「相对比例」记忆，换设备/转屏不会跑到屏幕外；
+ *   3. 弹层跟随按钮翻转对齐，靠右下角时向上展开，靠左侧时左对齐，永不出界。
+ * ========================================================================== */
+
+const PANEL_POS_STORAGE_KEY = 'artweb.brushPanelPos.v1';
+const PANEL_EDGE_MARGIN = 8;       // 与视口边缘的最小间距
+const PANEL_DRAG_THRESHOLD = 4;    // 超过该位移才判定为拖拽（区分点击与拖拽）
+
+let panelDragState = null;         // { pointerId, startX, startY, originX, originY, moved }
+let suppressPanelClick = false;    // 拖拽结束后吞掉紧随其后的那次 click
+
+function hasCustomPanelPosition() {
+    const el = elements.brushControl;
+    return Boolean(el && el.classList.contains('is-custom-position'));
+}
+
+function clampPanelXY(x, y) {
+    const el = elements.brushControl;
+    const w = (el && el.offsetWidth) || 42;
+    const h = (el && el.offsetHeight) || 42;
+    const maxX = Math.max(PANEL_EDGE_MARGIN, window.innerWidth - w - PANEL_EDGE_MARGIN);
+    const maxY = Math.max(PANEL_EDGE_MARGIN, window.innerHeight - h - PANEL_EDGE_MARGIN);
+    return {
+        x: Math.min(Math.max(PANEL_EDGE_MARGIN, x), maxX),
+        y: Math.min(Math.max(PANEL_EDGE_MARGIN, y), maxY)
+    };
+}
+
+/**
+ * 弹层跟随按钮定位：水平方向默认右对齐，左侧放不下时改左对齐；
+ * 垂直方向默认向下展开，下方不够则翻到按钮上方。
+ */
+function positionBrushPopup() {
+    const { brushControl, brushPopup } = elements;
+    if (!brushControl || !brushPopup) return;
+
+    const cRect = brushControl.getBoundingClientRect();
+    const pw = brushPopup.offsetWidth || 234;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // 水平：先试右对齐（弹层右缘 ≈ 按钮右缘），越界则左对齐，最后再夹一次
+    let popupLeft = cRect.right - pw;
+    if (popupLeft < PANEL_EDGE_MARGIN) popupLeft = cRect.left;
+    popupLeft = Math.min(
+        Math.max(PANEL_EDGE_MARGIN, popupLeft),
+        Math.max(PANEL_EDGE_MARGIN, vw - pw - PANEL_EDGE_MARGIN)
+    );
+    brushPopup.style.left = `${Math.round(popupLeft - cRect.left)}px`;
+    brushPopup.style.right = 'auto';
+
+    // 垂直：用 scrollHeight 而非 offsetHeight 取「自然高度」——
+    // offsetHeight 已被上一轮写入的 max-height 截断过，用它判断会形成反馈循环，
+    // 导致拖到屏幕下半部时永远判为「放得下」而不翻转。
+    const naturalH = brushPopup.scrollHeight || brushPopup.offsetHeight || 0;
+    const spaceBelow = vh - cRect.bottom - 10 - PANEL_EDGE_MARGIN;
+    const spaceAbove = cRect.top - 10 - PANEL_EDGE_MARGIN;
+
+    // 下方放不完整、且上方余量更多 → 向上展开；否则向下，并把高度收到可用空间内滚动显示
+    const goUp = naturalH > spaceBelow && spaceAbove > spaceBelow;
+    const avail = Math.max(120, goUp ? spaceAbove : spaceBelow);
+
+    brushPopup.style.maxHeight = naturalH > avail ? `${Math.round(avail)}px` : '';
+
+    if (goUp) {
+        brushPopup.style.top = 'auto';
+        brushPopup.style.bottom = 'calc(100% + 10px)';
+    } else {
+        brushPopup.style.top = 'calc(100% + 10px)';
+        brushPopup.style.bottom = 'auto';
+    }
+}
+
+/**
+ * 将按钮放到视口坐标 (x, y)。坐标以视口左上角为原点，内部换算成相对舞台的偏移。
+ */
+function applyPanelPosition(x, y, { persist = false } = {}) {
+    const el = elements.brushControl;
+    if (!el) return;
+
+    const pos = clampPanelXY(x, y);
+    const parent = el.offsetParent || el.parentElement;
+    const parentRect = parent ? parent.getBoundingClientRect() : { left: 0, top: 0 };
+
+    el.style.left = `${Math.round(pos.x - parentRect.left)}px`;
+    el.style.top = `${Math.round(pos.y - parentRect.top)}px`;
+    el.style.right = 'auto';
+    el.classList.add('is-custom-position');
+
+    if (persist) {
+        const maxX = Math.max(1, window.innerWidth - (el.offsetWidth || 42));
+        const maxY = Math.max(1, window.innerHeight - (el.offsetHeight || 42));
+        try {
+            localStorage.setItem(PANEL_POS_STORAGE_KEY, JSON.stringify({
+                x: Number((pos.x / maxX).toFixed(4)),
+                y: Number((pos.y / maxY).toFixed(4))
+            }));
+        } catch (err) {
+            // 隐私模式 / 存储禁用时静默降级为「本次会话有效」
+        }
+    }
+
+    positionBrushPopup();
+}
+
+/** 恢复上次拖拽位置（按比例换算，跨分辨率与转屏均安全） */
+function restorePanelPosition() {
+    const el = elements.brushControl;
+    if (!el) return;
+
+    let saved = null;
+    try {
+        saved = JSON.parse(localStorage.getItem(PANEL_POS_STORAGE_KEY) || 'null');
+    } catch (err) {
+        saved = null;
+    }
+    if (!saved || typeof saved.x !== 'number' || typeof saved.y !== 'number') return;
+
+    const maxX = Math.max(1, window.innerWidth - (el.offsetWidth || 42));
+    const maxY = Math.max(1, window.innerHeight - (el.offsetHeight || 42));
+    applyPanelPosition(saved.x * maxX, saved.y * maxY);
+}
+
+/** 复位到右上角默认位置（双击按钮触发） */
+function resetPanelPosition() {
+    const el = elements.brushControl;
+    if (!el) return;
+    el.style.left = '';
+    el.style.top = '';
+    el.style.right = '';
+    el.classList.remove('is-custom-position');
+    try {
+        localStorage.removeItem(PANEL_POS_STORAGE_KEY);
+    } catch (err) { /* ignore */ }
+    positionBrushPopup();
+}
+
+/**
+ * 初始化按钮拖拽（Pointer Events，鼠标 / 触屏 / 触控笔统一）
+ */
+function initDraggableBrushButton(brushToggleBtn) {
+    const el = elements.brushControl;
+    if (!el || !brushToggleBtn) return;
+
+    brushToggleBtn.addEventListener('pointerdown', (e) => {
+        // 只响应主键与单指，允许右键菜单等原生行为
+        if (e.button !== undefined && e.button !== 0) return;
+        if (!e.isPrimary) return;
+
+        suppressPanelClick = false;
+
+        const rect = el.getBoundingClientRect();
+        panelDragState = {
+            pointerId: e.pointerId,
+            startX: e.clientX,
+            startY: e.clientY,
+            originX: rect.left,
+            originY: rect.top,
+            moved: false
+        };
+
+        // 捕获指针：拖出按钮范围后仍持续收到 move 事件
+        try {
+            brushToggleBtn.setPointerCapture(e.pointerId);
+        } catch (err) { /* 部分旧浏览器不支持，退化为普通事件流 */ }
+    });
+
+    brushToggleBtn.addEventListener('pointermove', (e) => {
+        if (!panelDragState || e.pointerId !== panelDragState.pointerId) return;
+
+        const dx = e.clientX - panelDragState.startX;
+        const dy = e.clientY - panelDragState.startY;
+
+        if (!panelDragState.moved) {
+            if (Math.hypot(dx, dy) < PANEL_DRAG_THRESHOLD) return;
+            panelDragState.moved = true;
+            // 拖拽期间屏蔽画布涂抹 / 透镜判定，并复位悬停缩放避免抖动
+            appState.isFloatingPanelDragging = true;
+            document.body.classList.add('is-panel-dragging');
+        }
+
+        if (e.cancelable) e.preventDefault();
+        applyPanelPosition(panelDragState.originX + dx, panelDragState.originY + dy);
+    });
+
+    const endDrag = (e) => {
+        if (!panelDragState || (e.pointerId !== undefined && e.pointerId !== panelDragState.pointerId)) return;
+
+        const moved = panelDragState.moved;
+        const rect = el.getBoundingClientRect();
+
+        panelDragState = null;
+        appState.isFloatingPanelDragging = false;
+        document.body.classList.remove('is-panel-dragging');
+
+        try {
+            if (brushToggleBtn.hasPointerCapture(e.pointerId)) {
+                brushToggleBtn.releasePointerCapture(e.pointerId);
+            }
+        } catch (err) { /* ignore */ }
+
+        if (moved) {
+            suppressPanelClick = true;
+            applyPanelPosition(rect.left, rect.top, { persist: true });
+        }
+    };
+
+    brushToggleBtn.addEventListener('pointerup', endDrag);
+    brushToggleBtn.addEventListener('pointercancel', endDrag);
+    // 兜底：指针捕获在个别环境失败时，松手位置可能落在按钮之外，
+    // 若不接住会让 isFloatingPanelDragging 卡在 true，后续整页都无法涂抹。
+    window.addEventListener('pointerup', endDrag);
+    window.addEventListener('pointercancel', endDrag);
+
+    // 双击复位：拖到角落抓不回来时的逃生通道
+    brushToggleBtn.addEventListener('dblclick', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        resetPanelPosition();
+        showToast('🧭 画笔按钮已复位到右上角', '🧭');
+    });
+
+    // 视口变化：自定义位置重新夹紧，默认位置重新对齐弹层
+    window.addEventListener('resize', () => {
+        if (hasCustomPanelPosition()) {
+            const rect = el.getBoundingClientRect();
+            applyPanelPosition(rect.left, rect.top);
+        } else {
+            positionBrushPopup();
+        }
+    });
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', () => {
+            if (hasCustomPanelPosition()) {
+                const rect = el.getBoundingClientRect();
+                applyPanelPosition(rect.left, rect.top);
+            }
+        });
+    }
+}
+
 /**
  * 绑定画笔控制面板事件
  */
@@ -305,8 +553,14 @@ export function setupBrushUI() {
     // 点击切换调节面板展开/收起
     brushToggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        // 拖拽结束时浏览器仍会补发一次 click，这里吞掉，避免「拖完顺手弹出面板」
+        if (suppressPanelClick) {
+            suppressPanelClick = false;
+            return;
+        }
         const isOpen = brushPopup.classList.toggle('open');
         brushToggleBtn.classList.toggle('active', isOpen);
+        if (isOpen) positionBrushPopup();
     });
 
     // 画笔大小滑块
@@ -416,4 +670,9 @@ export function setupBrushUI() {
     setFitMode(config.fitMode);
     setScale(config.scale);
     setAppMode(appState.appMode);
+
+    // 画笔按钮自由拖拽（须在 setAppMode 之后：弹层内容高度已确定，翻转判定才准确）
+    initDraggableBrushButton(brushToggleBtn);
+    restorePanelPosition();
+    positionBrushPopup();
 }
