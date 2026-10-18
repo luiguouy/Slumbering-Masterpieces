@@ -29,3 +29,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Agent & Browser Tooling Local State
+.workbuddy/
+.playwright-cli/
+

@@ -127,7 +127,10 @@
    - 沉睡模式：底层灰阶 + 顶层全彩遮罩投射；
    - 漫游模式：底层全彩新画 + 顶层暗色画廊防护罩与当前画，通过 `destination-in` 动态抠取擦除孔洞；
 4. **最近 30 幅防重复随机漫游池**：
-   - 内置 FIFO 队列，确保观者在连续擦画漫游过程中不会频繁遇到同一幅作品。
+   - 内置 FIFO 队列，确保观者在连续擦画漫游过程中不会频繁遇到同一幅作品；
+5. **零外部请求与本地字体托管**：
+   - 标题衬线字体 Cormorant Garamond 以 **latin 子集 woff2** 形式内置于 `assets/fonts/`（约 88 KB），通过 `unicode-range` 精确声明加载范围，中文由系统衬线字体回退；
+   - 全站不再依赖任何 CDN 或外链，断网、离线双击 `index.html` 亦可完整呈现原本的排版质感。
 
 ---
 
@@ -144,10 +147,13 @@ Slumbering-Masterpieces/
 │   └── masterpieces.js             # 传世油画名作博览馆核心数据库 (315幅)
 ├── assets/                         # 艺术与演示资源目录
 │   ├── demo/                       # 🎬 交互演示动图、高清截图与演示视频 (GIF / MP4 / PNG)
+│   ├── fonts/                      # 🔤 Cormorant Garamond 本地托管子集 (latin, woff2, ~88KB)
 │   └── images/                     # 🖼️ 315 幅传世高清油画原图资产库
 ├── docs/                           # 官方规范与标准文档
 │   ├── ART_SELECTION_SPEC.md       # 🏛️ 传世名画博览馆油画收录与准入规范 (v1.0.0)
-│   └── COLLECTED_ARTWORKS.md       # 📋 传世著名油画已收录台账总览表 (315幅全量台账)
+│   ├── COLLECTED_ARTWORKS.md       # 📋 传世著名油画已收录台账总览表 (315幅全量台账)
+│   ├── CODE_REVIEW.md              # 🔍 代码审查与两轮缺陷修复实录
+│   └── ORPHAN_ASSETS.md            # 🗂️ 未收录图片台账 (81 项，可从 git 历史恢复)
 └── scripts/                        # 资产抓取、清洗与自动化演示生成工具脚本
     └── generate_demos.py           # 自动化 Playwright + FFmpeg 演示录制脚本
 ```
