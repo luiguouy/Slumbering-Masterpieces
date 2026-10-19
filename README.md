@@ -1,8 +1,7 @@
 # 🎨 Slumbering Masterpieces (沉睡的名画)
 
 > **Fine Arts Digital Exhibition · An Interactive Chromatic Awakening & Random Wander**  
-> *“I must have flowers, always, and always.” —— Claude Monet*  
-> *触碰沉睡的静谧灰阶，用指尖的温度唤醒绚烂盛放；或挥毫漫游擦拭画卷，在图层交错间探寻下一幅旷世杰作。*
+> *拂过静谧的黑白画卷，唤醒沉睡五百年的璀璨真彩；或挥毫漫游擦拭画卷，在图层交错间探寻下一幅旷世杰作。*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-amber.svg)](https://opensource.org/licenses/MIT)
 [![Technology: Vanilla JS](https://img.shields.io/badge/Technology-Vanilla%20JS%20%7C%20HTML5%20Canvas-336699.svg)](#)
