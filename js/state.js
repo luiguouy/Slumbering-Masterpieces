@@ -12,7 +12,7 @@ export const LOUPE_CSS_SIZE = 220;
 // 事件命中判定与透镜隐匿判定统一引用，避免各处硬编码导致漏改
 // 注意 .brush-control-panel 是画笔面板「容器」（含底部按钮坞），
 // .brush-popup 仅是其内部展开的弹层，两者都需登记
-export const MODAL_SELECTOR = '.gallery-panel, .story-panel, .help-dialog, .brush-control-panel, .brush-popup';
+export const MODAL_SELECTOR = '.gallery-panel, .story-panel, .help-dialog, .brush-control-panel, .brush-popup, .gallery-backdrop, .story-backdrop, .help-backdrop, .gallery-drawer, .story-drawer, .help-modal';
 export const MACRO_HUD_SELECTOR = '.macro-zoom-hud';
 
 // 核心画布与界面元素
@@ -21,6 +21,7 @@ export const elements = {
     revealCanvas: document.getElementById('reveal-canvas'),
     artQuote: document.getElementById('art-quote'),
     quoteTextEl: document.querySelector('#art-quote .quote-text'),
+    quoteTransEl: document.querySelector('#art-quote .quote-trans'),
     quoteAuthorEl: document.querySelector('#art-quote .quote-author'),
     cursor: document.getElementById('custom-cursor'),
     cursorRing: document.querySelector('#custom-cursor .cursor-ring'),
@@ -224,6 +225,7 @@ export const appState = {
     isFullColorLocked: false,
     isCursorActive: false,
     isQuoteSubtle: false,
+    isQuoteVisible: false,       // 是否显示名画哲思题词 (默认隐藏，快捷键 Q/T 可切换)
     // 正在拖拽浮动控件（画笔按钮）时为真：拖拽全程必须屏蔽画布涂抹与透镜判定，
     // 否则指针划过画布会被当成「挥毫涂抹」，留下一道意外的笔迹。
     isFloatingPanelDragging: false,
@@ -270,7 +272,7 @@ export const appState = {
  *
  * 画廊与画笔面板只需 54px 的缩略图，却加载 2~26MB 的原图，
  * 滚动一屏（24 张）就会拉取几十 MB。assets/thumbs/ 下存放长边 400px 的 WebP
- * （全部 315 张合计 7.4MB），此处做纯字符串映射，无需改动数据源。
+ * （全部 420 张合计 7.4MB），此处做纯字符串映射，无需改动数据源。
  * @param {string} src 原图地址，如 assets/images/foo.jpg?v=4.2.0
  * @returns {string} 缩略图地址，如 assets/thumbs/foo.webp
  */

@@ -1,5 +1,236 @@
 /* ==========================================================================
    Masterpiece Garden - Pure Fine Art Stylesheet (v3.0.0)
+   Swiss International Typographic Style Refactoring (Milestone 1)
+   ========================================================================== */
+
+/* ==========================================================================
+   PART 1: DESIGN TOKENS & CSS CUSTOM PROPERTIES (:root)
+   Swiss International Typographic Style · 8pt Modular System · Baseline Grid
+   ========================================================================== */
+
+:root {
+    /* --------------------------------------------------------------------------
+       1. SPATIAL TOKENS (8pt System & 4pt Sub-grid)
+       -------------------------------------------------------------------------- */
+    --space-1:  4px;    /* 0.5x: Micro gap, tag padding, slider rail */
+    --space-2:  8px;    /* 1.0x: Base rhythm unit, component gap */
+    --space-3: 12px;    /* 1.5x: Compact padding, medium gap */
+    --space-4: 16px;    /* 2.0x: Card padding, modular spacing, mobile margin */
+    --space-5: 20px;    /* 2.5x: Tablet margin, large component gap */
+    --space-6: 24px;    /* 3.0x: Baseline line height, standard grid gutter */
+    --space-8: 32px;    /* 4.0x: Section padding, tablet margin */
+    --space-10: 40px;   /* 5.0x: Large structural margin */
+    --space-12: 48px;   /* 6.0x: Drawer header spacing, macro buffer */
+    --space-16: 64px;   /* 8.0x: Widescreen desktop margin, hero negative space */
+
+    /* --------------------------------------------------------------------------
+       2. VERTICAL BASELINE GRID & TYPOGRAPHIC SCALES
+       -------------------------------------------------------------------------- */
+    --baseline:         24px;
+    --baseline-grid:    24px;
+    --baseline-half:    12px;
+    --baseline-quarter:  6px;
+    --baseline-micro:    4px;
+
+    /* Typographic Harmonic Scale (Major Second & Minor Third Hybrid) */
+    --font-xs:   0.75rem;   /* 12px */
+    --font-sm:   0.875rem;  /* 14px */
+    --font-base: 1.000rem;  /* 16px */
+    --font-md:   1.125rem;  /* 18px */
+    --font-lg:   1.250rem;  /* 20px */
+    --font-xl:   1.500rem;  /* 24px */
+    --font-2xl:  2.000rem;  /* 32px */
+    --font-3xl:  2.500rem;  /* 40px */
+    --font-4xl:  3.000rem;  /* 48px */
+
+    /* Typographic Weight Tokens (Müller-Brockmann Weight Hierarchy) */
+    --font-weight-light:    300;   /* Classical Latin display */
+    --font-weight-regular:  400;   /* Standard body, narrative appreciation */
+    --font-weight-medium:   500;   /* Curatorial metadata, active pills, authors */
+    --font-weight-semibold: 600;   /* Titles, section headers, badges, kbd */
+    --font-weight-bold:     700;   /* Critical metrics, hotkey icons */
+
+    /* Explicit Baseline-Locked Line Heights */
+    --lh-xs: 18px;          /* 0.75 baseline */
+    --lh-sm: 24px;          /* 1.0 baseline */
+    --lh-base-px: 24px;     /* 1.0 baseline */
+    --lh-md: 24px;          /* 1.0 baseline */
+    --lh-lg: 36px;          /* 1.5 baseline */
+    --lh-xl: 36px;          /* 1.5 baseline */
+    --lh-2xl: 48px;         /* 2.0 baseline */
+    --lh-3xl: 48px;         /* 2.0 baseline */
+    --lh-4xl: 60px;         /* 2.5 baseline */
+
+    /* Proportional Line Heights */
+    --lh-none:    1;
+    --lh-tight:   1.25;     /* Display & Headings */
+    --lh-snug:    1.35;     /* Card titles & compact blocks */
+    --lh-normal:  1.5;      /* 24px line-height on 16px font - perfect 1.0 baseline */
+    --lh-base:    1.5;      /* Canonical body line-height */
+    --lh-relaxed: 1.75;     /* Narrative art appreciation text */
+
+    /* Universal Font Stacks (Western Classical + Humanist CJK Fallbacks) */
+    --font-serif:     'Cormorant Garamond', 'Songti SC', 'Source Han Serif SC', 'Noto Serif SC', 'SimSun', Georgia, serif;
+    --font-serif-art: 'Cormorant Garamond', 'Songti SC', 'Source Han Serif SC', 'Noto Serif CJK SC', 'Noto Serif SC', 'STSong', 'SimSun', Georgia, 'Times New Roman', serif;
+    --font-sans:       -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    --font-sans-swiss: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Source Han Sans SC', 'Noto Sans SC', sans-serif;
+    --font-mono:      'SF Mono', 'Roboto Mono', 'Menlo', Consolas, monospace;
+    --font-mono-num:  'SF Mono', 'Roboto Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+    /* Typographic Tracking & Ergonomic Reading Measures */
+    --tracking-tight:  -0.02em;     /* Display title compression */
+    --tracking-normal:  0em;        /* Standard text */
+    --tracking-wide:    0.05em;     /* Section sub-headers */
+    --tracking-loose:   0.12em;     /* Micro labels, uppercase tags */
+    --measure-latin:    65ch;       /* Western optimal measure: 45~75 chars */
+    --measure-cjk:      38em;       /* CJK optimal measure: 30~45 characters */
+
+    /* --------------------------------------------------------------------------
+       3. SWISS GRID SYSTEM & LAYOUT CONSTRAINTS
+       -------------------------------------------------------------------------- */
+    --grid-columns:   12;
+    --grid-gutter:    24px;
+    --grid-margin:    clamp(24px, 5vw, 64px);
+    --grid-max-width: 1440px;
+    --max-width:      1440px;
+
+    /* Müller-Brockmann Margin Proportions (2:3:4:6) */
+    --margin-inner:   16px;         /* 2 * unit: Inner boundary */
+    --margin-top:     24px;         /* 3 * unit: Top baseline header */
+    --margin-outer:   32px;         /* 4 * unit: Outer margin buffer */
+    --margin-bottom:  48px;         /* 6 * unit: Bottom optical gravity base */
+
+    /* --------------------------------------------------------------------------
+       4. SEMANTIC COLOR SYSTEM
+       -------------------------------------------------------------------------- */
+    /* Dark Surface & Atmospheric Canvas Elevations */
+    --color-bg-stage:               #0d0f12;                     /* Primary deep obsidian void */
+    --color-bg-deep:                #080a0d;                     /* Recessed input wells & tracks */
+    --color-surface-base:           #10141b;                     /* Solid fallback for selects/drawers */
+    --color-surface-base-alpha:     rgba(14, 18, 24, 0.94);       /* Standard side drawer panels */
+    --color-surface-elevated:       #141822;                     /* High-elevation solid */
+    --color-surface-elevated-alpha: rgba(16, 20, 26, 0.96);       /* High-elevation modal dialogs */
+    --color-surface-floating:       rgba(13, 16, 20, 0.78);       /* Floating HUDs & capsules */
+    --color-surface-card:           rgba(22, 28, 38, 0.70);       /* Nested card backgrounds */
+    --color-surface-card-hover:     rgba(30, 38, 52, 0.85);       /* Card hover illumination */
+    --color-surface-input:          rgba(8, 10, 14, 0.85);        /* Search & text input fields */
+
+    /* Classical Warm Gold & Brass Accents */
+    --color-accent-gold:            #eed6aa;                     /* Canonical champagne gold */
+    --color-accent-gold-vibrant:    #ffd700;                     /* Brilliant pure gold (High contrast) */
+    --color-accent-brass:           #c5a059;                     /* Rich antique brass */
+    --color-accent-brass-alt:       #c9a463;                     /* Warm intermediate brass */
+    --color-accent-gold-metallic:   #d4af37;                     /* Classic metallic gold */
+    --color-accent-gold-light:      #f7e7b4;                     /* Pale luxury gold sheen */
+    --color-accent-bronze:          #8b6834;                     /* Dark structural bronze */
+    --color-accent-umber:           #59411e;                     /* Deep umber wood shadow */
+    --color-ink-dark:               #1a1408;                     /* Deep umber ink (AAA text on active gold) */
+
+    /* Structured Gold Alpha Ladder (Expanded for M4 Purity) */
+    --color-gold-alpha-05:          rgba(238, 214, 170, 0.05);   /* Ambient tint, unselected hover */
+    --color-gold-alpha-08:          rgba(238, 214, 170, 0.08);   /* Subtle hover & track tint */
+    --color-gold-alpha-10:          rgba(238, 214, 170, 0.10);   /* Subtle dividers, inactive tab borders */
+    --color-gold-alpha-12:          rgba(238, 214, 170, 0.12);   /* Soft accent wash */
+    --color-gold-alpha-15:          rgba(238, 214, 170, 0.15);   /* Tag backgrounds, slider rails */
+    --color-gold-alpha-18:          rgba(238, 214, 170, 0.18);   /* Intermediate tint */
+    --color-gold-alpha-20:          rgba(238, 214, 170, 0.20);   /* Intermediate button fill */
+    --color-gold-alpha-25:          rgba(238, 214, 170, 0.25);   /* Standard card & popup borders */
+    --color-gold-alpha-30:          rgba(238, 214, 170, 0.30);   /* Secondary active borders */
+    --color-gold-alpha-35:          rgba(238, 214, 170, 0.35);   /* Capsule border & chip stroke */
+    --color-gold-alpha-40:          rgba(238, 214, 170, 0.40);   /* Active borders, focused rings */
+    --color-gold-alpha-50:          rgba(238, 214, 170, 0.50);   /* Slider thumb & reticle stroke */
+    --color-gold-alpha-70:          rgba(238, 214, 170, 0.70);   /* High-emphasis strokes & icons */
+    --color-gold-alpha-80:          rgba(238, 214, 170, 0.80);   /* Primary focus & radiant stroke */
+
+    /* Text & Legibility Hierarchy */
+    --color-text-primary:           #ffffff;                     /* Pure white headings & active text */
+    --color-text-secondary:         rgba(255, 255, 255, 0.85);   /* Standard high-contrast reading text */
+    --color-text-muted:             rgba(255, 255, 255, 0.60);   /* Secondary meta, shortcuts, hints */
+    --color-text-subtle:            rgba(255, 255, 255, 0.35);   /* Micro captions, disabled units */
+    --color-border-subtle:          rgba(255, 255, 255, 0.08);   /* Hairline separators & wells */
+    --color-overlay-hover:          rgba(255, 255, 255, 0.04);   /* Universal hover surface flash */
+
+    /* Atmospheric Mist & Curatorial Tags */
+    --color-mist-slate:             #d8e6f8;                     /* Soft celestial blue-slate metadata */
+    --color-mist-light:             #e2e8f0;                     /* Neutral parchment slate */
+    --color-tag-period:             #eed6aa;                     /* Period tag text (Curatorial gold) */
+    --color-tag-period-bg:          rgba(238, 214, 170, 0.10);   /* Period tag background */
+    --color-tag-period-border:      rgba(238, 214, 170, 0.25);   /* Period tag border */
+    --color-tag-genre:              #7da4b8;                     /* Genre tag text (Muted slate) */
+    --color-tag-genre-bg:           rgba(125, 164, 184, 0.12);   /* Genre tag background */
+    --color-tag-genre-border:       rgba(125, 164, 184, 0.25);   /* Genre tag border */
+    --color-locked-border:          rgba(160, 220, 255, 0.60);   /* Scratch locked state border */
+    --color-locked-glow:            rgba(160, 220, 255, 0.30);   /* Scratch locked state aura */
+    --color-active-slate-border:    rgba(160, 190, 230, 0.50);   /* Full-color mode active border */
+
+    /* Scrims, Shadows & Luxury Illumination */
+    --color-backdrop:               rgba(0, 0, 0, 0.65);         /* Standard drawer & modal scrim */
+    --color-backdrop-deep:          rgba(0, 0, 0, 0.85);         /* Full-immersion sheet mask */
+    --shadow-sm:                    0 2px 8px rgba(0, 0, 0, 0.25);
+    --shadow-md:                    0 8px 24px rgba(0, 0, 0, 0.45);
+    --shadow-lg:                    0 16px 48px rgba(0, 0, 0, 0.65);
+    --shadow-inset:                 inset 0 1px 1px rgba(0, 0, 0, 0.40);
+    --shadow-keycap:                0 1px 0 rgba(255, 255, 255, 0.15), 0 2px 4px rgba(0, 0, 0, 0.50);
+    --shadow-sheet:                 0 -8px 32px rgba(0, 0, 0, 0.75);
+    --shadow-glow-gold-sm:          0 0 8px rgba(238, 214, 170, 0.60);
+    --shadow-glow-gold:             0 0 24px rgba(238, 214, 170, 0.15);
+    --shadow-glow-gold-lg:          0 4px 16px rgba(238, 214, 170, 0.25);
+    --text-shadow-deep:             0 2px 8px rgba(0, 0, 0, 0.85);
+    --text-shadow-sm:               0 1px 4px rgba(0, 0, 0, 0.85);
+    --text-shadow-gold:             0 0 8px rgba(238, 214, 170, 0.60);
+
+    /* --------------------------------------------------------------------------
+       5. GEOMETRIC BORDER RADIUSES (8pt System Aligned)
+       -------------------------------------------------------------------------- */
+    --radius-xs:        2px;        /* Technical sliders & tick marks */
+    --radius-sm:        4px;        /* Badges, tags, shortcut keys, sub-controls */
+    --radius-md:        8px;        /* Cards, preview boxes, popup panels, inputs */
+    --radius-lg:        16px;       /* Modal dialogs, drawer corners */
+    --radius-xl:        24px;       /* Large floating capsules, grand sheets */
+    --radius-full:      9999px;     /* Pill buttons, capsules, toggle switches */
+    --radius-pill:      9999px;     /* Pill button alias */
+    --radius-sheet-top: 16px 16px 0 0; /* Mobile bottom sheet top radius */
+    --radius-circle:    50%;        /* Circular buttons, reticles, loupe rim */
+
+    /* --------------------------------------------------------------------------
+       5B. GLASSMORPHISM & ATMOSPHERIC BLUR
+       -------------------------------------------------------------------------- */
+    --blur-sm:          8px;        /* Sub-controls, subtle glass */
+    --blur-md:          12px;       /* Floating capsules, mode switchers */
+    --blur-lg:          16px;       /* Popup panels, zoom HUDs */
+    --blur-xl:          24px;       /* High-immersion drawers & modal dialogs */
+
+    /* --------------------------------------------------------------------------
+       6. STRUCTURED 10-STEP Z-INDEX HIERARCHY (PROJECT.md Line 56 Compliant)
+       -------------------------------------------------------------------------- */
+    --z-stage:           1;         /* Base canvas stage (#bg-canvas) */
+    --z-canvas:          2;         /* Color reveal mask (#reveal-canvas) */
+    --z-quote:          10;         /* Philosophical quote in sky (.art-quote-container) */
+    --z-hud:            20;         /* Ambient hints & progress (.interactive-hint, .scratch-hud) */
+    --z-controls:       30;         /* Navigation & tool panels (.mode-switcher, .brush-control-panel) */
+    --z-drawer-backdrop:40;         /* Gallery & Story drawer dark backdrop */
+    --z-drawer:         50;         /* Gallery Drawer & Story Drawer panels */
+    --z-modal-backdrop: 60;         /* Help modal dark backdrop */
+    --z-modal:          70;         /* Help modal dialog (.help-dialog) */
+    --z-toast:          80;         /* Status toasts (.mode-toast) */
+    --z-loupe:          90;         /* Classical brass magnifying lens overlay */
+    --z-cursor:        100;         /* Fine art custom cursor follower (#custom-cursor) */
+    --z-topmost:       110;         /* Critical protocol error banner (#protocol-hint) */
+
+    /* --------------------------------------------------------------------------
+       7. MOTION, TIMING & ERGONOMIC ANCHORS
+       -------------------------------------------------------------------------- */
+    --duration-fast:    150ms;      /* Micro-interactions & hover transitions */
+    --duration-base:    250ms;      /* Button presses & toggle switches */
+    --duration-slow:    350ms;      /* Drawer sliding & modal scale entrance */
+    --duration-hero:    1200ms;     /* Quote fade & atmospheric canvas transitions */
+    --ease-out:         cubic-bezier(0.16, 1, 0.3, 1); /* Swiss smooth decelerate */
+    --optical-center:   45%;        /* Vertical optical balance center (44% - 46%) */
+}
+
+/* ==========================================================================
+   PART 2: RESET & SWISS TYPOGRAPHIC RHYTHM
+   Standard: Josef Müller-Brockmann Baseline Grid (L_base = 24px)
    ========================================================================== */
 
 *, *::before, *::after {
@@ -8,17 +239,528 @@
     box-sizing: border-box;
 }
 
+html {
+    font-size: 16px;
+    line-height: var(--lh-base, 1.5);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: var(--font-serif-art, var(--font-serif, 'Cormorant Garamond', Georgia, serif));
+    font-size: var(--font-base, 16px);
+    line-height: var(--lh-base, 1.5);
+    letter-spacing: var(--tracking-normal, 0);
+    line-break: strict;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* 标题与展示性文本自动平衡折行 (Prevent Orphan Words) */
+h1, h2, h3, h4,
+.art-title,
+.story-main-title,
+.gallery-main-title,
+.help-main-title,
+.quote-text,
+.quote-trans {
+    text-wrap: balance;
+}
+
+/* 叙事段落与长文本避头尾孤字优化 (Orphan Suppression) */
+p,
+.story-narrative-text,
+.story-block-text,
+.mechanic-desc,
+.shortcut-desc {
+    text-wrap: pretty;
+}
+
+/* 按钮、输入框、控制面板默认使用现代瑞士无衬线体系 */
+button, input, select, textarea, kbd, label {
+    font-family: var(--font-sans-swiss, var(--font-sans, -apple-system, sans-serif));
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* 等宽数值与度量防抖 (Tabular Numbers) */
+.mono-num,
+.tabular-nums,
+.brush-value,
+.brush-badge,
+.scratch-hud-val,
+.macro-zoom-val,
+.picker-index,
+.meta-num,
+kbd {
+    font-family: var(--font-mono-num, var(--font-mono, monospace)) !important;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+}
+
+/* --------------------------------------------------------------------------
+   Headings Mathematical Closure Rules (h1 ~ h6)
+   Formula: Margin-top + Line-height + Margin-bottom = k * 24px (k in Z+)
+   -------------------------------------------------------------------------- */
+h1, .h1 {
+    font-family: var(--font-serif-art, var(--font-serif, serif));
+    font-size: var(--font-2xl, 32px);
+    line-height: var(--lh-2xl, 48px);
+    font-weight: 400;
+    letter-spacing: var(--tracking-tight, -0.02em);
+    margin-top: 48px;
+    margin-bottom: 24px;
+    /* Total: 48 + 48 + 24 = 120px = 5 * 24px (k = 5) */
+}
+
+h1.compact, .h1-compact {
+    margin-top: 24px;
+    margin-bottom: 24px;
+    /* Total: 24 + 48 + 24 = 96px = 4 * 24px (k = 4) */
+}
+
+h2, .h2 {
+    font-family: var(--font-serif-art, var(--font-serif, serif));
+    font-size: var(--font-xl, 24px);
+    line-height: var(--lh-xl, 36px);
+    font-weight: 500;
+    letter-spacing: var(--tracking-normal, 0);
+    margin-top: 36px;
+    margin-bottom: 24px;
+    /* Total: 36 + 36 + 24 = 96px = 4 * 24px (k = 4) */
+}
+
+h2.compact, .h2-compact {
+    margin-top: 24px;
+    margin-bottom: 12px;
+    /* Total: 24 + 36 + 12 = 72px = 3 * 24px (k = 3) */
+}
+
+h3, .h3 {
+    font-family: var(--font-serif-art, var(--font-serif, serif));
+    font-size: var(--font-lg, 20px);
+    line-height: var(--lh-lg, 36px);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide, 0.05em);
+    margin-top: 24px;
+    margin-bottom: 12px;
+    /* Total: 24 + 36 + 12 = 72px = 3 * 24px (k = 3) */
+}
+
+h3.compact, .h3-compact {
+    line-height: var(--lh-md, 24px);
+    margin-top: 12px;
+    margin-bottom: 12px;
+    /* Total: 12 + 24 + 12 = 48px = 2 * 24px (k = 2) */
+}
+
+h4, .h4 {
+    font-family: var(--font-sans-swiss, var(--font-sans, sans-serif));
+    font-size: var(--font-md, 18px);
+    line-height: var(--lh-md, 24px);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide, 0.05em);
+    margin-top: 24px;
+    margin-bottom: 24px;
+    /* Total: 24 + 24 + 24 = 72px = 3 * 24px (k = 3) */
+}
+
+h4.compact, .h4-compact {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    /* Total: 12 + 24 + 12 = 48px = 2 * 24px (k = 2) */
+}
+
+h5, .h5 {
+    font-family: var(--font-sans-swiss, var(--font-sans, sans-serif));
+    font-size: var(--font-base, 16px);
+    line-height: var(--lh-base, 24px);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide, 0.05em);
+    margin-top: 12px;
+    margin-bottom: 12px;
+    /* Total: 12 + 24 + 12 = 48px = 2 * 24px (k = 2) */
+}
+
+h6, .h6 {
+    font-family: var(--font-sans-swiss, var(--font-sans, sans-serif));
+    font-size: var(--font-xs, 12px);
+    line-height: var(--lh-sm, 24px);
+    font-weight: 600;
+    letter-spacing: var(--tracking-loose, 0.12em);
+    text-transform: uppercase;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    /* Total: 12 + 24 + 12 = 48px = 2 * 24px (k = 2) */
+}
+
+/* 相邻兄弟标题折叠修正 (Adjacent Sibling Margin Collapse Corrections) */
+h1 + h2, .h1 + .h2 { margin-top: 12px; }
+h2 + h3, .h2 + .h3 { margin-top: 12px; }
+h3 + h4, .h3 + .h4 { margin-top: 12px; }
+h1 + p, h2 + p, h3 + p, h4 + p { margin-top: 0px; }
+
+/* --------------------------------------------------------------------------
+   Paragraphs, Quotes & Reading Measure
+   -------------------------------------------------------------------------- */
+p {
+    font-size: var(--font-base, 16px);
+    line-height: var(--lh-base, 24px);
+    margin-top: 0;
+    margin-bottom: 24px;
+    /* Total: 24 + 24 = 48px = 2 * 24px (k = 2) */
+}
+
+p.compact, .p-compact {
+    font-size: var(--font-sm, 14px);
+    line-height: var(--lh-sm, 24px);
+    margin-top: 0;
+    margin-bottom: 12px;
+    /* Total: 24 + 12 = 36px (Pair closes at 72px = 3L) */
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+blockquote, .quote-box {
+    margin: 24px 0;
+    padding-left: 20px;
+    border-left: 4px solid var(--color-accent-gold, #eed6aa);
+}
+
+.reading-measure,
+.measure-readable {
+    max-width: var(--measure-cjk, 38em);
+}
+
+.reading-measure-latin {
+    max-width: var(--measure-latin, 65ch);
+}
+
+/* ==========================================================================
+   PART 3: SWISS GRID SYSTEM & MODULAR UTILITIES
+   International Typographic Style Grid Architecture (Josef Müller-Brockmann)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   3.1 Swiss Grid Master Container
+   -------------------------------------------------------------------------- */
+.swiss-grid {
+    width: 100%;
+    max-width: var(--grid-max-width, 1440px);
+    margin-inline: auto;
+    padding-inline: var(--grid-margin, clamp(24px, 5vw, 64px));
+    padding-top: var(--margin-top, 24px);
+    padding-bottom: var(--margin-bottom, 48px);
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns, 12), minmax(0, 1fr));
+    column-gap: var(--grid-gutter, 24px);
+    row-gap: var(--baseline, 24px);
+    box-sizing: border-box;
+}
+
+/* Edge-to-edge unconstrained grid variation */
+.swiss-grid-full {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
+    padding-inline: var(--grid-margin, clamp(24px, 5vw, 64px));
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns, 12), minmax(0, 1fr));
+    column-gap: var(--grid-gutter, 24px);
+    row-gap: var(--baseline, 24px);
+    box-sizing: border-box;
+}
+
+/* Subgrid Support for Nested Components */
+.swiss-subgrid {
+    display: grid;
+    grid-template-columns: subgrid;
+    column-gap: var(--grid-gutter, 24px);
+    row-gap: var(--baseline, 24px);
+}
+
+@supports not (grid-template-columns: subgrid) {
+    .swiss-subgrid {
+        display: grid;
+        grid-template-columns: repeat(var(--subgrid-columns, 12), minmax(0, 1fr));
+        column-gap: var(--grid-gutter, 24px);
+        row-gap: var(--baseline, 24px);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   3.1B Explicit Modular Grid Column Utilities (Milestone 4 / Feature 10)
+   -------------------------------------------------------------------------- */
+.grid-cols-12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.grid-cols-8  { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); }
+.grid-cols-6  { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.grid-cols-4  { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grid-cols-3  { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-2  { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-1  { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); }
+
+/* Dedicated Canonical 12 -> 8 -> 4 -> 2 Responsive Grid Class */
+.swiss-grid-cascade {
+    width: 100%;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns, 12), minmax(0, 1fr));
+    column-gap: var(--grid-gutter, 24px);
+    row-gap: var(--baseline, 24px);
+    box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   3.2 Column Spans (Integer Field Spanning & Gutter Absorption)
+   -------------------------------------------------------------------------- */
+.col-span-12 { grid-column: span 12 / span 12; }
+.col-span-11 { grid-column: span 11 / span 11; }
+.col-span-10 { grid-column: span 10 / span 10; }
+.col-span-9  { grid-column: span 9 / span 9; }
+.col-span-8  { grid-column: span 8 / span 8; }
+.col-span-7  { grid-column: span 7 / span 7; }
+.col-span-6  { grid-column: span 6 / span 6; }
+.col-span-5  { grid-column: span 5 / span 5; }
+.col-span-4  { grid-column: span 4 / span 4; }
+.col-span-3  { grid-column: span 3 / span 3; }
+.col-span-2  { grid-column: span 2 / span 2; }
+.col-span-1  { grid-column: span 1 / span 1; }
+
+/* --------------------------------------------------------------------------
+   3.3 Column Start & Alignment Coordinates
+   -------------------------------------------------------------------------- */
+.col-start-1  { grid-column-start: 1; }
+.col-start-2  { grid-column-start: 2; }
+.col-start-3  { grid-column-start: 3; }
+.col-start-4  { grid-column-start: 4; }
+.col-start-5  { grid-column-start: 5; }
+.col-start-6  { grid-column-start: 6; }
+.col-start-7  { grid-column-start: 7; }
+.col-start-8  { grid-column-start: 8; }
+.col-start-9  { grid-column-start: 9; }
+.col-start-10 { grid-column-start: 10; }
+.col-start-11 { grid-column-start: 11; }
+.col-start-12 { grid-column-start: 12; }
+
+/* Centered Symmetrical Column Spans */
+.col-center-10 { grid-column: 2 / span 10; }
+.col-center-8  { grid-column: 3 / span 8; }
+.col-center-6  { grid-column: 4 / span 6; }
+.col-center-4  { grid-column: 5 / span 4; }
+
+/* --------------------------------------------------------------------------
+   3.4 Module Field Boxes & Asymmetric Margin Proportions (2:3:4:6)
+   -------------------------------------------------------------------------- */
+.module-box {
+    box-sizing: border-box;
+    margin: 0;
+    padding: var(--space-4, 16px);
+    min-width: 0;
+    min-height: 0;
+    position: relative;
+}
+
+/* Exact Müller-Brockmann 2:3:4:6 Padding Dynamics */
+.module-box-asymmetric,
+.swiss-margins-asymmetric {
+    padding-top: var(--margin-top, 24px);
+    padding-right: var(--margin-outer, 32px);
+    padding-bottom: var(--margin-bottom, 48px);
+    padding-left: var(--margin-inner, 16px);
+    box-sizing: border-box;
+}
+
+/* Row Spanning (Locked to Baseline Rhythm) */
+.row-span-1 { grid-row: span 1 / span 1; }
+.row-span-2 { grid-row: span 2 / span 2; }
+.row-span-3 { grid-row: span 3 / span 3; }
+.row-span-4 { grid-row: span 4 / span 4; }
+.row-span-5 { grid-row: span 5 / span 5; }
+.row-span-6 { grid-row: span 6 / span 6; }
+
+/* --------------------------------------------------------------------------
+   3.5 Stage Grid Overlay & Optical Center Calibration
+   -------------------------------------------------------------------------- */
+.stage-grid-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: var(--z-hud, 20);
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns, 12), minmax(0, 1fr));
+    column-gap: var(--grid-gutter, 24px);
+    padding-inline: var(--grid-margin, clamp(24px, 5vw, 64px));
+    max-width: var(--grid-max-width, 1440px);
+    margin-inline: auto;
+    box-sizing: border-box;
+}
+
+.stage-grid-overlay > * {
+    pointer-events: auto;
+}
+
+/* Optical Center (45% Vertical Focal Calibration) */
+.optical-center {
+    position: absolute;
+    top: var(--optical-center, 45%);
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* --------------------------------------------------------------------------
+   3.6 Responsive Folding Cascade (12 -> 8 -> 4 -> 2)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1439px) {
+    :root {
+        --grid-max-width: 100%;
+    }
+}
+
+@media (max-width: 1023px) {
+    :root {
+        --grid-columns: 8;
+        --grid-gutter: 20px;
+        --grid-margin: 24px;
+        --margin-inner: 12px;
+        --margin-top: 18px;
+        --margin-outer: 24px;
+        --margin-bottom: 36px;
+    }
+
+    .col-span-12,
+    .col-span-11,
+    .col-span-10,
+    .col-span-9,
+    .col-span-8 {
+        grid-column: span 8 / span 8;
+    }
+
+    .col-span-7,
+    .col-span-6 {
+        grid-column: span 8 / span 8;
+    }
+
+    .col-span-5,
+    .col-span-4 {
+        grid-column: span 4 / span 4;
+    }
+
+    .col-span-3 {
+        grid-column: span 4 / span 4;
+    }
+
+    .col-span-2 {
+        grid-column: span 2 / span 2;
+    }
+
+    .col-center-10,
+    .col-center-8 {
+        grid-column: 1 / span 8;
+    }
+
+    .col-center-6 {
+        grid-column: 2 / span 6;
+    }
+
+    .col-center-4 {
+        grid-column: 3 / span 4;
+    }
+}
+
+@media (max-width: 767px) {
+    :root {
+        --grid-columns: 4;
+        --grid-gutter: 16px;
+        --grid-margin: 16px;
+        --margin-inner: 8px;
+        --margin-top: 12px;
+        --margin-outer: 16px;
+        --margin-bottom: 24px;
+    }
+
+    .col-span-12,
+    .col-span-11,
+    .col-span-10,
+    .col-span-9,
+    .col-span-8,
+    .col-span-7,
+    .col-span-6,
+    .col-span-5,
+    .col-span-4 {
+        grid-column: span 4 / span 4;
+    }
+
+    .col-span-3 {
+        grid-column: span 4 / span 4;
+    }
+
+    .col-span-2 {
+        grid-column: span 2 / span 2;
+    }
+
+    .col-center-10,
+    .col-center-8,
+    .col-center-6,
+    .col-center-4 {
+        grid-column: 1 / span 4;
+    }
+}
+
+@media (max-width: 479px) {
+    :root {
+        --grid-columns: 2;
+        --grid-gutter: 12px;
+        --grid-margin: 12px;
+    }
+
+    .col-span-12,
+    .col-span-11,
+    .col-span-10,
+    .col-span-9,
+    .col-span-8,
+    .col-span-7,
+    .col-span-6,
+    .col-span-5,
+    .col-span-4,
+    .col-span-3,
+    .col-span-2 {
+        grid-column: span 2 / span 2;
+    }
+
+    .col-span-1 {
+        grid-column: span 1 / span 1;
+    }
+
+    .col-center-10,
+    .col-center-8,
+    .col-center-6,
+    .col-center-4 {
+        grid-column: 1 / span 2;
+    }
+}
+
+/* ==========================================================================
+   PART 4: STAGE & VISUAL CANVAS OVERLAY
+   Full Viewport Immersion (100dvh) · Strict Canvas Mathematics Preservation
+   ========================================================================== */
+
 html, body {
     width: 100%;
     height: 100%;
     height: 100dvh;
     min-height: -webkit-fill-available;
     overflow: hidden;
-    background-color: #0d0f12;
+    background-color: var(--color-bg-stage, #0d0f12);
     cursor: default; /* 保证原生鼠标光标无论何时均绝不意外消失 */
     user-select: none;
     -webkit-user-select: none;
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: var(--font-serif-art, var(--font-serif, 'Cormorant Garamond', Georgia, serif));
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -27,6 +769,8 @@ html, body {
     width: 100vw;
     height: 100%;
     height: 100dvh;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
     touch-action: none; /* 彻底阻止移动端默认滚动与下拉刷新阻碍画布挥毫涂抹 */
     cursor: default;
@@ -48,7 +792,12 @@ html, body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    display: block;
+    z-index: var(--z-stage, 1);
 }
 
 /* 顶层：动态彩色唤醒 Canvas */
@@ -58,59 +807,13 @@ html, body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2;
-    pointer-events: none;
-}
-
-/* 画面中唯一切题的名人名言：悬浮于画面上方纯净天空，字迹沉静深邃 */
-.art-quote-container {
-    position: absolute;
-    top: 14%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 4;
-    text-align: center;
-    pointer-events: none;
-    max-width: 860px;
-    padding: 12px 28px;
-    background: radial-gradient(ellipse at center, rgba(15, 18, 22, 0.40) 0%, rgba(15, 18, 22, 0) 75%);
-    border-radius: 8px;
-    backdrop-filter: blur(1px);
-    -webkit-backdrop-filter: blur(1px);
-    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.quote-text {
-    font-size: clamp(1.4rem, 2.7vw, 2.4rem);
-    font-weight: 400;
-    font-style: italic;
-    letter-spacing: 0.08em;
-    color: #ffffff;
-    text-shadow: 
-        0 2px 12px rgba(0, 0, 0, 0.95),
-        0 0 24px rgba(0, 0, 0, 0.8),
-        0 1px 2px rgba(0, 0, 0, 1.0);
-    line-height: 1.45;
-    margin-bottom: 8px;
-}
-
-.quote-author {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
     display: block;
-    font-size: clamp(0.85rem, 1.15vw, 1.1rem);
-    font-weight: 400;
-    font-style: normal;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    color: #eed6aa;
-    text-shadow: 
-        0 2px 8px rgba(0, 0, 0, 0.95),
-        0 0 16px rgba(0, 0, 0, 0.8);
-}
-
-/* 交互时名言微弱隐退，让观者全神贯注于绘画本身，但依然温润可读 */
-.art-quote-container.subtle {
-    opacity: 0.60;
-    transform: translate(-50%, -52%) scale(0.99);
+    z-index: var(--z-canvas, 2);
+    pointer-events: none;
 }
 
 /* 极简典雅艺术光标 (纯净纤细白环，不遮挡与污染名画色彩) */
@@ -129,20 +832,20 @@ html, body {
 .cursor-dot {
     width: 5px;
     height: 5px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 50%;
+    background: var(--color-text-primary, #ffffff);
+    border-radius: var(--radius-circle, 50%);
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 8px var(--color-text-primary, #ffffff);
 }
 
 .cursor-ring {
     width: 36px;
     height: 36px;
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    border-radius: 50%;
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.45));
+    border-radius: var(--radius-circle, 50%);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -152,7 +855,7 @@ html, body {
 
 #custom-cursor.active .cursor-ring {
     transform: translate(-50%, -50%) scale(1.18);
-    border-color: rgba(255, 255, 255, 0.75);
+    border-color: var(--color-text-secondary, rgba(255, 255, 255, 0.75));
 }
 
 @media (pointer: coarse) {
@@ -165,205 +868,1035 @@ html, body {
 }
 
 /* ==========================================================================
-   画笔大小调节控件 (Artisan Brush Control)
+   PART 5: FLOATING HUDS & NAVIGATION CONTROLS
+   Standard: Josef Müller-Brockmann 8pt Modular System · Baseline Grid Lock (24px)
    ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Section 5.1: Art Quote Geometric Alignment (Milestone 2 Refactoring)
+   Standard: Optical Center (44%~46%) · 24px Baseline Leading · 38em/65ch Measure
+   -------------------------------------------------------------------------- */
+
+/* 全屏唯一切题名画题录名言：精准锚定 45% 视错觉光学中心 */
+.art-quote-container {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: var(--z-quote, 10);
+    text-align: center;
+    pointer-events: none;
+    width: fit-content;
+    max-width: min(768px, var(--measure-latin, 65ch), calc(100vw - 2 * var(--space-8, 32px)));
+    padding: var(--space-6, 24px) var(--space-8, 32px);
+    background: rgba(14, 16, 22, 0.92);
+    border: 1.5px solid var(--color-accent-gold, #eed6aa);
+    border-radius: var(--radius-md, 8px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85), 0 0 24px var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+}
+
+.quote-text {
+    font-family: var(--font-serif-art);
+    font-size: var(--font-xl, 1.5rem);
+    font-weight: 600;
+    font-style: normal;
+    letter-spacing: var(--tracking-normal, 0.02em);
+    color: var(--color-accent-gold-vibrant, #ffd700);
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95), 0 0 12px rgba(255, 215, 0, 0.40);
+    line-height: var(--lh-xl, 36px);
+    margin: 0;
+    margin-bottom: var(--baseline-half, 12px);
+}
+
+.quote-trans {
+    font-family: var(--font-serif-art);
+    font-size: var(--font-base, 1rem);
+    font-weight: 500;
+    font-style: normal;
+    letter-spacing: 0.03em;
+    color: var(--color-accent-gold, #eed6aa);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.90), 0 0 8px rgba(238, 214, 170, 0.35);
+    line-height: var(--lh-base-px, 24px);
+    margin: 0;
+    margin-bottom: var(--baseline-half, 12px);
+    opacity: 0.95;
+}
+
+.quote-author {
+    display: block;
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-sm, 0.875rem);
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: var(--tracking-loose, 0.18em);
+    text-transform: uppercase;
+    color: var(--color-accent-gold, #eed6aa);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
+    line-height: var(--lh-sm, 24px);
+    margin: 0;
+}
+
+/* 交互时名言微弱隐退，让观者全神贯注于绘画本身，但依然清晰可辨 */
+.art-quote-container.subtle {
+    opacity: 0.50;
+    transform: translate(-50%, calc(-50% - var(--baseline-quarter, 6px))) scale(0.98);
+}
+
+/* 快捷键显隐控制：彻底隐藏状态平滑淡出与禁用点击 */
+.art-quote-container.quote-hidden {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+    transform: translate(-50%, -50%) scale(0.95) !important;
+}
+
+/* 宽屏与平板端名言字体自适应 */
+@media (min-width: 1440px) {
+    .art-quote-container {
+        max-width: min(840px, var(--measure-latin, 65ch), calc(100vw - 2 * var(--grid-margin, 64px)));
+        padding: var(--space-6, 24px) var(--space-8, 32px);
+    }
+    .quote-text {
+        font-size: var(--font-2xl, 2rem);
+        line-height: var(--lh-2xl, 48px);
+        margin-bottom: var(--baseline, 24px);
+    }
+    .quote-author {
+        font-size: var(--font-sm, 0.875rem);
+        line-height: var(--lh-sm, 24px);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .art-quote-container {
+        max-width: min(640px, calc(100vw - 2 * var(--space-6, 24px)));
+        padding: var(--space-5, 20px) var(--space-6, 24px);
+    }
+    .quote-text {
+        font-size: var(--font-lg, 1.25rem);
+        line-height: var(--lh-lg, 36px);
+        margin-bottom: var(--baseline-half, 12px);
+    }
+    .quote-author {
+        font-size: var(--font-xs, 0.75rem);
+        line-height: var(--lh-sm, 24px);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Section 5.2: Primary Mode Switcher (#mode-switcher)
+   Baseline Lock: bottom = var(--space-6) (24px = 1 * L_base)
+   -------------------------------------------------------------------------- */
+.mode-switcher {
+    position: absolute;
+    bottom: var(--space-6, 24px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1, 4px);
+    padding: var(--space-1, 4px);
+    min-height: 48px;
+    max-width: calc(100vw - 24px);
+    box-sizing: border-box;
+    background: var(--color-surface-floating, rgba(13, 16, 20, 0.78));
+    border: 1px solid var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    border-radius: var(--radius-full, 9999px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-md, 0 8px 24px rgba(0, 0, 0, 0.45));
+    z-index: var(--z-controls, 30);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.mode-switch-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    min-height: 40px;
+    min-width: 40px;
+    box-sizing: border-box;
+    gap: var(--space-2, 8px);
+    padding: var(--space-2, 8px) var(--space-4, 16px);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-full, 9999px);
+    color: var(--color-text-secondary, rgba(255, 255, 255, 0.85));
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-sm, 0.875rem);
+    font-weight: var(--font-weight-medium, 500);
+    line-height: var(--lh-none, 1);
+    letter-spacing: var(--tracking-wide, 0.05em);
+    cursor: pointer;
+    transition: background var(--duration-fast, 150ms) ease, 
+                color var(--duration-fast, 150ms) ease, 
+                border-color var(--duration-fast, 150ms) ease,
+                transform var(--duration-fast, 150ms) ease;
+}
+
+.mode-switch-btn:hover {
+    color: var(--color-text-primary, #ffffff);
+    background: var(--color-gold-alpha-10, rgba(238, 214, 170, 0.10));
+}
+
+.mode-switch-btn.active {
+    color: var(--color-ink-dark, #1a1408);
+    background: linear-gradient(135deg, var(--color-accent-gold, #eed6aa) 0%, var(--color-accent-brass-alt, #c9a463) 100%);
+    border-color: var(--color-gold-alpha-70, rgba(238, 214, 170, 0.70));
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.mode-switch-btn:active {
+    transform: scale(0.98);
+}
+
+.mode-switch-icon {
+    font-size: var(--font-base, 1rem);
+    line-height: 1;
+}
+
+.mode-switch-label {
+    line-height: 1;
+}
+
+/* 首次进入的切换引导：8 秒后自行淡出，不拦截任何交互 */
+.mode-switch-hint {
+    position: absolute;
+    bottom: calc(100% + var(--space-2, 8px));
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding: var(--space-1, 4px) var(--space-3, 12px);
+    border-radius: var(--radius-full, 9999px);
+    background: var(--color-surface-floating, rgba(13, 16, 20, 0.78));
+    border: 1px solid var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    color: var(--color-accent-gold, #eed6aa);
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-xs, 0.75rem);
+    letter-spacing: var(--tracking-wide, 0.05em);
+    pointer-events: none;
+    animation: modeHintFade 8s ease forwards;
+}
+
+@keyframes modeHintFade {
+    0%, 70% { opacity: 0.95; transform: translateX(-50%) translateY(0); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+}
+
+/* --------------------------------------------------------------------------
+   Section 5.3: Peripheral Help Trigger Button (.help-trigger-wrap / #help-toggle-btn)
+   Baseline Lock: bottom = var(--space-6) (24px = 1 * L_base, matching #mode-switcher)
+   -------------------------------------------------------------------------- */
+.help-trigger-wrap {
+    position: absolute;
+    bottom: var(--space-6, 24px);
+    left: var(--space-6, 24px);
+    z-index: var(--z-controls, 30);
+}
+
+.help-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    min-width: 40px;
+    box-sizing: border-box;
+    gap: var(--space-2, 8px);
+    padding: var(--space-2, 8px) var(--space-4, 16px);
+    background: var(--color-surface-floating, rgba(13, 16, 20, 0.78));
+    border: 1px solid var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    border-radius: var(--radius-full, 9999px);
+    color: var(--color-text-secondary, rgba(255, 255, 255, 0.85));
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-sm, 0.875rem);
+    font-weight: var(--font-weight-medium, 500);
+    line-height: var(--lh-none, 1);
+    letter-spacing: var(--tracking-wide, 0.05em);
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.25));
+    transition: background var(--duration-fast, 150ms) ease,
+                border-color var(--duration-fast, 150ms) ease,
+                color var(--duration-fast, 150ms) ease,
+                transform var(--duration-fast, 150ms) ease,
+                box-shadow var(--duration-fast, 150ms) ease;
+}
+
+.help-toggle-btn:hover {
+    background: var(--color-gold-alpha-15, rgba(238, 214, 170, 0.15));
+    border-color: var(--color-gold-alpha-40, rgba(238, 214, 170, 0.40));
+    color: var(--color-accent-gold, #eed6aa);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md, 0 8px 24px rgba(0, 0, 0, 0.45));
+}
+
+.help-toggle-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.help-btn-icon {
+    font-size: var(--font-sm, 0.875rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-accent-gold, #eed6aa);
+}
+
+.help-btn-text {
+    font-weight: 500;
+    line-height: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Section 5.4: Scratch Progress Indicator Capsule (#scratch-hud)
+   Vertical Rhythm: bottom = 96px (calc(var(--space-6) * 4) = 4 * L_base)
+   -------------------------------------------------------------------------- */
+.scratch-hud {
+    position: absolute;
+    bottom: calc(var(--space-6) * 4); /* 96px = 4 * 24px baseline */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: var(--z-hud, 20);
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--baseline-quarter, 6px);
+    padding: var(--space-2, 8px) var(--space-4, 16px);
+    background: var(--color-surface-floating, rgba(13, 16, 20, 0.78));
+    border: 1px solid var(--color-gold-alpha-40, rgba(238, 214, 170, 0.40));
+    border-radius: var(--radius-full, 9999px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-md), var(--shadow-glow-gold);
+    transition: opacity var(--duration-slow, 350ms) ease, transform var(--duration-slow, 350ms) var(--ease-out);
+}
+
+.scratch-hud.locked {
+    border-color: rgba(160, 220, 255, 0.6);
+    box-shadow: 0 0 20px rgba(160, 220, 255, 0.3);
+}
+
+.scratch-hud-pill {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 8px);
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-sm, 0.875rem);
+    color: var(--color-mist-light, #e2e8f0);
+    letter-spacing: var(--tracking-normal, 0em);
+}
+
+.scratch-hud-icon {
+    font-size: var(--font-base, 1rem);
+    line-height: 1;
+}
+
+.scratch-hud-label {
+    color: var(--color-text-secondary, rgba(255, 255, 255, 0.85));
+    font-size: var(--font-sm, 0.875rem);
+}
+
+.scratch-hud-val {
+    font-size: var(--font-base, 1rem);
+    font-weight: 700;
+    color: var(--color-accent-gold, #eed6aa);
+    font-family: var(--font-mono-num, monospace);
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 8px rgba(238, 214, 170, 0.6);
+}
+
+.scratch-hud-target {
+    font-size: var(--font-xs, 0.75rem);
+    color: var(--color-text-muted, rgba(255, 255, 255, 0.60));
+    font-family: var(--font-mono-num, monospace);
+    font-variant-numeric: tabular-nums;
+}
+
+.scratch-hud-track {
+    width: 144px; /* 18 * 8pt = 6 * 24px modular width */
+    height: var(--space-1, 4px);
+    background: var(--color-bg-deep, #080a0d);
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.08));
+    border-radius: var(--radius-xs, 2px);
+    overflow: hidden;
+}
+
+.scratch-hud-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-accent-brass, #c5a059) 0%, var(--color-accent-gold, #eed6aa) 60%, var(--color-text-primary, #ffffff) 100%);
+    border-radius: var(--radius-xs, 2px);
+    box-shadow: 0 0 10px rgba(238, 214, 170, 0.8);
+    transition: width var(--duration-fast, 150ms) ease-out;
+}
+
+/* --------------------------------------------------------------------------
+   Section 5.5: Macro Zoom HUD Indicator (#macro-zoom-hud)
+   Perimeter Margin: top = max(var(--space-6), ...) (24px = 1 * L_base)
+   -------------------------------------------------------------------------- */
+.macro-zoom-hud {
+    position: fixed;
+    top: max(var(--space-6, 24px), calc(var(--space-3, 12px) + env(safe-area-inset-top, 12px)));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: var(--z-controls, 30);
+    pointer-events: auto;
+    animation: macroHudFadeIn var(--duration-base, 250ms) var(--ease-out) forwards;
+}
+
+@keyframes macroHudFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -8px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+    }
+}
+
+.macro-zoom-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2, 8px);
+    padding: var(--space-2, 8px) var(--space-4, 16px);
+    background: var(--color-surface-floating, rgba(13, 16, 20, 0.78));
+    border: 1px solid var(--color-gold-alpha-40, rgba(238, 214, 170, 0.40));
+    border-radius: var(--radius-full, 9999px);
+    box-shadow: var(--shadow-md), var(--shadow-glow-gold);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: var(--color-accent-gold, #eed6aa);
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-sm, 0.875rem);
+    letter-spacing: var(--tracking-normal, 0em);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.macro-zoom-icon {
+    font-size: var(--font-base, 1rem);
+    line-height: 1;
+}
+
+.macro-zoom-val {
+    font-weight: 700;
+    color: var(--color-text-primary, #ffffff);
+    font-family: var(--font-mono-num, monospace);
+    font-variant-numeric: tabular-nums;
+}
+
+.macro-zoom-label {
+    font-size: var(--font-xs, 0.75rem);
+    color: var(--color-gold-alpha-70, rgba(238, 214, 170, 0.75));
+    letter-spacing: var(--tracking-wide, 0.05em);
+}
+
+.macro-zoom-reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1, 4px);
+    margin-left: var(--space-1, 4px);
+    padding: var(--space-1, 4px) var(--space-2, 8px);
+    background: var(--color-gold-alpha-15, rgba(238, 214, 170, 0.15));
+    border: 1px solid var(--color-gold-alpha-40, rgba(238, 214, 170, 0.40));
+    border-radius: var(--radius-full, 9999px);
+    color: var(--color-accent-gold, #eed6aa);
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-xs, 0.75rem);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background var(--duration-fast, 150ms) ease,
+                border-color var(--duration-fast, 150ms) ease,
+                color var(--duration-fast, 150ms) ease,
+                transform var(--duration-fast, 150ms) var(--ease-out);
+}
+
+.macro-zoom-reset-btn:hover {
+    background: var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    border-color: var(--color-accent-gold, #eed6aa);
+    color: var(--color-text-primary, #ffffff);
+    transform: scale(1.05);
+}
+
+.macro-zoom-reset-btn:active {
+    transform: scale(0.95);
+}
+
+/* --------------------------------------------------------------------------
+   Section 5.6: Onboarding Ambient Elements (#interactive-hint & #mode-toast)
+   -------------------------------------------------------------------------- */
+.interactive-hint {
+    position: absolute;
+    bottom: calc(var(--space-6) * 4); /* 96px = 4 * 24px baseline */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: var(--z-hud, 20);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3, 12px);
+    padding: var(--space-2, 8px) var(--space-4, 16px);
+    background: var(--color-surface-floating, rgba(13, 16, 20, 0.78));
+    border: 1px solid var(--color-gold-alpha-40, rgba(238, 214, 170, 0.40));
+    border-radius: var(--radius-full, 9999px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-md), var(--shadow-glow-gold);
+    pointer-events: none;
+    transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+    animation: hint-breathe 3.5s infinite ease-in-out;
+}
+
+.interactive-hint.dismissed {
+    opacity: 0 !important;
+    transform: translateX(-50%) translateY(12px) scale(0.95);
+    pointer-events: none;
+}
+
+@keyframes hint-breathe {
+    0%, 100% {
+        box-shadow: var(--shadow-sm), 0 0 12px rgba(238, 214, 170, 0.2);
+        border-color: var(--color-gold-alpha-40);
+    }
+    50% {
+        box-shadow: var(--shadow-md), 0 0 24px rgba(238, 214, 170, 0.45);
+        border-color: var(--color-gold-alpha-70);
+    }
+}
+
+.hint-ripple-icon {
+    position: relative;
+    width: var(--space-6, 24px);
+    height: var(--space-6, 24px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hint-symbol {
+    font-size: var(--font-base, 1rem);
+    position: relative;
+    z-index: 2;
+}
+
+.hint-ripple-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-circle, 50%);
+    border: 1.5px solid var(--color-gold-alpha-70, rgba(238, 214, 170, 0.70));
+    animation: ripple-wave 2s infinite ease-out;
+}
+
+@keyframes ripple-wave {
+    0% { transform: scale(0.8); opacity: 0.9; }
+    100% { transform: scale(1.8); opacity: 0; }
+}
+
+.hint-text {
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-sm, 0.875rem);
+    color: var(--color-text-primary, #ffffff);
+    letter-spacing: var(--tracking-wide, 0.05em);
+    font-weight: 400;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
+}
+
+.mode-toast {
+    position: absolute;
+    bottom: calc(var(--space-6) * 6); /* 144px = 6 * 24px baseline */
+    left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    z-index: var(--z-toast, 80);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2, 8px);
+    padding: var(--space-2, 8px) var(--space-4, 16px);
+    background: var(--color-surface-floating, rgba(13, 16, 20, 0.88));
+    border: 1px solid var(--color-gold-alpha-40, rgba(238, 214, 170, 0.40));
+    border-radius: var(--radius-full, 9999px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--color-accent-gold, #eed6aa);
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-sm, 0.875rem);
+    letter-spacing: var(--tracking-wide, 0.05em);
+    box-shadow: var(--shadow-md);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--duration-slow, 350ms) ease, transform var(--duration-slow, 350ms) var(--ease-out);
+}
+
+.mode-toast.show,
+.mode-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast-icon {
+    font-size: var(--font-base, 1rem);
+    line-height: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Section 5.7: Artisan Brush Control & Settings Dialog (#brush-control & #brush-popup)
+   Standard: Josef Müller-Brockmann 8pt Metric System & Baseline Grid L_base = 24px
+   -------------------------------------------------------------------------- */
+
+/* 5.7.1 Control Dock Container (#brush-control) */
 .brush-control-panel {
     position: absolute;
-    top: 24px;
-    right: 28px;
-    /* 高于 .macro-loupe(120)：透镜圆盘扫过面板时被面板自然遮住，杜绝透镜遮挡面板交互 */
-    z-index: 130;
+    top: var(--space-6, 24px);
+    right: var(--space-6, 24px);
+    z-index: var(--z-controls, 30);
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     cursor: default;
     user-select: none;
+    -webkit-user-select: none;
 }
 
-.brush-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: rgba(18, 22, 28, 0.65);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: rgba(255, 255, 255, 0.85);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* 可自由拖拽：grab 手势提示「这里能抓住」，touch-action:none 让触屏拖动不被滚动手势抢走 */
-    cursor: grab;
-    touch-action: none;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+/* Elevate stacking context when popup dialog is open */
+.brush-control-panel:has(.brush-popup.open) {
+    z-index: var(--z-modal, 70);
 }
 
-/* 拖拽中：切抓手光标，并冻结 hover 的放大与滤镜，避免跟随移动时抖动 */
-body.is-panel-dragging .brush-btn,
-body.is-panel-dragging .brush-btn:hover {
-    cursor: grabbing;
-    transform: none;
-    background: rgba(28, 34, 44, 0.9);
-    border-color: rgba(238, 214, 170, 0.85);
-    color: #eed6aa;
-    transition: none;
-}
-
-/* 自定义位置后取消右锚点，交由内联 left/top 决定 */
+/* Custom Drag Position: release right anchor to honor inline left coordinate */
 .brush-control-panel.is-custom-position {
     right: auto;
 }
 
+/* 5.7.2 Draggable Toggle Button Dock (#brush-toggle-btn) */
+.brush-btn {
+    width: var(--space-10, 40px);
+    height: var(--space-10, 40px);
+    border-radius: var(--radius-circle, 50%);
+    background: var(--color-surface-floating, rgba(13, 16, 20, 0.78));
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.15));
+    color: var(--color-text-secondary, rgba(255, 255, 255, 0.85));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    touch-action: none; /* Required for PointerCapture drag on touch displays */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.25));
+    transition: all var(--duration-base, 250ms) var(--ease-out);
+}
+
 .brush-btn:hover {
-    background: rgba(28, 34, 44, 0.85);
-    border-color: rgba(238, 214, 170, 0.7);
-    color: #eed6aa;
-    transform: scale(1.06);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 12px rgba(238, 214, 170, 0.3);
+    background: var(--color-surface-card-hover, rgba(30, 38, 52, 0.85));
+    border-color: var(--color-gold-alpha-70, rgba(238, 214, 170, 0.70));
+    color: var(--color-accent-gold, #eed6aa);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md, 0 8px 24px rgba(0, 0, 0, 0.45)), var(--shadow-glow-gold, 0 0 24px rgba(238, 214, 170, 0.15));
 }
 
 .brush-btn.active {
-    background: rgba(35, 42, 54, 0.9);
-    border-color: #eed6aa;
-    color: #eed6aa;
+    background: var(--color-surface-elevated, #141822);
+    border-color: var(--color-accent-gold, #eed6aa);
+    color: var(--color-accent-gold, #eed6aa);
 }
 
+/* Active Drag State: Lock cursor, freeze hover transforms to eliminate jitter */
+body.is-panel-dragging .brush-btn,
+body.is-panel-dragging .brush-btn:hover {
+    cursor: grabbing;
+    transform: none;
+    background: var(--color-surface-elevated, #141822);
+    border-color: var(--color-accent-gold, #eed6aa);
+    color: var(--color-accent-gold, #eed6aa);
+    transition: none;
+}
+
+/* 5.7.3 Modular Settings Popup Dialog (#brush-popup) */
 .brush-popup {
-    /* 绝对定位而非参与父容器 flex 流：
-       未展开态为 opacity:0 + pointer-events:none，但仍占据布局空间，
-       会把 .brush-control-panel 撑到整屏大小（手机竖屏下实测 296×746），
-       而透镜的浮层判定读取的是容器矩形——结果透镜一进画作就被判为「压在面板上」而隐匿。
-       脱离文档流后容器矩形只剩按钮本身，几何判定才与视觉真实一致。 */
+    /* Absolute positioning out of flow: prevents parent container rect inflation */
     position: absolute;
     top: calc(100% + 10px);
     right: 0;
-    width: 234px;
-    max-height: 86vh;
+    width: 240px;
+    max-height: min(86vh, 86dvh);
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 16px 18px;
-    background: rgba(15, 18, 24, 0.88);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 12px;
+    padding: var(--space-4, 16px);
+    background: var(--color-surface-elevated-alpha, rgba(16, 20, 26, 0.96));
+    border: 1px solid var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    border-radius: var(--radius-md, 8px);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+    box-shadow: var(--shadow-lg, 0 16px 48px rgba(0, 0, 0, 0.65));
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: var(--space-3, 12px);
     opacity: 0;
     pointer-events: none;
-    transform: translateY(-8px) scale(0.96);
-    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(-8px);
+    transition: opacity var(--duration-base, 250ms) ease, transform var(--duration-base, 250ms) var(--ease-out);
+    -webkit-overflow-scrolling: touch;
 }
 
 .brush-popup::-webkit-scrollbar {
-    width: 4px;
+    width: var(--baseline-micro, 4px);
+}
+
+.brush-popup::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 .brush-popup::-webkit-scrollbar-thumb {
-    background: rgba(238, 214, 170, 0.25);
-    border-radius: 2px;
+    background: var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    border-radius: var(--radius-xs, 2px);
 }
 
 .brush-popup.open {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
 }
 
-.brush-popup-divider {
-    width: 100%;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.12);
-    margin: 2px 0;
-}
-
+/* 5.7.4 Typographic Rows, Labels & Values */
 .brush-popup-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    min-height: var(--space-6, 24px);
 }
 
 .brush-label {
-    font-size: 0.88rem;
-    letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.75);
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-xs, 0.75rem);
+    letter-spacing: var(--tracking-wide, 0.05em);
+    color: var(--color-text-secondary, rgba(255, 255, 255, 0.85));
     text-transform: uppercase;
+    line-height: var(--lh-xs, 18px);
+}
+
+.brush-label-sub {
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-xs, 0.75rem);
+    letter-spacing: var(--tracking-normal, 0);
+    color: var(--color-text-muted, rgba(255, 255, 255, 0.60));
+    line-height: var(--lh-xs, 18px);
 }
 
 .brush-value {
-    font-size: 0.95rem;
+    font-family: var(--font-mono-num, monospace);
+    font-size: var(--font-sm, 0.875rem);
     font-weight: 500;
-    color: #eed6aa;
-    font-family: monospace;
+    color: var(--color-accent-gold, #eed6aa);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--lh-sm, 24px);
 }
 
+.brush-badge {
+    font-family: var(--font-mono-num, monospace);
+    font-size: var(--font-xs, 0.75rem);
+    font-weight: 500;
+    color: var(--color-accent-gold, #eed6aa);
+    background: var(--color-gold-alpha-15, rgba(238, 214, 170, 0.15));
+    border: 1px solid var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    padding: 2px var(--space-2, 8px);
+    border-radius: var(--radius-sm, 4px);
+    letter-spacing: var(--tracking-wide, 0.05em);
+}
+
+/* 5.7.5 Precision Sliders */
 .brush-slider-container {
     width: 100%;
+    padding: var(--space-1, 4px) 0;
 }
 
 .brush-slider-container input[type="range"] {
     width: 100%;
     -webkit-appearance: none;
     appearance: none;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
+    height: var(--baseline-micro, 4px);
+    background: var(--color-gold-alpha-15, rgba(238, 214, 170, 0.15));
+    border-radius: var(--radius-xs, 2px);
     outline: none;
     cursor: pointer;
+    margin: var(--space-1, 4px) 0;
 }
 
 .brush-slider-container input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: #eed6aa;
+    width: var(--space-4, 16px);
+    height: var(--space-4, 16px);
+    border-radius: var(--radius-circle, 50%);
+    background: var(--color-accent-gold, #eed6aa);
+    border: 1px solid var(--color-accent-brass, #c5a059);
     box-shadow: 0 0 8px rgba(238, 214, 170, 0.6);
     cursor: pointer;
-    transition: transform 0.15s ease;
+    transition: transform var(--duration-fast, 150ms) ease;
 }
 
 .brush-slider-container input[type="range"]::-webkit-slider-thumb:hover {
     transform: scale(1.25);
 }
 
+.brush-slider-container input[type="range"]::-moz-range-thumb {
+    width: var(--space-4, 16px);
+    height: var(--space-4, 16px);
+    border-radius: var(--radius-circle, 50%);
+    background: var(--color-accent-gold, #eed6aa);
+    border: 1px solid var(--color-accent-brass, #c5a059);
+    box-shadow: 0 0 8px rgba(238, 214, 170, 0.6);
+    cursor: pointer;
+    transition: transform var(--duration-fast, 150ms) ease;
+}
+
+.brush-slider-container input[type="range"]::-moz-range-thumb:hover {
+    transform: scale(1.25);
+}
+
+/* 5.7.6 Visual Brush Radius Preview Dot */
 .brush-preview-wrap {
-    height: 52px;
+    height: var(--space-12, 48px);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.25);
-    border-radius: 8px;
-    border: 1px dashed rgba(255, 255, 255, 0.15);
+    background: var(--color-bg-deep, #080a0d);
+    border-radius: var(--radius-md, 8px);
+    border: 1px dashed var(--color-border-subtle, rgba(255, 255, 255, 0.15));
     overflow: hidden;
 }
 
 .brush-preview-dot {
-    border-radius: 50%;
+    border-radius: var(--radius-circle, 50%);
     background: radial-gradient(circle, rgba(238, 214, 170, 0.8) 0%, rgba(238, 214, 170, 0.25) 70%, transparent 100%);
-    border: 1px solid rgba(238, 214, 170, 0.6);
-    transition: width 0.1s ease, height 0.1s ease;
+    border: 1px solid var(--color-gold-alpha-70, rgba(238, 214, 170, 0.70));
+    transition: width var(--duration-fast, 150ms) ease, height var(--duration-fast, 150ms) ease;
 }
 
-/* ==========================================================================
-   名画画廊快捷入口与切换器样式 (Masterpiece Gallery Picker Card)
-   ========================================================================== */
-.brush-badge {
-    font-size: 0.82rem;
+/* 5.7.7 Hairline Dividers */
+.brush-popup-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--color-border-subtle, rgba(255, 255, 255, 0.08));
+    margin: var(--space-1, 4px) 0;
+}
+
+/* 5.7.8 Quick Actions & Full Color Bloom Button */
+.brush-quick-actions {
+    width: 100%;
+}
+
+.full-color-btn {
+    width: 100%;
+    min-height: 40px;
+    min-width: 40px;
+    box-sizing: border-box;
+    padding: var(--space-2, 8px) var(--space-3, 12px);
+    background: linear-gradient(135deg, var(--color-gold-alpha-15, rgba(238, 214, 170, 0.16)) 0%, var(--color-gold-alpha-05, rgba(200, 160, 100, 0.08)) 100%);
+    border: 1px solid var(--color-gold-alpha-40, rgba(238, 214, 170, 0.45));
+    border-radius: var(--radius-sm, 4px);
+    color: var(--color-accent-gold, #eed6aa);
+    font-family: var(--font-serif);
+    font-size: var(--font-sm, 0.875rem);
     font-weight: 500;
-    color: #eed6aa;
-    background: rgba(238, 214, 170, 0.15);
-    border: 1px solid rgba(238, 214, 170, 0.35);
-    padding: 2px 7px;
-    border-radius: 10px;
-    letter-spacing: 0.05em;
-    font-family: monospace;
+    letter-spacing: var(--tracking-wide, 0.05em);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2, 8px);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.25));
+    transition: all var(--duration-base, 250ms) var(--ease-out);
 }
 
+.full-color-btn:hover {
+    background: linear-gradient(135deg, var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25)) 0%, var(--color-gold-alpha-15, rgba(200, 160, 100, 0.15)) 100%);
+    border-color: var(--color-accent-gold, #eed6aa);
+    color: var(--color-text-primary, #ffffff);
+    box-shadow: var(--shadow-glow-gold, 0 0 24px rgba(238, 214, 170, 0.15));
+    transform: translateY(-1px);
+}
+
+.full-color-btn:active {
+    transform: translateY(0);
+}
+
+.full-color-btn.active {
+    background: linear-gradient(135deg, rgba(70, 90, 120, 0.35) 0%, rgba(40, 50, 70, 0.25) 100%);
+    border-color: rgba(160, 190, 230, 0.5);
+    color: var(--color-mist-slate, #d8e6f8);
+}
+
+.full-color-icon {
+    flex-shrink: 0;
+    transition: transform var(--duration-base, 250ms) ease;
+}
+
+.full-color-btn:hover .full-color-icon {
+    transform: rotate(20deg) scale(1.15);
+}
+
+/* 5.7.9 Scratch Mode Mini Progress Bar */
+.scratch-mini-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: var(--color-bg-deep, #080a0d);
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.10));
+    border-radius: var(--radius-xs, 2px);
+    overflow: hidden;
+    margin: var(--space-1, 4px) 0;
+}
+
+.scratch-mini-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-accent-gold-metallic, #d4af37) 0%, var(--color-accent-gold-light, #f7e7b4) 50%, var(--color-text-primary, #ffffff) 100%);
+    border-radius: var(--radius-xs, 2px);
+    box-shadow: 0 0 8px rgba(238, 214, 170, 0.5);
+    transition: width var(--duration-fast, 150ms) ease-out;
+}
+
+/* 5.7.10 Aspect Ratio Fit Tabs & Scale */
+.fit-mode-tabs {
+    display: flex;
+    width: 100%;
+    background: var(--color-bg-deep, #080a0d);
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.10));
+    border-radius: var(--radius-sm, 4px);
+    padding: 2px;
+    gap: 2px;
+}
+
+.fit-tab-btn {
+    flex: 1;
+    min-height: 40px;
+    min-width: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: var(--space-1, 4px) 0;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-xs, 2px);
+    color: var(--color-text-muted, rgba(255, 255, 255, 0.65));
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-xs, 0.75rem);
+    letter-spacing: var(--tracking-wide, 0.05em);
+    cursor: pointer;
+    transition: all var(--duration-fast, 150ms) ease;
+}
+
+.fit-tab-btn:hover {
+    color: var(--color-accent-gold, #eed6aa);
+    background: var(--color-overlay-hover, rgba(255, 255, 255, 0.04));
+}
+
+.fit-tab-btn.active {
+    background: var(--color-gold-alpha-25, rgba(238, 214, 170, 0.20));
+    border-color: var(--color-gold-alpha-70, rgba(238, 214, 170, 0.70));
+    color: var(--color-accent-gold, #eed6aa);
+    font-weight: 600;
+}
+
+.fit-scale-row {
+    margin-top: 0;
+}
+
+/* 5.7.11 Macro Loupe Control Row & Zoom Chips */
+.loupe-control-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 40px;
+}
+
+.loupe-toggle-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    min-width: 40px;
+    box-sizing: border-box;
+    padding: 2px var(--space-3, 12px);
+    background: var(--color-surface-floating, rgba(13, 16, 20, 0.78));
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.15));
+    border-radius: var(--radius-full, 9999px);
+    color: var(--color-text-muted, rgba(255, 255, 255, 0.65));
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-xs, 0.75rem);
+    cursor: pointer;
+    transition: all var(--duration-fast, 150ms) ease;
+}
+
+.loupe-toggle-pill-btn:hover {
+    background: var(--color-gold-alpha-15, rgba(238, 214, 170, 0.15));
+    border-color: var(--color-gold-alpha-40, rgba(238, 214, 170, 0.40));
+    color: var(--color-accent-gold, #eed6aa);
+}
+
+.loupe-toggle-pill-btn.active {
+    background: var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    border-color: var(--color-accent-gold, #eed6aa);
+    color: var(--color-accent-gold, #eed6aa);
+    font-weight: 600;
+    box-shadow: 0 0 10px rgba(238, 214, 170, 0.25);
+}
+
+.loupe-options-box {
+    padding: var(--space-2, 8px) var(--space-3, 12px);
+    background: var(--color-bg-deep, #080a0d);
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.08));
+    border-radius: var(--radius-md, 8px);
+    margin-top: var(--space-2, 8px);
+}
+
+.loupe-zoom-pills {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 8px);
+}
+
+.loupe-zoom-label {
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-xs, 0.75rem);
+    color: var(--color-accent-gold, #eed6aa);
+}
+
+.loupe-zoom-chip {
+    padding: 2px var(--space-2, 8px);
+    min-height: 20px;
+    background: var(--color-surface-card, rgba(22, 28, 38, 0.70));
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.12));
+    border-radius: var(--radius-full, 9999px);
+    color: var(--color-text-secondary, rgba(255, 255, 255, 0.70));
+    font-family: var(--font-mono-num, monospace);
+    font-size: var(--font-xs, 0.75rem);
+    cursor: pointer;
+    transition: all var(--duration-fast, 150ms) ease;
+}
+
+.loupe-zoom-chip:hover {
+    background: var(--color-gold-alpha-25, rgba(238, 214, 170, 0.20));
+    border-color: var(--color-gold-alpha-70, rgba(238, 214, 170, 0.70));
+    color: var(--color-accent-gold, #eed6aa);
+}
+
+.loupe-zoom-chip.active {
+    background: var(--color-gold-alpha-40, rgba(238, 214, 170, 0.32));
+    border-color: var(--color-accent-gold, #eed6aa);
+    color: var(--color-text-primary, #ffffff);
+    font-weight: 600;
+    box-shadow: 0 0 8px rgba(197, 160, 89, 0.3);
+}
+
+/* 5.7.12 Masterpiece Gallery Card Entry */
 .masterpiece-selector-box {
     width: 100%;
 }
@@ -372,32 +1905,32 @@ body.is-panel-dragging .brush-btn:hover {
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 7px 10px;
-    background: rgba(24, 28, 36, 0.9);
-    border: 1px solid rgba(238, 214, 170, 0.35);
-    border-radius: 8px;
-    color: #ffffff;
+    gap: var(--space-2, 8px);
+    padding: var(--space-2, 8px);
+    background: var(--color-surface-card, rgba(22, 28, 38, 0.70));
+    border: 1px solid var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    border-radius: var(--radius-md, 8px);
+    color: var(--color-text-primary, #ffffff);
     cursor: pointer;
     text-align: left;
-    transition: all 0.22s ease;
+    transition: all var(--duration-fast, 150ms) var(--ease-out);
 }
 
 .masterpiece-picker-btn:hover {
-    border-color: rgba(238, 214, 170, 0.85);
-    background: rgba(36, 44, 58, 0.95);
-    box-shadow: 0 4px 14px rgba(238, 214, 170, 0.18);
+    border-color: var(--color-accent-gold, #eed6aa);
+    background: var(--color-surface-card-hover, rgba(30, 38, 52, 0.85));
+    box-shadow: var(--shadow-glow-gold, 0 0 24px rgba(238, 214, 170, 0.15));
     transform: translateY(-1px);
 }
 
 .picker-thumb-wrap {
-    width: 36px;
-    height: 36px;
-    border-radius: 6px;
+    width: var(--space-10, 40px);
+    height: var(--space-10, 40px);
+    border-radius: var(--radius-sm, 4px);
     overflow: hidden;
     flex-shrink: 0;
-    background: #0d0f12;
-    border: 1px solid rgba(238, 214, 170, 0.3);
+    background: var(--color-bg-deep, #080a0d);
+    border: 1px solid var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
 }
 
 .picker-thumb {
@@ -413,67 +1946,68 @@ body.is-panel-dragging .brush-btn:hover {
 }
 
 .picker-title {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 0.95rem;
+    font-family: var(--font-serif);
+    font-size: var(--font-sm, 0.875rem);
     font-weight: 600;
-    color: #eed6aa;
+    color: var(--color-accent-gold, #eed6aa);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.25;
+    line-height: var(--lh-tight, 1.25);
 }
 
 .picker-artist {
-    font-size: 0.76rem;
-    color: rgba(255, 255, 255, 0.65);
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-xs, 0.75rem);
+    color: var(--color-text-muted, rgba(255, 255, 255, 0.60));
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.3;
+    line-height: var(--lh-xs, 18px);
     margin-top: 2px;
 }
 
 .picker-search-badge {
-    font-size: 0.9rem;
-    color: rgba(238, 214, 170, 0.8);
+    font-size: var(--font-sm, 0.875rem);
+    color: var(--color-accent-gold, #eed6aa);
     flex-shrink: 0;
     padding-left: 2px;
 }
 
-/* 画笔弹窗内的名画鉴赏故事专属入口按钮 */
+/* 5.7.13 Masterpiece Story Dossier Entry Button */
 .brush-story-entry-btn {
     width: 100%;
-    margin-top: 8px;
-    padding: 8px 12px;
-    background: linear-gradient(135deg, rgba(238, 214, 170, 0.12) 0%, rgba(20, 25, 34, 0.75) 100%);
-    border: 1px solid rgba(238, 214, 170, 0.38);
-    border-radius: 8px;
-    color: #eed6aa;
+    margin-top: var(--space-2, 8px);
+    padding: var(--space-2, 8px) var(--space-3, 12px);
+    background: linear-gradient(135deg, var(--color-gold-alpha-10, rgba(238, 214, 170, 0.10)) 0%, var(--color-surface-card, rgba(22, 28, 38, 0.70)) 100%);
+    border: 1px solid var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    border-radius: var(--radius-md, 8px);
+    color: var(--color-accent-gold, #eed6aa);
     display: flex;
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
-    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: all var(--duration-fast, 150ms) var(--ease-out);
+    box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.25));
 }
 
 .brush-story-entry-btn:hover {
-    background: linear-gradient(135deg, rgba(238, 214, 170, 0.24) 0%, rgba(30, 38, 52, 0.9) 100%);
-    border-color: rgba(238, 214, 170, 0.85);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25)) 0%, var(--color-surface-card-hover, rgba(30, 38, 52, 0.85)) 100%);
+    border-color: var(--color-accent-gold, #eed6aa);
+    color: var(--color-text-primary, #ffffff);
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(238, 214, 170, 0.22);
+    box-shadow: var(--shadow-glow-gold, 0 0 24px rgba(238, 214, 170, 0.15));
 }
 
 .brush-story-entry-left {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-2, 8px);
     text-align: left;
 }
 
 .brush-story-entry-icon {
-    font-size: 1.25rem;
+    font-size: var(--font-lg, 1.25rem);
     line-height: 1;
 }
 
@@ -484,169 +2018,63 @@ body.is-panel-dragging .brush-btn:hover {
 }
 
 .brush-story-entry-title {
-    font-size: 0.9rem;
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-xs, 0.75rem);
     font-weight: 600;
-    letter-spacing: 0.05em;
-    color: #ffffff;
+    letter-spacing: var(--tracking-wide, 0.05em);
+    color: var(--color-text-primary, #ffffff);
 }
 
 .brush-story-entry-sub {
-    font-size: 0.72rem;
-    color: rgba(238, 214, 170, 0.8);
-    letter-spacing: 0.04em;
+    font-family: var(--font-sans-swiss);
+    font-size: 0.7rem;
+    color: var(--color-accent-gold, #eed6aa);
+    letter-spacing: var(--tracking-normal, 0);
 }
 
 .brush-story-entry-arrow {
-    font-size: 1.15rem;
-    color: rgba(238, 214, 170, 0.7);
-    transition: transform 0.2s ease, color 0.2s ease;
+    font-size: var(--font-md, 1.125rem);
+    color: var(--color-accent-gold, #eed6aa);
+    transition: transform var(--duration-fast, 150ms) ease;
 }
 
 .brush-story-entry-btn:hover .brush-story-entry-arrow {
-    color: #eed6aa;
+    color: var(--color-text-primary, #ffffff);
     transform: translateX(3px);
 }
 
+/* 5.7.14 Masterpiece Adjacent Navigation Button Pair */
 .masterpiece-nav-row {
     display: flex;
-    gap: 8px;
+    gap: var(--space-2, 8px);
     width: 100%;
-    margin-top: 8px;
+    margin-top: var(--space-2, 8px);
 }
 
 .art-nav-btn {
     flex: 1;
-    padding: 6px 0;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 6px;
-    color: rgba(255, 255, 255, 0.85);
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 0.9rem;
-    letter-spacing: 0.06em;
+    min-height: var(--space-8, 32px);
+    padding: var(--space-1, 4px) 0;
+    background: var(--color-surface-card, rgba(22, 28, 38, 0.70));
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.15));
+    border-radius: var(--radius-sm, 4px);
+    color: var(--color-text-secondary, rgba(255, 255, 255, 0.85));
+    font-family: var(--font-serif);
+    font-size: var(--font-sm, 0.875rem);
+    letter-spacing: var(--tracking-wide, 0.05em);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--duration-fast, 150ms) ease;
 }
 
 .art-nav-btn:hover {
-    background: rgba(238, 214, 170, 0.18);
-    border-color: rgba(238, 214, 170, 0.65);
-    color: #eed6aa;
+    background: var(--color-gold-alpha-15, rgba(238, 214, 170, 0.15));
+    border-color: var(--color-gold-alpha-70, rgba(238, 214, 170, 0.70));
+    color: var(--color-accent-gold, #eed6aa);
     transform: translateY(-1px);
 }
 
 .art-nav-btn:active {
     transform: translateY(0);
-}
-
-/* ==========================================================================
-   一键全彩盛放按钮样式 (Instant Full-Color Reveal Button)
-   ========================================================================== */
-.brush-quick-actions {
-    width: 100%;
-}
-
-.full-color-btn {
-    width: 100%;
-    padding: 8px 12px;
-    background: linear-gradient(135deg, rgba(238, 214, 170, 0.16) 0%, rgba(200, 160, 100, 0.08) 100%);
-    border: 1px solid rgba(238, 214, 170, 0.45);
-    border-radius: 6px;
-    color: #eed6aa;
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 0.96rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.full-color-btn:hover {
-    background: linear-gradient(135deg, rgba(238, 214, 170, 0.30) 0%, rgba(200, 160, 100, 0.18) 100%);
-    border-color: rgba(238, 214, 170, 0.85);
-    color: #ffffff;
-    box-shadow: 0 4px 16px rgba(238, 214, 170, 0.25);
-    transform: translateY(-1px);
-}
-
-.full-color-btn:active {
-    transform: translateY(0);
-}
-
-.full-color-btn.active {
-    background: linear-gradient(135deg, rgba(70, 90, 120, 0.35) 0%, rgba(40, 50, 70, 0.25) 100%);
-    border-color: rgba(160, 190, 230, 0.5);
-    color: #d8e6f8;
-}
-
-.full-color-btn.active:hover {
-    background: linear-gradient(135deg, rgba(80, 105, 140, 0.45) 0%, rgba(50, 65, 90, 0.35) 100%);
-    border-color: rgba(180, 210, 255, 0.8);
-    color: #ffffff;
-}
-
-.full-color-icon {
-    flex-shrink: 0;
-    transition: transform 0.25s ease;
-}
-
-.full-color-btn:hover .full-color-icon {
-    transform: rotate(20deg) scale(1.15);
-}
-
-/* ==========================================================================
-   画面规格选项卡与缩放控制 (Aspect Ratio Fit Modes & Scaling)
-   ========================================================================== */
-.fit-mode-tabs {
-    display: flex;
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 6px;
-    padding: 2px;
-    gap: 3px;
-    width: 100%;
-}
-
-.fit-tab-btn {
-    flex: 1;
-    padding: 5px 0;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    color: rgba(255, 255, 255, 0.65);
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 0.88rem;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.fit-tab-btn:hover {
-    color: #eed6aa;
-    background: rgba(255, 255, 255, 0.06);
-}
-
-.fit-tab-btn.active {
-    background: rgba(238, 214, 170, 0.2);
-    border-color: rgba(238, 214, 170, 0.55);
-    color: #eed6aa;
-    font-weight: 500;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
-}
-
-.fit-scale-row {
-    margin-top: -2px;
-}
-
-.brush-label-sub {
-    font-size: 0.82rem;
-    letter-spacing: 0.06em;
-    color: rgba(255, 255, 255, 0.65);
 }
 
 
@@ -660,7 +2088,7 @@ body.is-panel-dragging .brush-btn:hover {
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 1000;
+    z-index: var(--z-drawer, 50);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -733,15 +2161,15 @@ body.help-open #custom-cursor {
     -webkit-user-select: text;
 }
 
+/* --------------------------------------------------------------------------
+   6.1 Gallery Backdrop & Slide-Over Panel (Modular Multi-Column Width)
+   -------------------------------------------------------------------------- */
 .gallery-backdrop {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(6, 8, 12, 0.72);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    inset: 0;
+    background: var(--color-backdrop, rgba(6, 8, 12, 0.72));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     transition: opacity 0.3s ease;
 }
 
@@ -749,85 +2177,103 @@ body.help-open #custom-cursor {
     position: absolute;
     top: 0;
     left: 0;
-    width: 480px;
+    width: min(1080px, 75vw);
     max-width: 95vw;
     height: 100%;
-    background: linear-gradient(180deg, rgba(18, 22, 30, 0.96) 0%, rgba(12, 15, 20, 0.98) 100%);
-    border-right: 1px solid rgba(238, 214, 170, 0.28);
-    box-shadow: 12px 0 48px rgba(0, 0, 0, 0.75), inset -1px 0 0 rgba(255, 255, 255, 0.05);
+    background: linear-gradient(180deg, var(--color-surface-base-alpha, rgba(14, 18, 24, 0.96)) 0%, var(--color-surface-base, #10141b) 100%);
+    border-right: 1px solid var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    box-shadow: var(--shadow-lg, 0 16px 48px rgba(0, 0, 0, 0.75)), inset -1px 0 0 var(--color-border-subtle);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     transform: translateX(-100%);
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    user-select: text; /* 方便用户复制画作或画家名字 */
+    user-select: text;
+    box-sizing: border-box;
 }
 
 .gallery-drawer.open .gallery-panel {
     transform: translateX(0);
 }
 
-/* 展厅头部 */
+/* --------------------------------------------------------------------------
+   6.3 Gallery Header (24px Baseline Rhythm)
+   -------------------------------------------------------------------------- */
 .gallery-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 22px 24px 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    gap: var(--space-3, 12px);
+    padding: var(--space-6, 24px) var(--space-6, 24px) var(--space-4, 16px);
+    border-bottom: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.08));
+    flex-shrink: 0;
+    box-sizing: border-box;
 }
 
 .gallery-title-box {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: var(--space-1, 4px);
 }
 
 .gallery-main-title {
-    font-size: 1.45rem;
-    font-weight: 600;
-    color: #ffffff;
-    letter-spacing: 0.06em;
+    font-family: var(--font-serif-art);
+    font-size: var(--font-xl, 24px);
+    line-height: var(--lh-sm, 24px);
+    font-weight: var(--font-weight-semibold, 600);
+    color: var(--color-text-primary, #ffffff);
+    letter-spacing: var(--tracking-wide, 0.05em);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-2, 8px);
     margin: 0;
-    line-height: 1.2;
 }
 
 .gallery-main-title .header-icon {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
+    line-height: 1;
 }
 
 .gallery-sub-info {
-    font-size: 0.82rem;
-    color: #eed6aa;
-    opacity: 0.85;
-    letter-spacing: 0.08em;
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-sm, 14px);
+    line-height: var(--lh-sm, 24px);
+    color: var(--color-accent-gold, #eed6aa);
+    opacity: 0.9;
+    letter-spacing: var(--tracking-wide, 0.05em);
 }
 
 .gallery-close-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.75);
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: var(--radius-full, 9999px);
+    background: var(--color-overlay-hover, rgba(255, 255, 255, 0.06));
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.15));
+    color: var(--color-text-muted, rgba(255, 255, 255, 0.75));
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
 }
 
 .gallery-close-btn:hover {
-    background: rgba(238, 214, 170, 0.2);
-    border-color: rgba(238, 214, 170, 0.6);
-    color: #eed6aa;
+    background: var(--color-gold-alpha-15, rgba(238, 214, 170, 0.15));
+    border-color: var(--color-gold-alpha-70, rgba(238, 214, 170, 0.7));
+    color: var(--color-accent-gold, #eed6aa);
     transform: rotate(90deg);
 }
 
-/* 搜索栏区 */
+/* --------------------------------------------------------------------------
+   6.4 Search Bar (48px / 2.0x Baseline Height)
+   -------------------------------------------------------------------------- */
 .gallery-search-wrap {
-    padding: 14px 24px 10px;
+    padding: var(--space-3, 12px) var(--space-6, 24px);
+    flex-shrink: 0;
+    box-sizing: border-box;
 }
 
 .gallery-search-box {
@@ -835,140 +2281,151 @@ body.help-open #custom-cursor {
     display: flex;
     align-items: center;
     width: 100%;
-    background: rgba(8, 10, 14, 0.85);
-    border: 1px solid rgba(238, 214, 170, 0.35);
-    border-radius: 10px;
-    padding: 2px 12px;
-    transition: all 0.25s ease;
+    height: 48px; /* Exact 2 * baseline (24px) */
+    background: var(--color-surface-input, rgba(8, 10, 14, 0.85));
+    border: 1px solid var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    border-radius: var(--radius-md, 8px);
+    padding: 0 var(--space-3, 12px);
     box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+    box-sizing: border-box;
 }
 
 .gallery-search-box:focus-within {
-    border-color: rgba(238, 214, 170, 0.95);
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 14px rgba(238, 214, 170, 0.25);
-    background: rgba(14, 18, 24, 0.95);
+    border-color: var(--color-accent-gold, #eed6aa);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5), var(--shadow-glow-gold);
+    background: var(--color-surface-elevated, #141822);
 }
 
 .gallery-search-box .search-svg {
-    color: rgba(238, 214, 170, 0.75);
+    color: var(--color-gold-alpha-70, rgba(238, 214, 170, 0.7));
     flex-shrink: 0;
-    margin-right: 8px;
+    margin-right: var(--space-2, 8px);
 }
 
 .gallery-search-input {
     flex: 1;
-    height: 38px;
+    height: 100%;
     background: transparent;
     border: none;
     outline: none;
-    color: #ffffff;
-    font-family: 'Cormorant Garamond', Georgia, -apple-system, serif;
-    font-size: 1.05rem;
-    letter-spacing: 0.04em;
+    color: var(--color-text-primary, #ffffff);
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-base, 16px);
+    letter-spacing: var(--tracking-normal, 0);
 }
 
 .gallery-search-input::placeholder {
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 0.92rem;
+    color: var(--color-text-muted, rgba(255, 255, 255, 0.45));
+    font-size: var(--font-sm, 14px);
 }
 
 .gallery-search-clear {
     width: 24px;
     height: 24px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-full, 9999px);
+    background: var(--color-overlay-hover, rgba(255, 255, 255, 0.12));
     border: none;
-    color: #eed6aa;
+    color: var(--color-accent-gold, #eed6aa);
     font-size: 16px;
     line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .gallery-search-clear:hover {
-    background: rgba(238, 214, 170, 0.3);
-    color: #ffffff;
+    background: var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    color: var(--color-text-primary, #ffffff);
 }
 
-/* 多维分类筛选区 */
+/* --------------------------------------------------------------------------
+   6.5 Multi-Dimensional Filter Panel
+   -------------------------------------------------------------------------- */
 .gallery-filter-panel {
-    padding: 6px 24px 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: var(--space-2, 8px) var(--space-6, 24px) var(--space-4, 16px);
+    border-bottom: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.08));
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: var(--space-3, 12px);
+    flex-shrink: 0;
+    box-sizing: border-box;
 }
 
 .filter-section-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 6px;
+    margin-bottom: var(--space-1, 4px);
 }
 
 .filter-title {
-    font-size: 0.86rem;
-    color: #eed6aa;
-    letter-spacing: 0.08em;
-    font-weight: 500;
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-sm, 14px);
+    line-height: var(--lh-sm, 24px);
+    color: var(--color-accent-gold, #eed6aa);
+    letter-spacing: var(--tracking-wide, 0.05em);
+    font-weight: 600;
 }
 
 .filter-tip {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.4);
+    font-size: var(--font-xs, 12px);
+    line-height: var(--lh-sm, 24px);
+    color: var(--color-text-subtle, rgba(255, 255, 255, 0.4));
 }
 
-/* 题材胶囊标签 (Genre Pills) */
+/* Genre Pills */
 .genre-pills-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: var(--space-2, 8px);
 }
 
 .genre-pill {
-    padding: 4px 11px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 16px;
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 0.84rem;
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    letter-spacing: 0.04em;
+    padding: 4px 12px;
+    height: 28px;
+    box-sizing: border-box;
+    background: var(--color-gold-alpha-05, rgba(238, 214, 170, 0.05));
+    border: 1px solid var(--color-gold-alpha-15, rgba(238, 214, 170, 0.15));
+    border-radius: var(--radius-full, 9999px);
+    color: var(--color-text-secondary, rgba(255, 255, 255, 0.85));
+    font-size: var(--font-sm, 14px);
+    font-family: var(--font-sans-swiss, sans-serif);
+    letter-spacing: var(--tracking-normal, 0);
     cursor: pointer;
     transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--space-1, 4px);
 }
 
 .genre-pill:hover {
-    background: rgba(238, 214, 170, 0.15);
-    border-color: rgba(238, 214, 170, 0.5);
-    color: #eed6aa;
+    background: var(--color-gold-alpha-15, rgba(238, 214, 170, 0.15));
+    border-color: var(--color-gold-alpha-40, rgba(238, 214, 170, 0.4));
+    color: var(--color-accent-gold, #eed6aa);
     transform: translateY(-1px);
 }
 
 .genre-pill.active {
-    background: linear-gradient(135deg, rgba(238, 214, 170, 0.28) 0%, rgba(190, 145, 85, 0.2) 100%);
-    border-color: #eed6aa;
-    color: #ffffff;
+    background: var(--color-accent-gold, #eed6aa);
+    border-color: var(--color-accent-gold, #eed6aa);
+    color: var(--color-ink-dark, #1a1408);
     font-weight: 600;
-    box-shadow: 0 2px 10px rgba(238, 214, 170, 0.25);
+    box-shadow: 0 2px 8px rgba(238, 214, 170, 0.3);
 }
 
 .genre-pill-count {
-    font-size: 0.74rem;
-    opacity: 0.75;
-    font-family: monospace;
+    font-size: var(--font-xs, 12px);
+    opacity: 0.8;
+    font-family: var(--font-mono-num, monospace);
 }
 
-/* 下拉菜单行 (画家 + 画派时期) */
+/* Dropdowns Row */
 .filter-dropdowns-row {
     display: flex;
-    gap: 10px;
+    gap: var(--space-4, 16px);
     width: 100%;
 }
 
@@ -976,14 +2433,17 @@ body.help-open #custom-cursor {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--space-1, 4px);
     min-width: 0;
 }
 
 .dropdown-label {
-    font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.65);
-    letter-spacing: 0.06em;
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-xs, 12px);
+    line-height: var(--lh-xs, 18px);
+    margin-bottom: var(--baseline-quarter, 6px);
+    color: var(--color-text-muted, rgba(255, 255, 255, 0.65));
+    letter-spacing: var(--tracking-wide, 0.05em);
 }
 
 .dropdown-shell {
@@ -993,133 +2453,152 @@ body.help-open #custom-cursor {
 
 .gallery-select-input {
     width: 100%;
-    padding: 6px 10px;
-    background: rgba(12, 15, 20, 0.92);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 6px;
-    color: #eed6aa;
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 0.88rem;
+    height: 36px;
+    padding: 0 var(--space-3, 12px);
+    background: var(--color-surface-base, #10141b);
+    border: 1px solid var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    border-radius: var(--radius-md, 8px);
+    color: var(--color-accent-gold, #eed6aa);
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-sm, 14px);
     outline: none;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    box-sizing: border-box;
 }
 
-.gallery-select-input:hover, .gallery-select-input:focus {
-    border-color: rgba(238, 214, 170, 0.8);
-    background: rgba(18, 24, 32, 0.98);
+.gallery-select-input:hover,
+.gallery-select-input:focus {
+    border-color: var(--color-accent-gold, #eed6aa);
+    background: var(--color-surface-elevated, #141822);
 }
 
 .gallery-select-input option {
-    background: #10141b;
-    color: #ffffff;
-    padding: 6px;
+    background: var(--color-surface-base, #10141b);
+    color: var(--color-text-primary, #ffffff);
+    padding: var(--space-2, 8px);
 }
 
-/* 热门大师快捷标签 (Quick Artists) */
+/* Quick Artists */
 .quick-artists-section {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--space-2, 8px);
     flex-wrap: wrap;
-    padding-top: 2px;
+    padding-top: var(--space-1, 4px);
 }
 
 .quick-artists-label {
-    font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.55);
+    font-size: var(--font-xs, 12px);
+    color: var(--color-text-muted, rgba(255, 255, 255, 0.55));
     flex-shrink: 0;
 }
 
 .quick-artists-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: var(--space-1, 4px);
 }
 
 .quick-artist-pill {
-    padding: 2px 8px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 10px;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.78rem;
+    padding: 2px 10px;
+    height: 24px;
+    background: var(--color-overlay-hover, rgba(255, 255, 255, 0.04));
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.12));
+    border-radius: var(--radius-full, 9999px);
+    color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+    font-size: var(--font-xs, 12px);
+    line-height: 20px;
     cursor: pointer;
     transition: all 0.2s ease;
+    box-sizing: border-box;
 }
 
 .quick-artist-pill:hover {
-    background: rgba(238, 214, 170, 0.15);
-    border-color: rgba(238, 214, 170, 0.45);
-    color: #eed6aa;
+    background: var(--color-gold-alpha-15, rgba(238, 214, 170, 0.15));
+    border-color: var(--color-gold-alpha-40, rgba(238, 214, 170, 0.4));
+    color: var(--color-accent-gold, #eed6aa);
 }
 
 .quick-artist-pill.active {
-    background: rgba(238, 214, 170, 0.25);
-    border-color: #eed6aa;
-    color: #ffffff;
-    font-weight: 500;
+    background: var(--color-accent-gold, #eed6aa);
+    border-color: var(--color-accent-gold, #eed6aa);
+    color: var(--color-ink-dark, #1a1408);
+    font-weight: 600;
 }
 
-/* 筛选结果统计与重置 */
+/* --------------------------------------------------------------------------
+   6.6 Metadata Counter Bar
+   -------------------------------------------------------------------------- */
 .gallery-meta-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 24px 6px;
-    font-size: 0.84rem;
+    padding: var(--space-2, 8px) var(--space-6, 24px);
+    font-size: var(--font-sm, 14px);
+    line-height: var(--lh-sm, 24px);
+    flex-shrink: 0;
+    box-sizing: border-box;
 }
 
 .gallery-meta-count {
-    color: rgba(255, 255, 255, 0.75);
-    letter-spacing: 0.05em;
+    color: var(--color-text-muted, rgba(255, 255, 255, 0.75));
+    letter-spacing: var(--tracking-wide, 0.05em);
 }
 
 .meta-num {
-    color: #eed6aa;
+    color: var(--color-accent-gold, #eed6aa);
     font-weight: 600;
-    font-family: monospace;
+    font-family: var(--font-mono-num, monospace);
     font-size: 0.95rem;
 }
 
 .meta-filter-desc {
-    color: rgba(238, 214, 170, 0.85);
-    margin-left: 6px;
+    color: var(--color-accent-gold-light, #f7e7b4);
+    margin-left: var(--space-2, 8px);
     font-style: italic;
 }
 
 .gallery-reset-btn {
     background: transparent;
     border: none;
-    color: #eed6aa;
-    font-size: 0.82rem;
+    color: var(--color-accent-gold, #eed6aa);
+    font-size: var(--font-sm, 14px);
     text-decoration: underline;
+    text-underline-offset: 3px;
     cursor: pointer;
     transition: color 0.2s ease;
     padding: 0;
 }
 
 .gallery-reset-btn:hover {
-    color: #ffffff;
+    color: var(--color-text-primary, #ffffff);
 }
 
-/* 名画卡片滚动容器 (开启 GPU 合成隔离与顺畅滚动) */
-.gallery-list-container {
-    flex: 1;
+/* --------------------------------------------------------------------------
+   6.7 Multi-Column Artwork Card Grid (.gallery-list-container)
+   Swiss Grid Modular System · Preserving Scroll Root for Virtual Loading
+   -------------------------------------------------------------------------- */
+.gallery-list-container,
+.gallery-grid {
+    flex: 1 1 0%;
     min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 10px 20px 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    padding: var(--space-4, 16px) var(--space-6, 24px) var(--space-8, 32px);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: max-content;
+    gap: var(--space-4, 16px);
+    align-content: start;
     will-change: scroll-position;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
     contain: layout paint;
+    box-sizing: border-box;
 }
 
 .gallery-list-container::-webkit-scrollbar {
@@ -1127,34 +2606,45 @@ body.help-open #custom-cursor {
 }
 
 .gallery-list-container::-webkit-scrollbar-thumb {
-    background: rgba(238, 214, 170, 0.22);
-    border-radius: 3px;
+    background: var(--color-gold-alpha-25, rgba(238, 214, 170, 0.22));
+    border-radius: var(--radius-sm, 4px);
 }
 
 .gallery-list-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(238, 214, 170, 0.45);
+    background: var(--color-gold-alpha-40, rgba(238, 214, 170, 0.45));
 }
 
-/* 单个名画卡片 (Artwork Card - 独立图层加速) */
+/* Virtual Scroll Sentinel spanning full grid width */
+.gallery-scroll-sentinel {
+    grid-column: 1 / -1;
+    height: 40px;
+    width: 100%;
+    pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   6.8 Artwork Card (Museum Placard · 4:3 Aspect Ratio)
+   -------------------------------------------------------------------------- */
 .gallery-card {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 12px;
-    min-height: 72px;
-    flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.035);
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 10px;
-    cursor: pointer !important;
-    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.18s ease, border-color 0.18s ease;
-    position: relative;
+    flex-direction: column;
+    min-height: 240px;
+    background: var(--color-surface-card, rgba(22, 28, 38, 0.70));
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.08));
+    border-radius: var(--radius-md, 8px);
     overflow: hidden;
+    cursor: pointer !important;
+    position: relative;
     content-visibility: auto;
-    contain-intrinsic-size: 72px;
-    contain: content;
+    contain-intrinsic-size: 340px;
+    contain: layout paint;
     transform: translateZ(0);
     backface-visibility: hidden;
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.22s ease,
+                box-shadow 0.22s ease,
+                background-color 0.22s ease;
+    box-sizing: border-box;
 }
 
 .gallery-card * {
@@ -1162,189 +2652,262 @@ body.help-open #custom-cursor {
 }
 
 .gallery-card:hover {
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(238, 214, 170, 0.55);
-    transform: translateY(-1px) translateX(2px) translateZ(0);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    background: var(--color-surface-card-hover, rgba(30, 38, 52, 0.85));
+    border-color: var(--color-gold-alpha-40, rgba(238, 214, 170, 0.4));
+    transform: translateY(-2px) translateZ(0);
+    box-shadow: var(--shadow-md, 0 8px 24px rgba(0, 0, 0, 0.45));
 }
 
+/* Active State (Viewing) */
 .gallery-card.is-active {
-    background: linear-gradient(135deg, rgba(238, 214, 170, 0.16) 0%, rgba(26, 32, 44, 0.85) 100%);
-    border: 1px solid rgba(238, 214, 170, 0.8);
-    box-shadow: 0 4px 18px rgba(238, 214, 170, 0.2), inset 0 0 12px rgba(238, 214, 170, 0.1);
+    background: linear-gradient(180deg, var(--color-surface-card-hover, rgba(30, 38, 52, 0.9)) 0%, rgba(238, 214, 170, 0.08) 100%);
+    border-color: var(--color-accent-gold, #eed6aa);
+    box-shadow: 0 0 0 1px var(--color-accent-gold, #eed6aa), var(--shadow-glow-gold);
 }
 
 .gallery-card.is-active::before {
     content: '';
     position: absolute;
-    left: 0;
     top: 0;
-    bottom: 0;
-    width: 4px;
-    background: #eed6aa;
-    border-radius: 2px 0 0 2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--color-accent-gold, #eed6aa);
+    z-index: 2;
 }
 
+/* 4:3 Classical Painting Ratio Container */
 .card-thumb-box {
-    width: 54px;
-    height: 54px;
-    border-radius: 6px;
-    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 4 / 3;
     flex-shrink: 0;
-    background: #080a0d;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    overflow: hidden;
     position: relative;
-    contain: strict;
+    background: var(--color-bg-deep, #080a0d);
+    border-bottom: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.08));
+    contain: paint;
+    box-sizing: border-box;
+}
+
+.card-thumb-box.is-missing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-style: dashed;
+    border-color: var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+}
+
+.card-thumb-box.is-missing::after {
+    content: '🖼';
+    font-size: 28px;
+    opacity: 0.4;
 }
 
 .card-thumb-img {
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
     object-fit: cover;
     display: block;
-    transition: transform 0.25s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform;
-    image-rendering: auto;
 }
 
 .gallery-card:hover .card-thumb-img {
-    transform: scale(1.08);
+    transform: scale(1.05);
 }
 
+/* Card Details & Curatorial Typography */
 .card-details {
-    flex: 1;
-    min-width: 0;
+    padding: var(--space-3, 12px) var(--space-3, 12px) var(--space-4, 16px);
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--space-1, 4px);
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 .card-header-row {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 6px;
+    gap: var(--space-2, 8px);
 }
 
 .card-title {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: #ffffff;
+    font-family: var(--font-serif-art);
+    font-size: var(--font-base, 16px);
+    line-height: var(--lh-sm, 24px);
+    font-weight: var(--font-weight-semibold, 600);
+    color: var(--color-text-primary, #ffffff);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.25;
+    flex: 1;
 }
 
 .gallery-card.is-active .card-title {
-    color: #eed6aa;
+    color: var(--color-accent-gold, #eed6aa);
 }
 
 .card-badge-viewing {
-    font-size: 0.72rem;
-    color: #12161e;
-    background: #eed6aa;
-    font-weight: 600;
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-xs, 12px);
+    line-height: 18px;
+    color: var(--color-ink-dark, #1a1408);
+    background: var(--color-accent-gold, #eed6aa);
+    font-weight: var(--font-weight-semibold, 600);
     padding: 1px 6px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm, 4px);
     flex-shrink: 0;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--tracking-wide, 0.05em);
 }
 
 .card-entitle {
-    font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.45);
+    font-family: var(--font-serif-art);
+    font-size: var(--font-xs, 12px);
+    line-height: var(--lh-sm, 24px);
+    color: var(--color-text-muted, rgba(255, 255, 255, 0.5));
     font-style: italic;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.2;
 }
 
 .card-artist {
-    font-size: 0.84rem;
-    color: #eed6aa;
-    opacity: 0.9;
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-sm, 14px);
+    line-height: var(--lh-sm, 24px);
+    color: var(--color-accent-gold, #eed6aa);
+    opacity: 0.95;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.25;
 }
 
 .card-tags-row {
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-top: 3px;
+    gap: var(--space-1, 4px);
+    margin-top: var(--space-1, 4px);
     flex-wrap: wrap;
 }
 
 .card-tag {
-    font-size: 0.7rem;
-    padding: 1px 6px;
-    border-radius: 4px;
-    line-height: 1.3;
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-xs, 12px);
+    line-height: 16px;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm, 4px);
 }
 
 .card-tag-genre {
-    background: rgba(238, 214, 170, 0.12);
-    color: #eed6aa;
-    border: 1px solid rgba(238, 214, 170, 0.25);
+    background: var(--color-tag-genre-bg, rgba(254, 178, 178, 0.12));
+    color: var(--color-tag-genre, #feb2b2);
+    border: 1px solid rgba(254, 178, 178, 0.25);
 }
 
 .card-tag-cat {
-    background: rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--color-tag-period-bg, rgba(144, 205, 244, 0.12));
+    color: var(--color-tag-period, #90cdf4);
+    border: 1px solid rgba(144, 205, 244, 0.25);
 }
 
-/* 空状态 (Empty State) */
+/* Empty State */
 .gallery-empty-state {
+    grid-column: 1 / -1;
     text-align: center;
-    padding: 48px 20px;
+    padding: var(--space-12, 48px) var(--space-6, 24px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: var(--space-3, 12px);
+    box-sizing: border-box;
 }
 
 .empty-icon {
-    font-size: 2.4rem;
+    font-size: 2.5rem;
     opacity: 0.7;
+    line-height: 1;
 }
 
 .empty-title {
-    font-size: 1.15rem;
-    color: #eed6aa;
-    font-weight: 500;
+    font-family: var(--font-serif-art, serif);
+    font-size: var(--font-lg, 20px);
+    line-height: var(--lh-lg, 36px);
+    color: var(--color-accent-gold, #eed6aa);
+    font-weight: 600;
 }
 
 .empty-desc {
-    font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.5);
-    max-width: 280px;
-    line-height: 1.45;
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-sm, 14px);
+    line-height: var(--lh-sm, 24px);
+    color: var(--color-text-muted, rgba(255, 255, 255, 0.5));
+    max-width: 320px;
 }
 
 .empty-reset-btn {
-    margin-top: 6px;
-    padding: 6px 16px;
-    background: rgba(238, 214, 170, 0.18);
-    border: 1px solid rgba(238, 214, 170, 0.5);
-    border-radius: 16px;
-    color: #eed6aa;
-    font-size: 0.88rem;
+    margin-top: var(--space-2, 8px);
+    padding: 6px 18px;
+    background: var(--color-gold-alpha-15, rgba(238, 214, 170, 0.15));
+    border: 1px solid var(--color-gold-alpha-40, rgba(238, 214, 170, 0.4));
+    border-radius: var(--radius-full, 9999px);
+    color: var(--color-accent-gold, #eed6aa);
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-sm, 14px);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .empty-reset-btn:hover {
-    background: rgba(238, 214, 170, 0.35);
-    color: #ffffff;
+    background: var(--color-accent-gold, #eed6aa);
+    color: var(--color-ink-dark, #1a1408);
 }
 
-/* 响应式适配 */
+/* --------------------------------------------------------------------------
+   6.9 Responsive Folding Breakpoints (12 -> 8 -> 4 -> 2 Cascade)
+   -------------------------------------------------------------------------- */
+@media (min-width: 1440px) {
+    .gallery-panel {
+        width: min(1080px, 72vw);
+    }
+    .gallery-list-container,
+    .gallery-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--space-5, 20px);
+    }
+}
+
+@media (max-width: 1439px) and (min-width: 1024px) {
+    .gallery-panel {
+        width: min(920px, 80vw);
+    }
+    .gallery-list-container,
+    .gallery-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--space-4, 16px);
+    }
+}
+
+@media (max-width: 1023px) and (min-width: 641px) {
+    .gallery-panel {
+        width: min(680px, 88vw);
+    }
+    .gallery-list-container,
+    .gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-4, 16px);
+        padding: var(--space-4, 16px) var(--space-4, 16px) var(--space-8, 32px);
+    }
+    .gallery-header,
+    .gallery-search-wrap,
+    .gallery-filter-panel,
+    .gallery-meta-bar {
+        padding-inline: var(--space-4, 16px);
+    }
+}
+
 @media (max-width: 640px) {
     .gallery-open-container {
         top: 16px;
@@ -1359,214 +2922,31 @@ body.help-open #custom-cursor {
         width: 100vw;
         max-width: 100vw;
     }
+    .gallery-list-container,
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-3, 12px);
+        padding: var(--space-3, 12px) var(--space-3, 12px) var(--space-8, 32px);
+    }
+    .gallery-header,
+    .gallery-search-wrap,
+    .gallery-filter-panel,
+    .gallery-meta-bar {
+        padding-inline: var(--space-3, 12px);
+    }
+    .filter-dropdowns-row {
+        flex-direction: column;
+        gap: var(--space-2, 8px);
+    }
 
     .brush-control-panel {
-        top: 16px;
-        right: 16px;
+        top: max(var(--space-4, 16px), env(safe-area-inset-top, 16px));
+        right: max(var(--space-4, 16px), env(safe-area-inset-right, 16px));
     }
 }
 
-/* ==========================================================================
-   🎲 随机漫游擦画模式样式 (Random Wander & Scratch Mode)
-   ========================================================================== */
-/* ==========================================================================
-   一级模式切换控件（画布常驻，取代原先藏在画笔弹层里的 tab）
-   ========================================================================== */
-.mode-switcher {
-    position: absolute;
-    bottom: 26px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: inline-flex;
-    gap: 4px;
-    padding: 4px;
-    background: rgba(13, 16, 20, 0.72);
-    border: 1px solid rgba(238, 214, 170, 0.28);
-    border-radius: 999px;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.45);
-    z-index: 110;
-}
-
-.mode-switch-btn {
-    display: inline-flex;
-    align-items: center;
-    white-space: nowrap;
-    gap: 6px;
-    padding: 8px 18px;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 999px;
-    color: rgba(255, 255, 255, 0.72);
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 0.92rem;
-    letter-spacing: 0.06em;
-    cursor: pointer;
-    transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease;
-}
-
-.mode-switch-btn:hover {
-    color: #ffffff;
-    background: rgba(238, 214, 170, 0.12);
-}
-
-.mode-switch-btn.active {
-    color: #1a1408;
-    background: linear-gradient(135deg, #eed6aa 0%, #c9a463 100%);
-    border-color: rgba(238, 214, 170, 0.9);
-    font-weight: 500;
-}
-
-.mode-switch-icon {
-    font-size: 0.95rem;
-    line-height: 1;
-}
-
-/* 首次进入的切换引导：8 秒后自行淡出，不拦截任何交互 */
-.mode-switch-hint {
-    position: absolute;
-    bottom: calc(100% + 10px);
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    padding: 5px 12px;
-    border-radius: 999px;
-    background: rgba(13, 16, 20, 0.78);
-    border: 1px solid rgba(238, 214, 170, 0.25);
-    color: rgba(238, 214, 170, 0.92);
-    font-size: 0.76rem;
-    letter-spacing: 0.06em;
-    pointer-events: none;
-    animation: modeHintFade 8s ease forwards;
-}
-
-@keyframes modeHintFade {
-    0%, 70% { opacity: 0.95; transform: translateX(-50%) translateY(0); }
-    100% { opacity: 0; transform: translateX(-50%) translateY(-4px); }
-}
-
-.mode-tabs {
-    display: flex;
-    background: rgba(0, 0, 0, 0.40);
-    border: 1px solid rgba(238, 214, 170, 0.25);
-    border-radius: 8px;
-    padding: 3px;
-    gap: 4px;
-    width: 100%;
-    margin-bottom: 8px;
-}
-
-.mode-tabs .fit-tab-btn {
-    font-size: 0.85rem;
-    font-weight: 500;
-    padding: 6px 4px;
-}
-
-.mode-tabs .fit-tab-btn.active {
-    background: linear-gradient(135deg, rgba(238, 214, 170, 0.35) 0%, rgba(200, 160, 100, 0.20) 100%);
-    border-color: rgba(238, 214, 170, 0.7);
-    color: #ffffff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-}
-
-/* 面板内微型进度条 */
-.scratch-mini-bar-bg {
-    width: 100%;
-    height: 6px;
-    background: rgba(0, 0, 0, 0.45);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    overflow: hidden;
-    margin: 4px 0 2px 0;
-}
-
-.scratch-mini-bar-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #d4af37 0%, #f7e7b4 50%, #ffffff 100%);
-    border-radius: 4px;
-    box-shadow: 0 0 8px rgba(238, 214, 170, 0.5);
-    transition: width 0.15s ease-out;
-}
-
-/* 视口浮动揭开进度胶囊 (Scratch HUD) */
-.scratch-hud {
-    position: absolute;
-    bottom: 96px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 5;
-    pointer-events: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 18px 10px 18px;
-    background: rgba(18, 22, 28, 0.75);
-    border: 1px solid rgba(238, 214, 170, 0.45);
-    border-radius: 24px;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.65),
-        0 0 16px rgba(238, 214, 170, 0.15);
-    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.scratch-hud.locked {
-    border-color: rgba(160, 220, 255, 0.6);
-    box-shadow: 0 0 20px rgba(160, 220, 255, 0.3);
-}
-
-.scratch-hud-pill {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.92rem;
-    color: #e2e8f0;
-    letter-spacing: 0.04em;
-}
-
-.scratch-hud-icon {
-    font-size: 1.05rem;
-}
-
-.scratch-hud-label {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 0.88rem;
-}
-
-.scratch-hud-val {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: #eed6aa;
-    font-family: monospace;
-    text-shadow: 0 0 8px rgba(238, 214, 170, 0.6);
-}
-
-.scratch-hud-target {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.5);
-    font-family: monospace;
-}
-
-.scratch-hud-track {
-    width: 140px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.12);
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.scratch-hud-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #c5a059 0%, #eed6aa 60%, #ffffff 100%);
-    border-radius: 3px;
-    box-shadow: 0 0 10px rgba(238, 214, 170, 0.8);
-    transition: width 0.15s ease-out;
-}
+/* Note: Primary mode switcher (#mode-switcher) and scratch progress HUD (#scratch-hud)
+   have been refactored into PART 5: FLOATING HUDS & NAVIGATION CONTROLS. */
 
 /* ==========================================================================
    名画背景故事与艺术鉴赏系统 (Masterpiece Story & Secrets Sheet)
@@ -1577,75 +2957,81 @@ body.help-open #custom-cursor {
     pointer-events: auto;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    margin-top: 10px;
-    padding: 5px 14px;
-    background: rgba(15, 18, 22, 0.65);
-    border: 1px solid rgba(238, 214, 170, 0.35);
-    border-radius: 20px;
-    color: #eed6aa;
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 0.92rem;
-    letter-spacing: 0.12em;
+    gap: var(--baseline-quarter, 6px);
+    margin-top: var(--space-2, 8px);
+    padding: var(--space-1, 4px) var(--space-3, 12px);
+    background: var(--color-surface-floating, rgba(15, 18, 22, 0.65));
+    border: 1px solid var(--color-gold-alpha-35, rgba(238, 214, 170, 0.35));
+    border-radius: var(--radius-full, 9999px);
+    color: var(--color-accent-gold, #eed6aa);
+    font-family: var(--font-serif-art);
+    font-size: var(--font-sm, 0.875rem);
+    letter-spacing: var(--tracking-loose, 0.12em);
     cursor: pointer;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(var(--blur-sm, 8px));
+    -webkit-backdrop-filter: blur(var(--blur-sm, 8px));
+    transition: all var(--duration-base, 250ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+    box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.25));
 }
 
 .story-toggle-btn:hover {
-    background: rgba(238, 214, 170, 0.18);
-    border-color: rgba(238, 214, 170, 0.8);
-    color: #ffffff;
+    background: var(--color-gold-alpha-20, rgba(238, 214, 170, 0.18));
+    border-color: var(--color-gold-alpha-80, rgba(238, 214, 170, 0.80));
+    color: var(--color-text-primary, #ffffff);
     transform: translateY(-1px) scale(1.03);
-    box-shadow: 0 4px 16px rgba(238, 214, 170, 0.25);
+    box-shadow: var(--shadow-glow-gold-lg, 0 4px 16px rgba(238, 214, 170, 0.25));
 }
 
 .story-btn-icon {
-    font-size: 0.95rem;
+    font-size: var(--font-sm, 0.875rem);
 }
 
 .story-btn-text {
-    font-weight: 500;
+    font-weight: var(--font-weight-medium, 500);
 }
 
 /* 画笔面板中的名画故事按钮 */
 .art-story-btn {
     flex: 1.2;
-    padding: 7px 10px;
-    background: rgba(238, 214, 170, 0.1);
-    border: 1px solid rgba(238, 214, 170, 0.35);
-    border-radius: 6px;
-    color: #eed6aa;
-    font-size: 0.82rem;
-    letter-spacing: 0.05em;
+    padding: var(--space-2, 8px) var(--space-3, 12px);
+    background: var(--color-gold-alpha-10, rgba(238, 214, 170, 0.10));
+    border: 1px solid var(--color-gold-alpha-35, rgba(238, 214, 170, 0.35));
+    border-radius: var(--radius-md, 8px);
+    color: var(--color-accent-gold, #eed6aa);
+    font-size: var(--font-xs, 0.75rem);
+    letter-spacing: var(--tracking-wide, 0.05em);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    transition: all 0.2s ease;
+    gap: var(--space-1, 4px);
+    transition: all var(--duration-fast, 150ms) ease;
 }
 
 .art-story-btn:hover {
-    background: rgba(238, 214, 170, 0.22);
-    border-color: rgba(238, 214, 170, 0.7);
-    color: #ffffff;
+    background: var(--color-gold-alpha-20, rgba(238, 214, 170, 0.22));
+    border-color: var(--color-gold-alpha-70, rgba(238, 214, 170, 0.70));
+    color: var(--color-text-primary, #ffffff);
 }
 
-/* 2. 名画背景故事抽屉整体容器 (全屏绝对穿透，不遮挡未展开区域) */
+/* ==========================================================================
+   PART 6: DRAWERS (GALLERY & STORY)
+   SECTION 6.2: Masterpiece Story Drawer Typographic Layout (Feature 8)
+   Swiss International Typographic Style · 24px Baseline Grid · 3-Section Dossier
+   ========================================================================== */
+
+/* 1. Global Story Drawer Root Overlay Container */
 .story-drawer {
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 1000;
+    z-index: var(--z-drawer, 50);
     pointer-events: none;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .story-drawer.open {
@@ -1654,250 +3040,314 @@ body.help-open #custom-cursor {
     visibility: visible;
 }
 
-/* 典雅微光半透明背景幕 */
+/* 2. Atmospheric Dark Scrim Backdrop */
 .story-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(10, 12, 16, 0.55);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background: var(--color-backdrop-scrim, var(--color-backdrop, rgba(10, 12, 16, 0.65)));
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     transition: opacity 0.3s ease;
 }
 
-/* 右侧滑出的古典信笺磨砂面板 */
+/* 3. Swiss Architectural Story Panel (Desktop & Tablet) */
 .story-panel {
     position: absolute;
     top: 0;
     right: 0;
+    bottom: 0;
     width: 100%;
-    max-width: 500px;
+    max-width: clamp(320px, 45vw, 640px);
     height: 100%;
-    background: rgba(13, 16, 20, 0.92);
-    border-left: 1px solid rgba(238, 214, 170, 0.25);
-    box-shadow: -10px 0 35px rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: var(--color-surface-elevated, rgba(13, 16, 20, 0.94));
+    border-left: 1px solid var(--color-border-subtle, rgba(238, 214, 170, 0.22));
+    box-shadow: -12px 0 40px rgba(0, 0, 0, 0.75),
+                inset 1px 0 0 rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     display: flex;
     flex-direction: column;
     transform: translateX(100%);
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 2;
+    overflow: hidden;
 }
 
 .story-drawer.open .story-panel {
     transform: translateX(0);
 }
 
-/* 抽屉头部 */
+/* 4. Section 1: Provenance & Artwork Header */
 .story-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    padding: 24px 26px 18px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    gap: var(--space-4, 16px);
+    padding: var(--space-6, 24px) var(--space-6, 24px) var(--space-4, 16px);
+    border-bottom: 1px solid var(--color-border-hairline, var(--color-border-subtle, rgba(255, 255, 255, 0.08)));
+    background: rgba(10, 12, 16, 0.4);
+    flex-shrink: 0;
 }
 
 .story-header-left {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
+    gap: var(--space-3, 12px);
+    flex: 1;
+    min-width: 0;
 }
 
 .story-header-icon {
-    font-size: 1.5rem;
-    margin-top: 2px;
+    font-size: var(--font-xl, 1.5rem);
+    line-height: var(--lh-xl, 36px);
+    flex-shrink: 0;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
 }
 
 .story-header-meta {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0;
+    min-width: 0;
+    flex: 1;
 }
 
 .story-sub-label {
-    font-size: 0.76rem;
-    letter-spacing: 0.2em;
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-xs, 0.75rem);
+    line-height: 18px;
+    letter-spacing: var(--tracking-loose, 0.15em);
     text-transform: uppercase;
-    color: #c5a059;
+    color: var(--color-gold-400, var(--color-accent-gold, #eed6aa));
+    margin-bottom: var(--baseline-quarter, 6px);
+    display: block;
 }
 
 .story-main-title {
-    font-size: 1.35rem;
+    font-family: var(--font-serif-art);
+    font-size: var(--font-xl, 1.5rem);
     font-weight: 500;
-    color: #ffffff;
-    line-height: 1.3;
+    color: var(--color-text-primary, #ffffff);
+    line-height: var(--lh-xl, 36px);
+    letter-spacing: var(--tracking-tight, -0.01em);
+    margin: 0 0 var(--baseline-half, 12px) 0;
+    word-break: break-word;
 }
 
 .story-entitle {
-    font-size: 0.88rem;
+    font-family: var(--font-serif-art);
+    font-size: var(--font-sm, 0.875rem);
     font-style: italic;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.65);
+    line-height: var(--lh-sm, 24px);
+    letter-spacing: var(--tracking-normal, 0.02em);
+    margin: 0;
+    word-break: break-word;
 }
 
 .story-close-btn {
-    width: 34px;
-    height: 34px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-pill, var(--radius-full, 9999px));
     color: rgba(255, 255, 255, 0.7);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     flex-shrink: 0;
+    margin-top: 0;
 }
 
 .story-close-btn:hover {
     background: rgba(238, 214, 170, 0.2);
     border-color: rgba(238, 214, 170, 0.6);
-    color: #eed6aa;
+    color: var(--color-gold-300, var(--color-accent-gold, #eed6aa));
     transform: rotate(90deg);
 }
 
-/* 抽屉主体可滚动区域 */
+/* 5. Scrollable Body: 24px Vertical Rhythm Flow */
 .story-body {
     flex: 1;
     overflow-y: auto;
-    padding: 22px 26px;
+    overflow-x: hidden;
+    padding: var(--space-6, 24px);
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: var(--space-6, 24px);
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 }
 
 .story-body::-webkit-scrollbar {
-    width: 5px;
+    width: 6px;
+}
+
+.story-body::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 .story-body::-webkit-scrollbar-thumb {
     background: rgba(238, 214, 170, 0.2);
-    border-radius: 3px;
+    border-radius: var(--radius-pill, var(--radius-full, 9999px));
 }
 
-/* 元标签行 */
+.story-body::-webkit-scrollbar-thumb:hover {
+    background: rgba(238, 214, 170, 0.35);
+}
+
+/* 6. Section 1 (Cont.): Metadata Tags & Provenance */
 .story-badges-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: var(--space-2, 8px);
+    align-items: center;
+    margin-bottom: calc(-1 * var(--space-2, 8px));
 }
 
 .story-tag {
-    padding: 4px 10px;
-    font-size: 0.78rem;
-    letter-spacing: 0.06em;
-    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 var(--space-3, 12px);
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-xs, 0.75rem);
+    line-height: var(--lh-base-px, 24px);
+    letter-spacing: var(--tracking-wide, 0.05em);
+    border-radius: var(--radius-sm, 4px);
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
 }
 
 .story-tag-artist {
-    color: #eed6aa;
+    color: var(--color-gold-300, var(--color-accent-gold, #eed6aa));
     background: rgba(238, 214, 170, 0.08);
     border-color: rgba(238, 214, 170, 0.3);
     font-weight: 500;
 }
 
 .story-tag-period {
-    color: #90cdf4;
-    background: rgba(144, 205, 244, 0.08);
-    border-color: rgba(144, 205, 244, 0.25);
+    color: var(--color-tag-period, #eed6aa);
+    background: var(--color-tag-period-bg, rgba(238, 214, 170, 0.10));
+    border-color: var(--color-tag-period-border, rgba(238, 214, 170, 0.25));
 }
 
 .story-tag-genre {
-    color: #feb2b2;
-    background: rgba(254, 178, 178, 0.08);
-    border-color: rgba(254, 178, 178, 0.25);
+    color: var(--color-tag-genre, #7da4b8);
+    background: var(--color-tag-genre-bg, rgba(125, 164, 184, 0.12));
+    border-color: var(--color-tag-genre-border, rgba(125, 164, 184, 0.25));
 }
 
-/* 馆藏地栏 */
+/* Museum Location Strip */
 .story-location-box {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 9px 12px;
+    gap: var(--space-2, 8px);
+    padding: var(--space-2, 8px) var(--space-3, 12px);
     background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 6px;
-    font-size: 0.84rem;
+    border: 1px solid var(--color-border-subtle, rgba(238, 214, 170, 0.15));
+    border-radius: var(--radius-md, 8px);
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-sm, 0.875rem);
+    line-height: var(--lh-sm, 24px);
 }
 
 .location-icon {
-    font-size: 0.95rem;
+    font-size: var(--font-base, 1rem);
+    line-height: 1;
+    flex-shrink: 0;
 }
 
 .location-label {
     color: rgba(255, 255, 255, 0.45);
+    flex-shrink: 0;
 }
 
 .location-val {
-    color: #eed6aa;
+    color: var(--color-gold-300, var(--color-accent-gold, #eed6aa));
     font-weight: 500;
+    word-break: break-word;
 }
 
-/* 故事内容卡片区块 */
+/* 7. Section 2 & 3: Modular Archive Content Cards */
 .story-card-block {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 16px 18px;
+    padding: var(--space-4, 16px) var(--space-5, 20px);
     background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(238, 214, 170, 0.15);
-    border-radius: 8px;
+    border: 1px solid var(--color-border-subtle, rgba(238, 214, 170, 0.15));
+    border-radius: var(--radius-md, 8px);
     position: relative;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
 .story-block-title {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.95rem;
+    gap: var(--space-2, 8px);
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-base, 1rem);
     font-weight: 600;
-    color: #eed6aa;
-    letter-spacing: 0.08em;
+    color: var(--color-gold-300, var(--color-accent-gold, #eed6aa));
+    letter-spacing: var(--tracking-wide, 0.06em);
+    line-height: var(--lh-base-px, 24px);
+    margin: 0 0 var(--baseline-half, 12px) 0;
 }
 
 .block-icon {
-    font-size: 1.05rem;
+    font-size: var(--font-md, 1.125rem);
+    line-height: 1;
 }
 
+/* Ergonomic Reading Measure & Locked Baseline Text */
 .story-block-text {
-    font-size: 0.92rem;
-    line-height: 1.75;
-    color: rgba(255, 255, 255, 0.82);
-    letter-spacing: 0.02em;
+    font-family: var(--font-serif-art);
+    font-size: var(--font-base, 1rem);
+    line-height: var(--lh-base-px, 24px);
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: var(--tracking-normal, 0.02em);
     text-align: justify;
+    text-justify: inter-ideograph;
+    max-width: min(100%, var(--measure-cjk, 38em));
+    margin: 0;
+    hyphens: auto;
 }
 
-/* 画中故事：叙事主体，用香槟金左边线与略亮的底色，与下方「创作背景」的考据内容区分 */
+/* Section 2 Spotlight: Curatorial Narrative */
 .story-card-narrative {
-    background: rgba(238, 214, 170, 0.07);
+    background: linear-gradient(135deg, rgba(238, 214, 170, 0.08) 0%, rgba(13, 16, 20, 0.45) 100%);
     border-color: rgba(238, 214, 170, 0.32);
-    border-left: 2px solid #eed6aa;
-    border-radius: 0 8px 8px 0;
+    border-left: 3px solid var(--color-gold-400, var(--color-accent-gold, #eed6aa));
+    border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
 }
 
 .story-card-narrative .story-block-text {
-    color: rgba(255, 255, 255, 0.92);
-    font-size: 0.95rem;
-    line-height: 1.85;
+    color: rgba(255, 255, 255, 0.94);
+    font-size: var(--font-base, 1rem);
+    line-height: var(--lh-base-px, 24px);
 }
 
-/* 大师名言卡片 */
+/* Section 3 Highlight: Masterpiece Quote Card */
 .story-quote-box {
     position: relative;
-    padding: 16px 18px 14px;
-    background: linear-gradient(135deg, rgba(238, 214, 170, 0.08) 0%, rgba(20, 24, 30, 0.4) 100%);
-    border-left: 3px solid #eed6aa;
-    border-radius: 0 8px 8px 0;
-    margin-top: 4px;
+    padding: var(--space-4, 16px) var(--space-5, 20px);
+    background: linear-gradient(135deg, rgba(238, 214, 170, 0.08) 0%, rgba(20, 24, 30, 0.5) 100%);
+    border-left: 3px solid var(--color-gold-400, var(--color-accent-gold, #eed6aa));
+    border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
+    margin-top: 0;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
 .story-quote-symbol {
     position: absolute;
-    top: 6px;
-    right: 14px;
+    top: var(--space-2, 8px);
+    right: var(--space-4, 16px);
     font-size: 3rem;
     font-family: Georgia, serif;
     color: rgba(238, 214, 170, 0.12);
@@ -1906,248 +3356,92 @@ body.help-open #custom-cursor {
 }
 
 .story-quote-text {
-    font-size: 0.94rem;
+    font-family: var(--font-serif-art);
+    font-size: var(--font-base, 1rem);
     font-style: italic;
-    color: #ffffff;
-    line-height: 1.6;
-    margin-bottom: 8px;
+    color: var(--color-text-primary, #ffffff);
+    line-height: var(--lh-base-px, 24px);
+    margin: 0 0 var(--baseline-half, 12px) 0;
     position: relative;
     z-index: 1;
+    max-width: min(100%, var(--measure-cjk, 38em));
 }
 
 .story-quote-author {
-    font-size: 0.82rem;
-    letter-spacing: 0.15em;
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-xs, 0.75rem);
+    letter-spacing: var(--tracking-loose, 0.15em);
     text-transform: uppercase;
-    color: #eed6aa;
+    color: var(--color-accent-gold, #eed6aa);
+    line-height: var(--lh-base-px, 24px);
     text-align: right;
+    margin: 0;
 }
 
-/* 抽屉底部快捷翻页栏 */
+/* 8. Drawer Footer: Navigation & Keytip */
 .story-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(10, 12, 16, 0.7);
+    height: var(--space-12, 48px);
+    padding: 0 var(--space-6, 24px);
+    border-top: 1px solid var(--color-border-hairline, var(--color-border-subtle, rgba(255, 255, 255, 0.08)));
+    background: var(--color-bg-deep, rgba(10, 12, 16, 0.85));
+    flex-shrink: 0;
 }
 
 .story-nav-btn {
-    padding: 7px 14px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 6px;
-    color: #eed6aa;
-    font-size: 0.84rem;
+    min-height: 40px;
+    height: 40px;
+    min-width: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 0 var(--space-3, 12px);
+    background: var(--color-overlay-hover, rgba(255, 255, 255, 0.06));
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.15));
+    border-radius: var(--radius-sm, 4px);
+    color: var(--color-accent-gold, #eed6aa);
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-sm, 0.875rem);
+    line-height: 1;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--duration-fast, 150ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .story-nav-btn:hover {
-    background: rgba(238, 214, 170, 0.2);
-    border-color: rgba(238, 214, 170, 0.6);
-    color: #ffffff;
+    background: var(--color-gold-alpha-20, rgba(238, 214, 170, 0.20));
+    border-color: var(--color-gold-alpha-70, rgba(238, 214, 170, 0.60));
+    color: var(--color-text-primary, #ffffff);
 }
 
 .story-footer-tip {
-    font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.4);
-    letter-spacing: 0.05em;
-}
-
-@media (max-width: 640px) {
-    .story-panel {
-        max-width: 100%;
-    }
-    .story-header {
-        padding: 18px 20px 14px;
-    }
-    .story-body {
-        padding: 18px 20px;
-    }
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-xs, 0.75rem);
+    color: var(--color-text-muted, rgba(255, 255, 255, 0.60));
+    letter-spacing: var(--tracking-wide, 0.05em);
 }
 
 /* ==========================================================================
-   操作引导系统 (Onboarding, Interactive Hints & Shortcuts Guide)
+   PART 7: DIALOGS & MODAL OVERLAYS (Swiss Modular Matrix)
+   Section 7.1: Global Operations & Shortcuts Cheat Sheet Modal (#help-modal)
    ========================================================================== */
 
-/* 1. 入场首次操作情境呼吸引导提示胶囊 */
-.interactive-hint {
-    position: absolute;
-    bottom: 96px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 50;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 20px 8px 14px;
-    background: rgba(13, 16, 20, 0.76);
-    border: 1px solid rgba(238, 214, 170, 0.45);
-    border-radius: 30px;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.55), 0 0 16px rgba(238, 214, 170, 0.2);
-    pointer-events: none;
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    animation: hint-breathe 3.5s infinite ease-in-out;
-}
-
-.interactive-hint.dismissed {
-    opacity: 0 !important;
-    transform: translateX(-50%) translateY(14px) scale(0.95);
-    pointer-events: none;
-}
-
-@keyframes hint-breathe {
-    0%, 100% {
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.55), 0 0 12px rgba(238, 214, 170, 0.2);
-        border-color: rgba(238, 214, 170, 0.4);
-    }
-    50% {
-        box-shadow: 0 6px 28px rgba(0, 0, 0, 0.65), 0 0 24px rgba(238, 214, 170, 0.45);
-        border-color: rgba(238, 214, 170, 0.75);
-    }
-}
-
-.hint-ripple-icon {
-    position: relative;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.hint-symbol {
-    font-size: 1rem;
-    position: relative;
-    z-index: 2;
-}
-
-.hint-ripple-ring {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    border: 1.5px solid rgba(238, 214, 170, 0.8);
-    animation: ripple-wave 2s infinite ease-out;
-}
-
-@keyframes ripple-wave {
-    0% {
-        transform: scale(0.8);
-        opacity: 0.9;
-    }
-    100% {
-        transform: scale(1.8);
-        opacity: 0;
-    }
-}
-
-.hint-text {
-    font-size: 0.92rem;
-    color: #ffffff;
-    letter-spacing: 0.08em;
-    font-weight: 400;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
-    white-space: nowrap;
-}
-
-/* 2. 模式切换轻量即时 Toast 反馈 */
-.mode-toast {
-    position: absolute;
-    bottom: 138px;
-    left: 50%;
-    transform: translateX(-50%) translateY(16px);
-    z-index: 60;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 18px;
-    background: rgba(15, 18, 22, 0.88);
-    border: 1px solid rgba(238, 214, 170, 0.5);
-    border-radius: 20px;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    color: #eed6aa;
-    font-size: 0.88rem;
-    letter-spacing: 0.08em;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.mode-toast.show,
-.mode-toast.visible {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-
-.toast-icon {
-    font-size: 1rem;
-}
-
-/* 3. 屏幕左下角极简操作指南按钮 */
-.help-trigger-wrap {
-    position: absolute;
-    bottom: 24px;
-    left: 28px;
-    z-index: 40;
-}
-
-.help-toggle-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 7px 15px;
-    background: rgba(15, 18, 22, 0.65);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 20px;
-    color: rgba(255, 255, 255, 0.75);
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 0.88rem;
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-}
-
-.help-toggle-btn:hover {
-    background: rgba(238, 214, 170, 0.16);
-    border-color: rgba(238, 214, 170, 0.6);
-    color: #eed6aa;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(238, 214, 170, 0.2);
-}
-
-.help-btn-icon {
-    /* 用文字问号而非 ⌨️：keycap emoji 在部分 Windows 字体环境下会回退成方块 */
-    font-size: 0.95rem;
-    font-weight: 600;
-    line-height: 1;
-}
-
-.help-btn-text {
-    font-weight: 500;
-}
-
-/* 4. 全局操作与快捷键指南对话框 (Cheat Sheet Modal) */
+/* 1. Modal Fixed Root & Acrylic Scrim */
 .help-modal {
     position: fixed;
     inset: 0;
-    z-index: 2000;
+    z-index: var(--z-modal, 70);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: var(--space-6, 24px);
     pointer-events: none;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .help-modal.open {
@@ -2159,268 +3453,598 @@ body.help-open #custom-cursor {
 .help-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(10, 12, 16, 0.65);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    z-index: 1;
+    background: rgba(8, 10, 14, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    cursor: pointer;
 }
 
+/* 2. 8-Column Modal Dialog Container & Optical Center Alignment */
 .help-dialog {
     position: relative;
-    width: 100%;
-    max-width: 640px;
-    background: rgba(16, 20, 26, 0.94);
-    border: 1px solid rgba(238, 214, 170, 0.3);
-    border-radius: 14px;
-    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.7), 0 0 30px rgba(238, 214, 170, 0.15);
+    z-index: 2;
+    width: min(720px, calc(100vw - var(--space-12, 48px)));
+    max-height: min(84vh, 768px);
+    margin: auto;
+    background: var(--color-surface-elevated-alpha, rgba(16, 20, 26, 0.96));
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.10));
+    border-radius: var(--radius-lg, 16px);
+    box-shadow: var(--shadow-lg, 0 16px 48px rgba(0, 0, 0, 0.65)),
+                0 0 0 1px rgba(238, 214, 170, 0.08);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transform: scale(0.95) translateY(10px);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 2;
+    transform: translateY(calc(-4.8vh + 12px));
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.25s ease;
 }
 
 .help-modal.open .help-dialog {
-    transform: scale(1) translateY(0);
+    transform: translateY(-4.8vh);
 }
 
+/* 3. Dialog Header & Title Box */
 .help-dialog-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 24px 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    gap: var(--space-3, 12px);
+    padding: var(--space-4, 16px) var(--space-6, 24px);
+    border-bottom: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.08));
+    background: rgba(14, 17, 22, 0.60);
+    flex-shrink: 0;
 }
 
 .help-header-title-box {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--space-3, 12px);
 }
 
 .help-header-icon {
-    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    font-size: var(--font-xl, 1.5rem);
+    line-height: var(--lh-none, 1);
+    background: var(--color-gold-alpha-10, rgba(238, 214, 170, 0.10));
+    border: 1px solid var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    border-radius: var(--radius-md, 8px);
+    flex-shrink: 0;
 }
 
 .help-main-title {
-    font-size: 1.25rem;
-    font-weight: 500;
-    color: #ffffff;
-    letter-spacing: 0.06em;
+    font-family: var(--font-serif-art);
+    font-size: var(--font-lg, 1.25rem);
+    font-weight: var(--font-weight-semibold, 600);
+    color: var(--color-text-primary, #ffffff);
+    letter-spacing: var(--tracking-wide, 0.05em);
+    line-height: var(--lh-sm, 24px);
+    margin: 0;
 }
 
 .help-sub-title {
-    font-size: 0.78rem;
+    font-family: var(--font-serif-art);
+    font-size: var(--font-xs, 0.75rem);
     font-style: italic;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--color-accent-gold, #eed6aa);
+    opacity: 0.80;
     display: block;
-    margin-top: 2px;
+    line-height: var(--lh-xs, 18px);
+    letter-spacing: 0.08em;
+    margin-top: 0;
+    margin-bottom: var(--baseline-quarter, 6px);
 }
 
+/* 4. Top-Right Aligned Close Button (44x44px Touch Target) */
 .help-close-btn {
-    width: 32px;
-    height: 32px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    color: rgba(255, 255, 255, 0.7);
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    background: var(--color-surface-card, rgba(255, 255, 255, 0.04));
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.10));
+    border-radius: var(--radius-md, 8px);
+    color: var(--color-text-secondary, rgba(255, 255, 255, 0.70));
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+}
+
+.help-close-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2;
+    transition: transform 0.2s ease;
 }
 
 .help-close-btn:hover {
-    background: rgba(238, 214, 170, 0.2);
-    border-color: rgba(238, 214, 170, 0.6);
-    color: #eed6aa;
+    background: var(--color-gold-alpha-15, rgba(238, 214, 170, 0.15));
+    border-color: var(--color-gold-alpha-40, rgba(238, 214, 170, 0.40));
+    color: var(--color-accent-gold, #eed6aa);
     transform: rotate(90deg);
 }
 
-.help-dialog-body {
-    padding: 22px 24px;
-    overflow-y: auto;
-    max-height: 70vh;
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
+.help-close-btn:active {
+    transform: rotate(90deg) scale(0.95);
 }
 
+/* 5. Dialog Body & Baseline Rhythm Structure */
+.help-dialog-body {
+    padding: var(--space-6, 24px);
+    overflow-y: auto;
+    max-height: calc(84vh - 144px);
+    overscroll-behavior: contain;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6, 24px);
+}
+
+.help-dialog-body::-webkit-scrollbar {
+    width: 4px;
+}
+
+.help-dialog-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.help-dialog-body::-webkit-scrollbar-thumb {
+    background: var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    border-radius: var(--radius-xs, 2px);
+}
+
+/* 6. Semantic Section Headers */
 .help-section {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: var(--space-3, 12px);
 }
 
 .help-section-title {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.95rem;
+    gap: var(--space-2, 8px);
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-sm, 0.875rem);
     font-weight: 600;
-    color: #eed6aa;
-    letter-spacing: 0.08em;
+    color: var(--color-accent-gold, #eed6aa);
+    letter-spacing: var(--tracking-wide, 0.05em);
+    line-height: var(--lh-sm, 24px);
+    margin: 0;
+    padding-bottom: var(--space-1, 4px);
+    border-bottom: 1px solid var(--color-gold-alpha-10, rgba(238, 214, 170, 0.10));
 }
 
 .help-section-icon {
-    font-size: 1rem;
+    font-size: var(--font-base, 1rem);
+    line-height: var(--lh-none, 1);
 }
 
+/* 7. Core Interaction Mechanics 2-Column Grid */
 .help-mechanics-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4, 16px);
 }
 
 .mechanic-card {
-    padding: 14px 16px;
-    background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
+    padding: var(--space-4, 16px);
+    background: var(--color-surface-card, rgba(22, 28, 38, 0.70));
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.08));
+    border-radius: var(--radius-md, 8px);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--space-2, 8px);
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.mechanic-card:hover {
+    background: var(--color-surface-card-hover, rgba(30, 38, 52, 0.85));
+    border-color: var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
 }
 
 .mechanic-badge {
-    font-size: 0.85rem;
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-xs, 0.75rem);
     font-weight: 600;
-    color: #eed6aa;
-    margin-bottom: 4px;
+    color: var(--color-accent-gold, #eed6aa);
+    letter-spacing: 0.06em;
+    padding-bottom: var(--space-1, 4px);
+    margin-bottom: var(--space-1, 4px);
+    border-bottom: 1px solid var(--color-gold-alpha-15, rgba(238, 214, 170, 0.15));
+    line-height: var(--lh-sm, 24px);
 }
 
 .mechanic-row {
-    font-size: 0.82rem;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.75);
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-xs, 0.75rem);
+    line-height: var(--lh-sm, 24px);
+    color: var(--color-text-secondary, rgba(255, 255, 255, 0.80));
 }
 
 .mechanic-term {
-    color: #ffffff;
-    font-weight: 500;
+    color: var(--color-text-primary, #ffffff);
+    font-weight: 600;
 }
 
+.mechanic-desc {
+    color: var(--color-text-secondary, rgba(255, 255, 255, 0.75));
+}
+
+/* 8. Keyboard & Gesture Shortcuts 2-Column Tabular Matrix */
 .help-shortcuts-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2, 8px) var(--space-3, 12px);
 }
 
 .shortcut-item {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 12px;
-    background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 6px;
+    align-items: baseline;
+    gap: var(--space-3, 12px);
+    padding: var(--space-2, 8px) var(--space-3, 12px);
+    background: var(--color-surface-card, rgba(22, 28, 38, 0.70));
+    border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.06));
+    border-radius: var(--radius-sm, 4px);
+    min-height: 40px;
+    box-sizing: border-box;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.shortcut-item:hover {
+    background: var(--color-surface-card-hover, rgba(30, 38, 52, 0.85));
+    border-color: var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
 }
 
 .shortcut-keys {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    font-family: monospace;
-    font-size: 0.8rem;
-    color: #eed6aa;
+    gap: var(--space-1, 4px);
+    font-family: var(--font-mono, 'SF Mono', Consolas, monospace);
+    font-size: var(--font-xs, 0.75rem);
+    color: var(--color-accent-gold, #eed6aa);
     flex-shrink: 0;
+    min-width: 68px;
 }
 
+/* Precision <kbd> Keycap Modular Styling */
 kbd {
-    padding: 2px 6px;
-    background: rgba(238, 214, 170, 0.12);
-    border: 1px solid rgba(238, 214, 170, 0.35);
-    border-radius: 4px;
-    font-weight: 600;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-}
-
-.shortcut-desc {
-    font-size: 0.82rem;
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.35;
-}
-
-.help-dialog-footer {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 14px 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(12, 15, 19, 0.7);
-}
-
-.help-footer-quote {
-    font-size: 0.78rem;
-    font-style: italic;
-    color: rgba(255, 255, 255, 0.45);
-    max-width: 420px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.help-got-it-btn {
-    padding: 7px 18px;
-    background: rgba(238, 214, 170, 0.15);
-    border: 1px solid rgba(238, 214, 170, 0.5);
-    border-radius: 6px;
-    color: #ffffff;
-    font-size: 0.86rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.help-got-it-btn:hover {
-    background: rgba(238, 214, 170, 0.3);
-    border-color: rgba(238, 214, 170, 0.8);
-    color: #eed6aa;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 var(--space-1, 4px);
+    background: var(--color-gold-alpha-15, rgba(238, 214, 170, 0.12));
+    border: 1px solid var(--color-gold-alpha-40, rgba(238, 214, 170, 0.35));
+    border-radius: var(--radius-xs, 2px);
+    color: var(--color-accent-gold, #eed6aa);
+    font-family: var(--font-mono, 'SF Mono', 'Roboto Mono', Menlo, Consolas, monospace);
+    font-size: var(--font-xs, 0.75rem);
+    font-weight: var(--font-weight-semibold, 600);
+    line-height: 1;
+    box-shadow: var(--shadow-keycap, 0 1px 0 rgba(255, 255, 255, 0.15), 0 2px 4px rgba(0, 0, 0, 0.50));
+    vertical-align: baseline;
+    box-sizing: border-box;
 }
 
 .gesture-pill {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 3px 8px;
-    background: rgba(238, 214, 170, 0.16);
-    border: 1px solid rgba(238, 214, 170, 0.45);
-    border-radius: 12px;
-    color: #eed6aa;
-    font-size: 0.76rem;
-    font-weight: 500;
+    height: 24px;
+    padding: 0 var(--space-2, 8px);
+    background: var(--color-gold-alpha-15, rgba(238, 214, 170, 0.15));
+    border: 1px solid var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    border-radius: var(--radius-full, 9999px);
+    color: var(--color-accent-gold, #eed6aa);
+    font-size: var(--font-xs, 0.75rem);
+    font-weight: var(--font-weight-medium, 500);
     letter-spacing: 0.04em;
     white-space: nowrap;
+    line-height: var(--lh-sm, 24px);
+    box-sizing: border-box;
+}
+
+.shortcut-desc {
+    font-family: var(--font-sans-swiss, sans-serif);
+    font-size: var(--font-xs, 0.75rem);
+    color: var(--color-text-secondary, rgba(255, 255, 255, 0.85));
+    line-height: var(--lh-sm, 24px);
+    flex: 1;
+}
+
+/* 9. Dialog Curatorial Footer & Action Trigger */
+.help-dialog-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4, 16px) var(--space-6, 24px);
+    border-top: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.08));
+    background: var(--color-bg-deep, rgba(12, 15, 19, 0.85));
+    gap: var(--space-4, 16px);
+    flex-shrink: 0;
+}
+
+.help-footer-quote {
+    font-family: var(--font-serif-art);
+    font-size: var(--font-xs, 0.75rem);
+    font-style: italic;
+    color: var(--color-text-muted, rgba(255, 255, 255, 0.50));
+    line-height: var(--lh-sm, 24px);
+    max-width: 440px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.help-got-it-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-2, 8px) var(--space-4, 16px);
+    min-height: 36px;
+    background: var(--color-gold-alpha-15, rgba(238, 214, 170, 0.15));
+    border: 1px solid var(--color-gold-alpha-40, rgba(238, 214, 170, 0.40));
+    border-radius: var(--radius-sm, 4px);
+    color: var(--color-accent-gold, #eed6aa);
+    font-family: var(--font-sans-swiss);
+    font-size: var(--font-sm, 0.875rem);
+    font-weight: var(--font-weight-medium, 500);
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.help-got-it-btn:hover {
+    background: var(--color-gold-alpha-25, rgba(238, 214, 170, 0.25));
+    border-color: var(--color-gold-alpha-70, rgba(238, 214, 170, 0.70));
+    color: var(--color-text-primary, #ffffff);
+    box-shadow: var(--shadow-glow-gold, 0 0 12px rgba(238, 214, 170, 0.20));
+}
+
+.help-got-it-btn:active {
+    transform: scale(0.98);
 }
 
 /* ==========================================================================
-   📱 移动端与手机屏幕比例深度响应式适配 (Mobile Screen & Safe-Area Adaptation)
+   🏛️ 传世名画微距细节探索系统 (Macro Zoom & Artisan Brass Loupe)
+   Note: .macro-zoom-hud refactored into PART 5 (Section 5.5).
    ========================================================================== */
-@media (max-width: 640px) {
-    /* 1. 悬浮名言：手机竖屏下紧凑典雅，避免遮挡画作主体 */
+
+/* 2. 古典黄铜透镜 · 艺术微距探秘放大镜 (Artisan Brass Loupe) */
+.macro-loupe {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 220px;
+    border-radius: var(--radius-circle, 50%);
+    pointer-events: none;
+    z-index: 120;
+    overflow: visible;
+    box-shadow: 
+        0 0 0 1px var(--color-border-subtle, rgba(255, 255, 255, 0.15)),
+        0 0 0 4px var(--color-accent-bronze, #8b6834),
+        0 0 0 6px var(--color-accent-gold, #eed6aa),
+        0 0 0 8px var(--color-accent-umber, #59411e),
+        inset 0 0 20px var(--color-backdrop-deep, rgba(0, 0, 0, 0.75)),
+        0 20px 45px rgba(0, 0, 0, 0.8),
+        0 0 25px var(--color-gold-alpha-40, rgba(197, 160, 89, 0.4));
+    transform: translate(-50%, -50%);
+    transition: opacity 0.2s ease, transform 0.08s ease-out;
+    opacity: 0;
+}
+
+.macro-loupe.active {
+    opacity: 1;
+}
+
+#macro-loupe-canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-circle, 50%);
+    display: block;
+    background: var(--color-bg-stage, #0d0f12);
+}
+
+/* 镜面月牙弧形反光 (增强古典玻璃球弧度质感) */
+.loupe-rim-highlight {
+    position: absolute;
+    top: 6px;
+    left: 18px;
+    right: 18px;
+    height: 48px;
+    border-radius: 50% 50% 40% 40%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.02) 100%);
+    pointer-events: none;
+    filter: blur(1px);
+}
+
+/* 微米级艺术十字准星 */
+.loupe-reticle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 26px;
+    height: 26px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.loupe-reticle::before,
+.loupe-reticle::after {
+    content: '';
+    position: absolute;
+    background: var(--color-gold-alpha-70, rgba(238, 214, 170, 0.75));
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+}
+
+/* 横向线 */
+.loupe-reticle::before {
+    top: 12px;
+    left: 0;
+    width: 26px;
+    height: 1px;
+}
+
+/* 纵向线 */
+.loupe-reticle::after {
+    top: 0;
+    left: 12px;
+    width: 1px;
+    height: 26px;
+}
+
+/* Mobile bottom sheet trigger default state */
+.story-sheet-handle {
+    display: none;
+}
+
+/* ==========================================================================
+   PART 8: RESPONSIVE BREAKPOINT CASCADE & SAFE-AREA HARMONY
+   Josef Müller-Brockmann 12 -> 8 -> 4 -> 2 Column Folding Architecture
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Tier 1: Widescreen Desktop (min-width: 1440px)
+   12 Columns · Gutter 24px · Margin clamp(24px, 5vw, 64px) · Max-Width 1440px
+   -------------------------------------------------------------------------- */
+@media (min-width: 1440px) {
+    :root {
+        --grid-columns: 12;
+        --grid-gutter: var(--space-6, 24px);
+        --grid-margin: clamp(24px, 5vw, 64px);
+        --grid-max-width: 1440px;
+    }
+
     .art-quote-container {
-        top: max(8%, calc(env(safe-area-inset-top, 0px) + 38px));
-        max-width: 92vw;
-        padding: 8px 16px;
+        max-width: min(840px, var(--measure-latin, 65ch), calc(100vw - 2 * var(--grid-margin, 64px)));
+        padding: var(--space-6, 24px) var(--space-8, 32px);
     }
 
     .quote-text {
-        font-size: clamp(1.05rem, 4vw, 1.45rem);
-        line-height: 1.35;
-        margin-bottom: 4px;
+        font-size: var(--font-2xl, 2rem);
+        line-height: var(--lh-2xl, 48px);
+        margin-bottom: var(--baseline, 24px);
     }
 
     .quote-author {
-        font-size: clamp(0.72rem, 2.4vw, 0.88rem);
-        letter-spacing: 0.16em;
+        font-size: var(--font-sm, 0.875rem);
+        line-height: var(--lh-sm, 24px);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Tier 2: Desktop Standard (min-width: 1024px) and (max-width: 1439px)
+   12 Columns · Gutter 20px · Margin 32px · Max-Width 100%
+   -------------------------------------------------------------------------- */
+@media (min-width: 1024px) and (max-width: 1439px) {
+    :root {
+        --grid-max-width: 100%;
+        --grid-gutter: var(--space-5, 20px);
+        --grid-margin: var(--space-8, 32px);
+    }
+
+    .art-quote-container {
+        max-width: min(768px, var(--measure-latin, 65ch), calc(100vw - 2 * var(--space-8, 32px)));
+        padding: var(--space-5, 20px) var(--space-6, 24px);
+    }
+
+    .quote-text {
+        font-size: var(--font-xl, 1.5rem);
+        line-height: var(--lh-xl, 36px);
+        margin-bottom: var(--baseline-half, 12px);
+    }
+
+    .quote-author {
+        font-size: var(--font-xs, 0.75rem);
+        line-height: var(--lh-sm, 24px);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Tier 3: Tablet (min-width: 768px) and (max-width: 1023px)
+   8 Columns · Gutter 20px · Margin 24px · Margin Ratio 2:3:4:6 (12:18:24:36)
+   -------------------------------------------------------------------------- */
+@media (min-width: 768px) and (max-width: 1023px) {
+    :root {
+        --grid-columns: 8;
+        --grid-gutter: var(--space-5, 20px);
+        --grid-margin: var(--space-6, 24px);
+        --margin-inner: 12px;
+        --margin-top: 18px;
+        --margin-outer: 24px;
+        --margin-bottom: 36px;
+    }
+
+    .art-quote-container {
+        max-width: min(640px, calc(100vw - 2 * var(--space-6, 24px)));
+        padding: var(--space-5, 20px) var(--space-6, 24px);
+    }
+
+    .quote-text {
+        font-size: var(--font-lg, 1.25rem);
+        line-height: var(--lh-lg, 36px);
+        margin-bottom: var(--baseline-half, 12px);
+    }
+
+    .quote-author {
+        font-size: var(--font-xs, 0.75rem);
+        line-height: var(--lh-sm, 24px);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Tier 4: Mobile Standard (max-width: 767px)
+   4 Columns · Gutter 16px · Margin 16px · Safe-Area Insets Protection
+   -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    :root {
+        --grid-columns: 4;
+        --grid-gutter: var(--space-4, 16px);
+        --grid-margin: var(--space-4, 16px);
+        --margin-inner: 8px;
+        --margin-top: 12px;
+        --margin-outer: 16px;
+        --margin-bottom: 24px;
+    }
+
+    /* 1. 悬浮名言：紧凑典雅，锁定 45% 视错觉光学中心与 24px 基线 */
+    .art-quote-container {
+        top: 45%;
+        max-width: calc(100vw - 2 * var(--space-4, 16px));
+        padding: var(--space-3, 12px) var(--space-4, 16px);
+    }
+
+    .quote-text {
+        font-size: var(--font-base, 1rem);
+        line-height: var(--lh-base-px, 24px);
+        margin-bottom: var(--baseline-half, 12px);
+    }
+
+    .quote-author {
+        font-size: var(--font-xs, 0.75rem);
+        letter-spacing: 0.14em;
+        line-height: var(--lh-sm, 24px);
     }
 
     /* 2. 画笔控制按钮与设置弹窗：适配小屏手机宽度与指尖触控热区 */
     .brush-control-panel {
-        top: max(14px, env(safe-area-inset-top, 14px));
-        right: max(14px, env(safe-area-inset-right, 14px));
+        top: max(var(--space-4, 16px), env(safe-area-inset-top, 16px));
+        right: max(var(--space-4, 16px), env(safe-area-inset-right, 16px));
     }
 
     .brush-btn {
@@ -2429,10 +4053,10 @@ kbd {
     }
 
     .brush-popup {
-        width: min(296px, calc(100vw - 28px));
+        width: min(296px, calc(100vw - var(--space-6, 24px) - var(--space-6, 24px)));
         max-height: calc(82dvh - env(safe-area-inset-top, 0px));
-        padding: 14px 14px;
-        gap: 10px;
+        padding: var(--space-3, 12px);
+        gap: var(--space-2, 8px);
         -webkit-overflow-scrolling: touch;
     }
 
@@ -2448,45 +4072,66 @@ kbd {
 
     .mode-tabs .fit-tab-btn,
     .fit-mode-tabs .fit-tab-btn {
+        min-height: 40px;
+        min-width: 40px;
+        box-sizing: border-box;
         padding: 8px 4px;
         font-size: 0.82rem;
     }
 
     .full-color-btn,
     .art-nav-btn {
+        min-height: 40px;
+        min-width: 40px;
+        box-sizing: border-box;
         padding: 9px 8px;
         font-size: 0.85rem;
     }
 
-    /* 3. 操作指南对话框在手机屏幕下的舒适呈现 */
+    /* 3. 操作指南对话框在手机屏幕下的舒适呈现 (Swiss Responsive Folding) */
     .help-dialog {
         width: min(92vw, 460px);
         max-height: 84dvh;
-        padding: 18px 16px;
+        margin: auto;
+        border-radius: var(--radius-md, 8px);
     }
 
     .help-dialog-header {
-        padding-bottom: 12px;
+        padding: var(--space-3, 12px) var(--space-4, 16px);
     }
 
     .help-main-title {
-        font-size: 1.12rem;
+        font-size: var(--font-base, 1rem);
+        line-height: var(--lh-sm, 24px);
     }
 
     .help-sub-title {
-        font-size: 0.74rem;
+        font-size: var(--font-xs, 0.75rem);
+    }
+
+    .help-close-btn {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
     }
 
     .help-dialog-body {
         max-height: calc(84dvh - 110px);
-        padding-right: 4px;
-        gap: 16px;
+        padding: var(--space-3, 12px) var(--space-4, 16px);
+        gap: var(--space-4, 16px);
     }
 
+    /* 手机端平滑折叠为 1 栏 (2 -> 1) */
     .help-mechanics-grid,
     .help-shortcuts-grid {
         grid-template-columns: 1fr;
-        gap: 8px;
+        gap: var(--space-2, 8px);
+    }
+
+    .shortcut-item {
+        padding: var(--space-2, 8px);
+        min-height: 36px;
     }
 
     .help-footer-quote {
@@ -2495,31 +4140,36 @@ kbd {
 
     .help-dialog-footer {
         justify-content: flex-end;
-        padding-top: 10px;
+        padding: var(--space-2, 8px) var(--space-4, 16px);
     }
 
     /* 4. 底部引导胶囊、帮助按钮与擦画 HUD 安全区避让 */
-    /* 一级模式切换：手机端压缩内边距，保证 320px 窄屏也不与左下帮助按钮相撞 */
     .mode-switcher {
-        bottom: max(14px, env(safe-area-inset-bottom, 14px));
-        padding: 3px;
-        gap: 2px;
+        bottom: max(var(--space-4, 16px), env(safe-area-inset-bottom, 16px));
+        padding: var(--space-1, 4px);
+        gap: var(--space-1, 4px);
+        min-height: 48px;
+        max-width: calc(100vw - 24px);
+        box-sizing: border-box;
     }
 
     .mode-switch-btn {
-        padding: 6px 9px;
-        font-size: 0.78rem;
-        letter-spacing: 0.03em;
-        gap: 3px;
+        min-height: 40px;
+        min-width: 40px;
+        box-sizing: border-box;
+        padding: var(--space-2, 8px) var(--space-3, 12px);
+        font-size: var(--font-xs, 0.75rem);
+        letter-spacing: var(--tracking-normal, 0em);
+        gap: var(--space-1, 4px);
     }
 
     .mode-switch-icon {
-        font-size: 0.8rem;
+        font-size: var(--font-sm, 0.875rem);
     }
 
     .mode-switch-hint {
-        font-size: 0.7rem;
-        padding: 4px 10px;
+        font-size: var(--font-xs, 0.75rem);
+        padding: var(--space-1, 4px) var(--space-2, 8px);
     }
 
     /* 帮助按钮在手机端收为圆形图标，把左下角宽度让给模式切换 */
@@ -2528,17 +4178,17 @@ kbd {
     }
 
     .help-toggle-btn {
-        width: 42px;
-        height: 42px;
+        width: 40px;
+        height: 40px;
         padding: 0;
-        border-radius: 50%;
+        border-radius: var(--radius-circle, 50%);
         justify-content: center;
     }
 
     .interactive-hint {
-        bottom: max(96px, calc(88px + env(safe-area-inset-bottom, 10px)));
-        padding: 6px 14px;
-        font-size: 0.82rem;
+        bottom: max(calc(var(--space-6) * 3.5), calc(var(--space-10) * 2 + env(safe-area-inset-bottom, 16px)));
+        padding: var(--space-1, 4px) var(--space-3, 12px);
+        font-size: var(--font-xs, 0.75rem);
         max-width: 90vw;
         white-space: nowrap;
         overflow: hidden;
@@ -2546,13 +4196,13 @@ kbd {
     }
 
     .help-trigger-wrap {
-        bottom: max(16px, env(safe-area-inset-bottom, 16px));
-        left: max(14px, env(safe-area-inset-left, 14px));
+        bottom: max(var(--space-4, 16px), env(safe-area-inset-bottom, 16px));
+        left: max(var(--space-4, 16px), env(safe-area-inset-left, 16px));
     }
 
     .scratch-hud {
-        bottom: max(92px, calc(84px + env(safe-area-inset-bottom, 14px)));
-        padding: 6px 14px 8px;
+        bottom: max(calc(var(--space-6) * 3.5), calc(var(--space-10) * 2 + env(safe-area-inset-bottom, 16px)));
+        padding: var(--space-1, 4px) var(--space-3, 12px);
     }
 
     /* 5. 展厅与故事抽屉安全区与紧凑排版 */
@@ -2594,7 +4244,7 @@ kbd {
 
     /* 移动端微距缩放胶囊指示器与透镜尺寸微调 */
     .macro-zoom-hud {
-        top: max(16px, calc(10px + env(safe-area-inset-top, 10px)));
+        top: max(var(--space-4, 16px), calc(var(--space-2, 8px) + env(safe-area-inset-top, 8px)));
     }
 
     .macro-loupe {
@@ -2603,284 +4253,51 @@ kbd {
     }
 }
 
-/* ==========================================================================
-   🏛️ 传世名画微距细节探索系统 (Macro Zoom & Artisan Brass Loupe)
-   ========================================================================== */
-
-/* 1. 微距缩放胶囊指示器 (Pinch-to-zoom HUD) */
-.macro-zoom-hud {
-    position: fixed;
-    top: max(22px, calc(14px + env(safe-area-inset-top, 14px)));
-    left: 50%;
-    transform: translateX(-50%);
-    /* 高于 .macro-loupe(120)：透镜开启并放大时 HUD 复位按钮不被透镜盖住 */
-    z-index: 130;
-    pointer-events: auto;
-    animation: macroHudFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes macroHudFadeIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -10px) scale(0.96);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, 0) scale(1);
-    }
-}
-
-.macro-zoom-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 14px 6px 16px;
-    background: rgba(13, 16, 22, 0.88);
-    border: 1px solid rgba(238, 214, 170, 0.42);
-    border-radius: 9999px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(197, 160, 89, 0.2);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    color: #eed6aa;
-    font-size: 0.86rem;
-    letter-spacing: 0.04em;
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-.macro-zoom-icon {
-    font-size: 0.95rem;
-}
-
-.macro-zoom-val {
-    font-weight: 600;
-    color: #ffffff;
-    font-variant-numeric: tabular-nums;
-}
-
-.macro-zoom-label {
-    font-size: 0.78rem;
-    color: rgba(238, 214, 170, 0.75);
-    letter-spacing: 0.06em;
-}
-
-.macro-zoom-reset-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    margin-left: 4px;
-    padding: 3px 9px;
-    background: rgba(238, 214, 170, 0.15);
-    border: 1px solid rgba(238, 214, 170, 0.45);
-    border-radius: 9999px;
-    color: #eed6aa;
-    font-size: 0.76rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.macro-zoom-reset-btn:hover {
-    background: rgba(238, 214, 170, 0.3);
-    border-color: #eed6aa;
-    color: #ffffff;
-    transform: scale(1.05);
-}
-
-.macro-zoom-reset-btn:active {
-    transform: scale(0.95);
-}
-
-/* 2. 古典黄铜透镜 · 艺术微距探秘放大镜 (Artisan Brass Loupe) */
-.macro-loupe {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 120;
-    overflow: visible;
-    box-shadow: 
-        0 0 0 1px rgba(255, 255, 255, 0.15),
-        0 0 0 4px #8b6834,
-        0 0 0 6px #eed6aa,
-        0 0 0 8px #59411e,
-        inset 0 0 20px rgba(0, 0, 0, 0.75),
-        0 20px 45px rgba(0, 0, 0, 0.8),
-        0 0 25px rgba(197, 160, 89, 0.4);
-    transform: translate(-50%, -50%);
-    transition: opacity 0.2s ease, transform 0.08s ease-out;
-    opacity: 0;
-}
-
-.macro-loupe.active {
-    opacity: 1;
-}
-
-#macro-loupe-canvas {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    display: block;
-    background: #0d0f12;
-}
-
-/* 镜面月牙弧形反光 (增强古典玻璃球弧度质感) */
-.loupe-rim-highlight {
-    position: absolute;
-    top: 6px;
-    left: 18px;
-    right: 18px;
-    height: 48px;
-    border-radius: 50% 50% 40% 40%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.02) 100%);
-    pointer-events: none;
-    filter: blur(1px);
-}
-
-/* 微米级艺术十字准星 */
-.loupe-reticle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 26px;
-    height: 26px;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-}
-
-.loupe-reticle::before,
-.loupe-reticle::after {
-    content: '';
-    position: absolute;
-    background: rgba(238, 214, 170, 0.75);
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
-}
-
-/* 横向线 */
-.loupe-reticle::before {
-    top: 12px;
-    left: 0;
-    width: 26px;
-    height: 1px;
-}
-
-/* 纵向线 */
-.loupe-reticle::after {
-    top: 0;
-    left: 12px;
-    width: 1px;
-    height: 26px;
-}
-
-/* 3. 画笔面板微距开关与倍率芯片样式 */
-.loupe-control-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.loupe-toggle-pill-btn {
-    padding: 4px 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 9999px;
-    color: rgba(255, 255, 255, 0.65);
-    font-size: 0.78rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.loupe-toggle-pill-btn:hover {
-    background: rgba(238, 214, 170, 0.15);
-    border-color: rgba(238, 214, 170, 0.4);
-    color: #eed6aa;
-}
-
-.loupe-toggle-pill-btn.active {
-    background: rgba(238, 214, 170, 0.25);
-    border-color: #eed6aa;
-    color: #eed6aa;
-    box-shadow: 0 0 10px rgba(238, 214, 170, 0.25);
-    font-weight: 600;
-}
-
-.loupe-options-box {
-    padding: 8px 10px;
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 8px;
-}
-
-.loupe-zoom-pills {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.loupe-zoom-label {
-    font-size: 0.74rem;
-    color: rgba(238, 214, 170, 0.7);
-    margin-right: 2px;
-}
-
-.loupe-zoom-chip {
-    padding: 3px 9px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 9999px;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.74rem;
-    cursor: pointer;
-    transition: all 0.18s ease;
-}
-
-.loupe-zoom-chip:hover {
-    background: rgba(238, 214, 170, 0.2);
-    border-color: rgba(238, 214, 170, 0.5);
-    color: #eed6aa;
-}
-
-.loupe-zoom-chip.active {
-    background: rgba(238, 214, 170, 0.32);
-    border-color: #eed6aa;
-    color: #ffffff;
-    font-weight: 600;
-    box-shadow: 0 0 8px rgba(197, 160, 89, 0.3);
-}
-
-.loupe-toggle-pill-btn.active {
-    background: rgba(238, 214, 170, 0.25);
-    border-color: #eed6aa;
-    color: #eed6aa;
-    box-shadow: 0 0 10px rgba(238, 214, 170, 0.25);
-    font-weight: 600;
-}
-
-
-/* ==========================================================================
-   📱 移动端「画中故事」底部上拉卡片 (Bottom Sheet)
-   目的：半屏时画作与叙事同屏，让观者能一边看画一边读它讲了什么
-   ========================================================================== */
-.story-sheet-handle {
-    display: none;
-}
-
+/* --------------------------------------------------------------------------
+   Tier 4B: Mobile Landscape & Tablet Boundary (max-width: 640px)
+   Gallery Folds to 1-Column · Story Drawer Becomes Bottom Sheet
+   -------------------------------------------------------------------------- */
 @media (max-width: 640px) {
+    .gallery-open-container {
+        top: 16px;
+        left: 16px;
+    }
+
+    .gallery-open-hint {
+        display: none;
+    }
+
+    .gallery-panel {
+        width: 100vw;
+        max-width: 100vw;
+    }
+
+    .gallery-list-container,
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-3, 12px);
+        padding: var(--space-3, 12px) var(--space-3, 12px) var(--space-8, 32px);
+    }
+
+    .gallery-header,
+    .gallery-search-wrap,
+    .gallery-filter-panel,
+    .gallery-meta-bar {
+        padding-inline: var(--space-3, 12px);
+    }
+
+    /* Transform side drawer into bottom sheet */
     .story-sheet-handle {
         display: block;
-        width: 44px;
+        width: 48px;
         height: 4px;
-        margin: 10px auto 2px;
-        border-radius: 2px;
-        background: rgba(238, 214, 170, 0.45);
+        margin: var(--space-2, 8px) auto 4px;
+        border-radius: var(--radius-pill, var(--radius-full, 9999px));
+        background: var(--color-gold-alpha-50, rgba(238, 214, 170, 0.45));
         flex-shrink: 0;
         cursor: pointer;
     }
 
-    /* 面板从右侧滑入改为自底部升起 */
     .story-panel {
         position: fixed;
         top: auto;
@@ -2891,52 +4308,132 @@ kbd {
         max-width: 100vw;
         height: 90dvh;
         border-left: none;
-        border-top: 1px solid rgba(238, 214, 170, 0.28);
-        border-radius: 18px 18px 0 0;
-        box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.6);
+        border-top: 1px solid var(--color-border-subtle, rgba(238, 214, 170, 0.28));
+        border-radius: var(--radius-sheet-top, 16px 16px 0 0);
+        box-shadow: var(--shadow-sheet, 0 -12px 40px rgba(0, 0, 0, 0.75));
         transform: translateY(100%);
         transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         pointer-events: auto;
         padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
-    /* 未指定档位时保持收起，避免出现「横向滑入」与「纵向升起」两套位移打架 */
+    /* When open without explicit sheet state, remain retracted */
     .story-drawer.open .story-panel {
         transform: translateY(100%);
     }
 
-    /* 半屏：露出近一半画作，卡片自身仍可交互，画作区域不被遮挡 */
+    /* Half-sheet: reveals ~50% of the canvas for simultaneous viewing & reading */
     .story-drawer.open[data-sheet="half"] .story-panel {
         transform: translateY(48%);
     }
 
-    /* 全屏：完全展开，此时才压暗背景 */
+    /* Full-sheet: completely expanded */
     .story-drawer.open[data-sheet="full"] .story-panel {
         transform: translateY(0);
     }
 
-    /* 半屏下背景幕不压暗、不拦截，画作可以继续被观看与操作 */
+    /* In half-sheet, backdrop remains transparent so canvas can be enjoyed */
     .story-drawer[data-sheet="half"] .story-backdrop {
         opacity: 0;
         pointer-events: none;
     }
 
-    /* 半屏时抽屉容器整体不拦截事件，只让卡片本身接收 */
+    /* Story drawer container passes events through to underlying canvas in half mode */
     .story-drawer.open[data-sheet="half"],
     .story-drawer.open[data-sheet="full"] {
         pointer-events: none;
     }
 
-    /* 全屏时恢复背景幕的点击关闭（容器已设为穿透，需显式加回） */
+    /* In full-sheet mode, restore backdrop click interception */
     .story-drawer.open[data-sheet="full"] .story-backdrop {
         pointer-events: auto;
     }
 
-    /* 卡片头部圆角内收，避免与把手重叠时显得拥挤 */
+    /* Mobile Header & Body Spacing */
     .story-panel .story-header {
-        padding-top: 8px;
+        padding: var(--space-2, 8px) var(--space-4, 16px) var(--space-3, 12px);
+    }
+
+    .story-panel .story-main-title {
+        font-size: var(--font-lg, 1.25rem);
+        line-height: var(--lh-lg, 36px);
+        margin-bottom: var(--baseline-quarter, 6px);
+    }
+
+    .story-panel .story-body {
+        padding: var(--space-4, 16px);
+        gap: var(--space-4, 16px);
+    }
+
+    .story-panel .story-card-block {
+        padding: var(--space-3, 12px) var(--space-4, 16px);
+    }
+
+    .story-panel .story-footer {
+        padding: 0 var(--space-4, 16px);
     }
 }
+
+/* --------------------------------------------------------------------------
+   Tier 5: Ultra-Compact Mobile (max-width: 479px)
+   2 Columns · Gutter 12px · Margin 12px · Strict Single-Hand Ergonomics
+   -------------------------------------------------------------------------- */
+@media (max-width: 479px) {
+    :root {
+        --grid-columns: 2;
+        --grid-gutter: var(--space-3, 12px);
+        --grid-margin: var(--space-3, 12px);
+    }
+
+    /* All multi-column spans collapse to full 2-column width */
+    .col-span-12,
+    .col-span-11,
+    .col-span-10,
+    .col-span-9,
+    .col-span-8,
+    .col-span-7,
+    .col-span-6,
+    .col-span-5,
+    .col-span-4,
+    .col-span-3,
+    .col-span-2 {
+        grid-column: span 2 / span 2;
+    }
+
+    .col-span-1 {
+        grid-column: span 1 / span 1;
+    }
+
+    .col-center-10,
+    .col-center-8,
+    .col-center-6,
+    .col-center-4 {
+        grid-column: 1 / span 2;
+    }
+
+    /* Ultra-compact mode switcher padding */
+    .mode-switcher {
+        min-height: 48px;
+        max-width: calc(100vw - 24px);
+        box-sizing: border-box;
+        padding: 3px 6px;
+        gap: 3px;
+    }
+
+    .mode-switch-btn {
+        min-height: 40px;
+        min-width: 40px;
+        box-sizing: border-box;
+        padding: 4px 8px;
+        font-size: 0.72rem;
+        gap: 3px;
+    }
+
+    .interactive-hint {
+        max-width: calc(100vw - 24px);
+    }
+}
+
 
 /* ==========================================================================
    🖼️ 画廊缩略图加载骨架（缩略图未就绪时占位，避免列表出现空洞）

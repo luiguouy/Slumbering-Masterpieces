@@ -1,0 +1,278 @@
+{
+  "gallery": {
+    "Widescreen": {
+      "viewport": "1920x1080",
+      "panel_width": 1080,
+      "grid_template_columns": "330.328px 330.328px 330.344px",
+      "detected_columns": 3,
+      "expected_columns": 3,
+      "cols_passed": true,
+      "first_card_width": 330.328125,
+      "card_width_passed": true,
+      "thumb_ratios": [
+        1.3333967891363665,
+        1.3333967891363665,
+        1.3333756345177665,
+        1.3333967891363665,
+        1.3333967891363665,
+        1.3333756345177665
+      ],
+      "max_ratio_error_pct": 0.005,
+      "aspect_ratio_passed": true
+    },
+    "Desktop": {
+      "viewport": "1440x900",
+      "panel_width": 1036.796875,
+      "grid_template_columns": "315.922px 315.938px 315.922px",
+      "detected_columns": 3,
+      "expected_columns": 3,
+      "cols_passed": true,
+      "first_card_width": 315.921875,
+      "card_width_passed": true,
+      "thumb_ratios": [
+        1.333355455269445,
+        1.3333333333333333,
+        1.333355455269445,
+        1.333355455269445,
+        1.3333333333333333,
+        1.333355455269445
+      ],
+      "max_ratio_error_pct": 0.002,
+      "aspect_ratio_passed": true
+    },
+    "Standard Desktop": {
+      "viewport": "1280x800",
+      "panel_width": 920,
+      "grid_template_columns": "279.656px 279.672px 279.656px",
+      "detected_columns": 3,
+      "expected_columns": 3,
+      "cols_passed": true,
+      "first_card_width": 279.65625,
+      "card_width_passed": false,
+      "thumb_ratios": [
+        1.3333833570946199,
+        1.3333583433373348,
+        1.3333833570946199,
+        1.3333833570946199,
+        1.3333583433373348,
+        1.3333833570946199
+      ],
+      "max_ratio_error_pct": 0.004,
+      "aspect_ratio_passed": true
+    },
+    "Tablet": {
+      "viewport": "768x1024",
+      "panel_width": 675.828125,
+      "grid_template_columns": "313.406px 313.422px",
+      "detected_columns": 2,
+      "expected_columns": 2,
+      "cols_passed": true,
+      "first_card_width": 313.40625,
+      "card_width_passed": true,
+      "thumb_ratios": [
+        1.3333779353716464,
+        1.3333556328605833,
+        1.3333779353716464,
+        1.3333556328605833,
+        1.3333779353716464,
+        1.3333556328605833
+      ],
+      "max_ratio_error_pct": 0.003,
+      "aspect_ratio_passed": true
+    },
+    "Mobile": {
+      "viewport": "375x667",
+      "panel_width": 375,
+      "grid_template_columns": "350px",
+      "detected_columns": 1,
+      "expected_columns": 1,
+      "cols_passed": true,
+      "first_card_width": 350,
+      "card_width_passed": true,
+      "thumb_ratios": [
+        1.3333333333333333,
+        1.3333333333333333,
+        1.3333333333333333,
+        1.3333333333333333,
+        1.3333333333333333,
+        1.3333333333333333
+      ],
+      "max_ratio_error_pct": 0.0,
+      "aspect_ratio_passed": true
+    }
+  },
+  "story": {
+    "Widescreen": {
+      "viewport": "1920x1080",
+      "drawer_width": 1920,
+      "panel_width": 640,
+      "expected_panel_width": 640.0,
+      "panel_width_passed": true,
+      "narrative_width": 547,
+      "narrative_width_passed": true,
+      "line_heights": {
+        "narrative": 24,
+        "quote": 24,
+        "tag": 24,
+        "block_title": 24
+      },
+      "baseline_passed": true
+    },
+    "Desktop": {
+      "viewport": "1440x900",
+      "drawer_width": 1440,
+      "panel_width": 640,
+      "expected_panel_width": 640.0,
+      "panel_width_passed": true,
+      "narrative_width": 547,
+      "narrative_width_passed": true,
+      "line_heights": {
+        "narrative": 24,
+        "quote": 24,
+        "tag": 24,
+        "block_title": 24
+      },
+      "baseline_passed": true
+    },
+    "Standard Desktop": {
+      "viewport": "1280x800",
+      "drawer_width": 1280,
+      "panel_width": 576,
+      "expected_panel_width": 576.0,
+      "panel_width_passed": true,
+      "narrative_width": 483,
+      "narrative_width_passed": true,
+      "line_heights": {
+        "narrative": 24,
+        "quote": 24,
+        "tag": 24,
+        "block_title": 24
+      },
+      "baseline_passed": true
+    },
+    "Tablet": {
+      "viewport": "768x1024",
+      "drawer_width": 768,
+      "panel_width": 345.59375,
+      "expected_panel_width": 345.6,
+      "panel_width_passed": true,
+      "narrative_width": 252.59375,
+      "narrative_width_passed": true,
+      "line_heights": {
+        "narrative": 24,
+        "quote": 24,
+        "tag": 24,
+        "block_title": 24
+      },
+      "baseline_passed": true
+    },
+    "Mobile": {
+      "viewport": "375x667",
+      "drawer_width": 375,
+      "panel_width": 375,
+      "expected_panel_width": 375.0,
+      "panel_width_passed": true,
+      "narrative_width": 307,
+      "narrative_width_passed": true,
+      "line_heights": {
+        "narrative": 24,
+        "quote": 24,
+        "tag": 24,
+        "block_title": 24
+      },
+      "baseline_passed": true
+    }
+  },
+  "help": {
+    "Widescreen": {
+      "viewport": "1920x1080",
+      "dialog_width": 720,
+      "expected_dialog_width": 720.0,
+      "width_diff": 0.0,
+      "width_passed": true,
+      "optical_centroid_pct": 45.2,
+      "centroid_passed": true,
+      "margin_top_computed": "132px",
+      "shortcut_tops": [
+        575.1600341796875,
+        575.1600341796875
+      ],
+      "tops_diff": 0.0,
+      "cross_column_passed": true,
+      "close_btn_size": "44x44",
+      "close_btn_passed": true
+    },
+    "Desktop": {
+      "viewport": "1440x900",
+      "dialog_width": 720,
+      "expected_dialog_width": 720.0,
+      "width_diff": 0.0,
+      "width_passed": true,
+      "optical_centroid_pct": 45.2,
+      "centroid_passed": true,
+      "margin_top_computed": "48px",
+      "shortcut_tops": [
+        499.79998779296875,
+        499.79998779296875
+      ],
+      "tops_diff": 0.0,
+      "cross_column_passed": true,
+      "close_btn_size": "44x44.000003814697266",
+      "close_btn_passed": true
+    },
+    "Standard Desktop": {
+      "viewport": "1280x800",
+      "dialog_width": 720,
+      "expected_dialog_width": 720.0,
+      "width_diff": 0.0,
+      "width_passed": true,
+      "optical_centroid_pct": 45.2,
+      "centroid_passed": true,
+      "margin_top_computed": "40px",
+      "shortcut_tops": [
+        496.6000061035156,
+        496.6000061035156
+      ],
+      "tops_diff": 0.0,
+      "cross_column_passed": true,
+      "close_btn_size": "44x44",
+      "close_btn_passed": true
+    },
+    "Tablet": {
+      "viewport": "768x1024",
+      "dialog_width": 720,
+      "expected_dialog_width": 720.0,
+      "width_diff": 0.0,
+      "width_passed": true,
+      "optical_centroid_pct": 45.2,
+      "centroid_passed": true,
+      "margin_top_computed": "104px",
+      "shortcut_tops": [
+        549.8480224609375,
+        549.8480224609375
+      ],
+      "tops_diff": 0.0,
+      "cross_column_passed": true,
+      "close_btn_size": "44x43.99999237060547",
+      "close_btn_passed": true
+    },
+    "Mobile": {
+      "viewport": "375x667",
+      "dialog_width": 327,
+      "expected_dialog_width": 327.0,
+      "width_diff": 0.0,
+      "width_passed": true,
+      "optical_centroid_pct": 45.2,
+      "centroid_passed": true,
+      "margin_top_computed": "29.3594px",
+      "shortcut_tops": [
+        725.3433837890625,
+        823.3433837890625
+      ],
+      "tops_diff": 98.0,
+      "cross_column_passed": true,
+      "close_btn_size": "44x44",
+      "close_btn_passed": true
+    }
+  }
+}

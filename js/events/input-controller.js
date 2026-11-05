@@ -25,9 +25,25 @@ const MACRO_ZOOM_SNAP_THRESHOLD = 1.06;
 function isEventOverModal(e, includeMacroHud = true) {
     // 拖拽浮动控件期间，指针会掠过画布，但任何命中都不应被当作画面交互
     if (appState.isFloatingPanelDragging) return true;
+    if (document.body.classList.contains('gallery-open') ||
+        document.body.classList.contains('story-open') ||
+        document.body.classList.contains('help-open')) {
+        return true;
+    }
     if (!e.target || !e.target.closest) return false;
     const selector = includeMacroHud ? `${MODAL_SELECTOR}, ${MACRO_HUD_SELECTOR}` : MODAL_SELECTOR;
     return Boolean(e.target.closest(selector));
+}
+
+/**
+ * 切换名画哲思题词的显隐 (快捷键 Q / T)
+ */
+export function toggleQuote() {
+    appState.isQuoteVisible = !appState.isQuoteVisible;
+    if (elements.artQuote) {
+        elements.artQuote.classList.toggle('quote-hidden', !appState.isQuoteVisible);
+    }
+    showToast(appState.isQuoteVisible ? '已显示名画哲思题词' : '已隐去题词以沉浸赏画 (按 Q/T 恢复)', '📜');
 }
 
 export function setupInputEvents() {
@@ -35,6 +51,7 @@ export function setupInputEvents() {
 
     // 鼠标拖拽平移漫游状态 (微距放大时支持自如拖拽漫游)
     let isDraggingPan = false;
+    let quoteSubtleTimer = null;
     let dragStartMouse = { x: 0, y: 0 };
     let dragStartPan = { x: 0, y: 0 };
 
@@ -164,9 +181,18 @@ export function setupInputEvents() {
 
         appState.lastPointerPos = pos;
 
-        if (!appState.isQuoteSubtle && artQuote) {
-            appState.isQuoteSubtle = true;
-            artQuote.classList.add('subtle');
+        if (artQuote) {
+            if (!appState.isQuoteSubtle) {
+                appState.isQuoteSubtle = true;
+                artQuote.classList.add('subtle');
+            }
+            clearTimeout(quoteSubtleTimer);
+            quoteSubtleTimer = setTimeout(() => {
+                appState.isQuoteSubtle = false;
+                if (artQuote) {
+                    artQuote.classList.remove('subtle');
+                }
+            }, 1200);
         }
     });
 
@@ -197,6 +223,11 @@ export function setupInputEvents() {
                     artStageEl.classList.add('macro-panning');
                 }
             }
+        }
+        clearTimeout(quoteSubtleTimer);
+        appState.isQuoteSubtle = false;
+        if (artQuote) {
+            artQuote.classList.remove('subtle');
         }
     });
 
@@ -552,6 +583,9 @@ export function setupInputEvents() {
             } else if (e.key === 'g' || e.key === 'G' || e.key === '/') {
                 e.preventDefault();
                 openGallery();
+            } else if (e.key === 'q' || e.key === 'Q' || e.key === 't' || e.key === 'T') {
+                e.preventDefault();
+                toggleQuote();
             } else if (e.code === 'Space') {
                 e.preventDefault();
                 // toggleFullColor 在随机漫游模式下会自行给出提示并返回 false；

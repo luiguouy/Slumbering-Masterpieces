@@ -1,7 +1,7 @@
 /**
  * Slumbering Masterpieces · World Fine Art Stories & Secrets Engine
  * 传世名画博览馆 · 背景故事与鉴赏密码智库 (v1.0.0)
- * 涵盖 315 幅殿堂级世界油画的创作背景、历史典故与构图光影鉴赏细节
+ * 涵盖 420 幅殿堂级世界油画的创作背景、历史典故与构图光影鉴赏细节
  */
 
 (function () {

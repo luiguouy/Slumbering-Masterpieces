@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-amber.svg)](https://opensource.org/licenses/MIT)
 [![Technology: Vanilla JS](https://img.shields.io/badge/Technology-Vanilla%20JS%20%7C%20HTML5%20Canvas-336699.svg)](#)
 [![Dependencies: None](https://img.shields.io/badge/Dependencies-Zero-success.svg)](#)
-[![Artworks: 315 Oil Paintings](https://img.shields.io/badge/Artworks-315%20Masterpieces-gold.svg)](#)
+[![Artworks: 420 Oil Paintings](https://img.shields.io/badge/Artworks-420%20Masterpieces-gold.svg)](#)
 [![DPI: Retina 4K Ready](https://img.shields.io/badge/Render-Retina%204K%20Ready-brightgreen.svg)](#)
 
 ---

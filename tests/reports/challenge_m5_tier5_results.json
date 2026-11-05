@@ -1,0 +1,888 @@
+{
+  "timestamp": "2026-11-05T13:27:08.897890+00:00",
+  "milestone": "Milestone 5 Phase 2",
+  "suite": "Tier 5: Layout & Responsive Dynamics Adversarial Suite",
+  "verdict": "APPROVE",
+  "summary": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "pass_rate_percent": 100.0,
+    "duration_seconds": 16.67
+  },
+  "tests": [
+    {
+      "id": "ADV-01",
+      "name": "test_adv_01_precision_breakpoint_boundaries",
+      "description": "Precision Breakpoint Boundaries (1441/1439, 1025/1023, 769/767, 641/639, 481/479, 320)",
+      "status": "PASSED",
+      "duration_ms": 2193.45,
+      "details": {
+        "domain": "Precision Breakpoint Boundaries",
+        "passed": true,
+        "detail": "Tested 11 precision boundary points across 6 folding thresholds.",
+        "points": [
+          {
+            "width": 1439,
+            "metrics": {
+              "cols": 12,
+              "gutter": "20px",
+              "margin": "32px",
+              "scrollW": 1439,
+              "clientW": 1439,
+              "overflow": false,
+              "shDisplay": "none",
+              "gColCount": 3
+            },
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "width": 1441,
+            "metrics": {
+              "cols": 12,
+              "gutter": "24px",
+              "margin": "clamp(24px, 5vw, 64px)",
+              "scrollW": 1441,
+              "clientW": 1441,
+              "overflow": false,
+              "shDisplay": "none",
+              "gColCount": 3
+            },
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "width": 1023,
+            "metrics": {
+              "cols": 8,
+              "gutter": "20px",
+              "margin": "24px",
+              "scrollW": 1023,
+              "clientW": 1023,
+              "overflow": false,
+              "shDisplay": "none",
+              "gColCount": 2
+            },
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "width": 1025,
+            "metrics": {
+              "cols": 12,
+              "gutter": "20px",
+              "margin": "32px",
+              "scrollW": 1025,
+              "clientW": 1025,
+              "overflow": false,
+              "shDisplay": "none",
+              "gColCount": 3
+            },
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "width": 767,
+            "metrics": {
+              "cols": 4,
+              "gutter": "16px",
+              "margin": "16px",
+              "scrollW": 767,
+              "clientW": 767,
+              "overflow": false,
+              "shDisplay": "none",
+              "gColCount": 2
+            },
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "width": 769,
+            "metrics": {
+              "cols": 8,
+              "gutter": "20px",
+              "margin": "24px",
+              "scrollW": 769,
+              "clientW": 769,
+              "overflow": false,
+              "shDisplay": "none",
+              "gColCount": 2
+            },
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "width": 639,
+            "metrics": {
+              "cols": 4,
+              "gutter": "16px",
+              "margin": "16px",
+              "scrollW": 639,
+              "clientW": 639,
+              "overflow": false,
+              "shDisplay": "block",
+              "gColCount": 1
+            },
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "width": 641,
+            "metrics": {
+              "cols": 4,
+              "gutter": "16px",
+              "margin": "16px",
+              "scrollW": 641,
+              "clientW": 641,
+              "overflow": false,
+              "shDisplay": "none",
+              "gColCount": 2
+            },
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "width": 479,
+            "metrics": {
+              "cols": 2,
+              "gutter": "12px",
+              "margin": "12px",
+              "scrollW": 479,
+              "clientW": 479,
+              "overflow": false,
+              "shDisplay": "block",
+              "gColCount": 1
+            },
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "width": 481,
+            "metrics": {
+              "cols": 4,
+              "gutter": "16px",
+              "margin": "16px",
+              "scrollW": 481,
+              "clientW": 481,
+              "overflow": false,
+              "shDisplay": "block",
+              "gColCount": 1
+            },
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "width": 320,
+            "metrics": {
+              "cols": 2,
+              "gutter": "12px",
+              "margin": "12px",
+              "scrollW": 320,
+              "clientW": 320,
+              "overflow": false,
+              "shDisplay": "block",
+              "gColCount": 1
+            },
+            "passed": true,
+            "reasons": []
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "ADV-02",
+      "name": "test_adv_02_proportional_margins_and_fluid_clamp",
+      "description": "Proportional Margins (2:3:4:6) & Fluid Clamp Behavior",
+      "status": "PASSED",
+      "duration_ms": 1095.14,
+      "details": {
+        "domain": "Proportional Margins & Fluid Clamp",
+        "passed": true,
+        "detail": "Verified 2:3:4:6 margin hierarchy and fluid clamp across 6 viewports.",
+        "viewports": [
+          {
+            "viewport": "Widescreen",
+            "dimensions": "1920x1080",
+            "margins": {
+              "mInner": 16,
+              "mTop": 24,
+              "mOuter": 32,
+              "mBottom": 48,
+              "gMargin": "clamp(24px, 5vw, 64px)",
+              "ratio": [
+                16,
+                24,
+                32,
+                48
+              ]
+            },
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "viewport": "Desktop Boundary",
+            "dimensions": "1440x900",
+            "margins": {
+              "mInner": 16,
+              "mTop": 24,
+              "mOuter": 32,
+              "mBottom": 48,
+              "gMargin": "clamp(24px, 5vw, 64px)",
+              "ratio": [
+                16,
+                24,
+                32,
+                48
+              ]
+            },
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "viewport": "Desktop Standard",
+            "dimensions": "1280x800",
+            "margins": {
+              "mInner": 16,
+              "mTop": 24,
+              "mOuter": 32,
+              "mBottom": 48,
+              "gMargin": "32px",
+              "ratio": [
+                16,
+                24,
+                32,
+                48
+              ]
+            },
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "viewport": "Tablet",
+            "dimensions": "768x1024",
+            "margins": {
+              "mInner": 12,
+              "mTop": 18,
+              "mOuter": 24,
+              "mBottom": 36,
+              "gMargin": "24px",
+              "ratio": [
+                12,
+                18,
+                24,
+                36
+              ]
+            },
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "viewport": "Mobile",
+            "dimensions": "375x667",
+            "margins": {
+              "mInner": 8,
+              "mTop": 12,
+              "mOuter": 16,
+              "mBottom": 24,
+              "gMargin": "12px",
+              "ratio": [
+                8,
+                12,
+                16,
+                24
+              ]
+            },
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "viewport": "Ultra-Compact",
+            "dimensions": "320x568",
+            "margins": {
+              "mInner": 8,
+              "mTop": 12,
+              "mOuter": 16,
+              "mBottom": 24,
+              "gMargin": "12px",
+              "ratio": [
+                8,
+                12,
+                16,
+                24
+              ]
+            },
+            "passed": true,
+            "reasons": []
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "ADV-03",
+      "name": "test_adv_03_optical_centroid_stability_extreme_aspects",
+      "description": "Optical Centroid Stability across Extreme Aspect Ratios (21:9 & 9:21)",
+      "status": "PASSED",
+      "duration_ms": 2660.29,
+      "details": {
+        "domain": "Optical Centroid Stability",
+        "passed": true,
+        "detail": "Tested optical centroid across 6 extreme aspect ratios (21:9 to 9:21).",
+        "results": [
+          {
+            "name": "21:9 Ultrawide",
+            "dimensions": "2560x1080",
+            "quote_ratio": 45.0,
+            "help_ratio": 45.23,
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "name": "16:9 Desktop",
+            "dimensions": "1920x1080",
+            "quote_ratio": 45.0,
+            "help_ratio": 45.23,
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "name": "4:3 Standard Tablet",
+            "dimensions": "1024x768",
+            "quote_ratio": 45.0,
+            "help_ratio": 45.23,
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "name": "9:21 Tall Mobile",
+            "dimensions": "390x900",
+            "quote_ratio": 45.0,
+            "help_ratio": 45.23,
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "name": "Standard Mobile",
+            "dimensions": "375x667",
+            "quote_ratio": 45.0,
+            "help_ratio": 45.25,
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "name": "Compact Mobile",
+            "dimensions": "320x568",
+            "quote_ratio": 45.0,
+            "help_ratio": 45.25,
+            "passed": true,
+            "reasons": []
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "ADV-04",
+      "name": "test_adv_04_touch_target_standardization",
+      "description": "Standardized Touch Target Dimensions (>= 40x40px on all buttons)",
+      "status": "PASSED",
+      "duration_ms": 2777.49,
+      "details": {
+        "domain": "Standardized Touch Target Dimensions",
+        "passed": true,
+        "detail": "Tested 13 buttons across 4 viewports. Found 0 sub-40px touch target violations.",
+        "violations": [],
+        "viewports": [
+          {
+            "viewport": "Desktop",
+            "dimensions": "1440x900",
+            "buttons": [
+              {
+                "id": "help-close-btn",
+                "desc": "Help dialog close button",
+                "width": 44,
+                "height": 44,
+                "meets_target": true
+              },
+              {
+                "id": "gallery-close-btn",
+                "desc": "Gallery drawer close button",
+                "width": 40,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "story-close-btn",
+                "desc": "Story drawer close button",
+                "width": 40,
+                "height": 40.0,
+                "meets_target": true
+              },
+              {
+                "id": "brush-toggle-btn",
+                "desc": "Brush panel toggle button",
+                "width": 40,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "msw-sleep-btn",
+                "desc": "Mode switcher: sleep button",
+                "width": 123.48,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "msw-scratch-btn",
+                "desc": "Mode switcher: scratch button",
+                "width": 123.48,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "help-toggle-btn",
+                "desc": "Help toggle button",
+                "width": 107.66,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "scratch-reveal-now-btn",
+                "desc": "Scratch reveal now button",
+                "width": 206,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "fit-auto-btn",
+                "desc": "Fit auto mode button",
+                "width": 65.33,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "toggle-loupe-btn",
+                "desc": "Loupe toggle button",
+                "width": 62,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "story-prev-btn",
+                "desc": "Story previous narrative button",
+                "width": 76.27,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "story-next-btn",
+                "desc": "Story next narrative button",
+                "width": 76.27,
+                "height": 40,
+                "meets_target": true
+              }
+            ]
+          },
+          {
+            "viewport": "Tablet",
+            "dimensions": "768x1024",
+            "buttons": [
+              {
+                "id": "help-close-btn",
+                "desc": "Help dialog close button",
+                "width": 44,
+                "height": 44,
+                "meets_target": true
+              },
+              {
+                "id": "gallery-close-btn",
+                "desc": "Gallery drawer close button",
+                "width": 40,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "story-close-btn",
+                "desc": "Story drawer close button",
+                "width": 40,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "brush-toggle-btn",
+                "desc": "Brush panel toggle button",
+                "width": 40,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "msw-sleep-btn",
+                "desc": "Mode switcher: sleep button",
+                "width": 123.48,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "msw-scratch-btn",
+                "desc": "Mode switcher: scratch button",
+                "width": 123.48,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "help-toggle-btn",
+                "desc": "Help toggle button",
+                "width": 107.66,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "scratch-reveal-now-btn",
+                "desc": "Scratch reveal now button",
+                "width": 206,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "fit-auto-btn",
+                "desc": "Fit auto mode button",
+                "width": 65.33,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "toggle-loupe-btn",
+                "desc": "Loupe toggle button",
+                "width": 62,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "story-prev-btn",
+                "desc": "Story previous narrative button",
+                "width": 76.27,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "story-next-btn",
+                "desc": "Story next narrative button",
+                "width": 76.27,
+                "height": 40,
+                "meets_target": true
+              }
+            ]
+          },
+          {
+            "viewport": "Mobile",
+            "dimensions": "375x667",
+            "buttons": [
+              {
+                "id": "help-close-btn",
+                "desc": "Help dialog close button",
+                "width": 44,
+                "height": 44,
+                "meets_target": true
+              },
+              {
+                "id": "gallery-close-btn",
+                "desc": "Gallery drawer close button",
+                "width": 40,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "story-close-btn",
+                "desc": "Story drawer close button",
+                "width": 40,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "brush-toggle-btn",
+                "desc": "Brush panel toggle button",
+                "width": 44,
+                "height": 44,
+                "meets_target": true
+              },
+              {
+                "id": "msw-sleep-btn",
+                "desc": "Mode switcher: sleep button",
+                "width": 86.33,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "msw-scratch-btn",
+                "desc": "Mode switcher: scratch button",
+                "width": 86.33,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "help-toggle-btn",
+                "desc": "Help toggle button",
+                "width": 40,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "scratch-reveal-now-btn",
+                "desc": "Scratch reveal now button",
+                "width": 270,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "fit-auto-btn",
+                "desc": "Fit auto mode button",
+                "width": 86.66,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "toggle-loupe-btn",
+                "desc": "Loupe toggle button",
+                "width": 62,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "story-prev-btn",
+                "desc": "Story previous narrative button",
+                "width": 76.27,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "story-next-btn",
+                "desc": "Story next narrative button",
+                "width": 76.27,
+                "height": 40,
+                "meets_target": true
+              }
+            ]
+          },
+          {
+            "viewport": "Compact",
+            "dimensions": "320x568",
+            "buttons": [
+              {
+                "id": "help-close-btn",
+                "desc": "Help dialog close button",
+                "width": 44,
+                "height": 44.0,
+                "meets_target": true
+              },
+              {
+                "id": "gallery-close-btn",
+                "desc": "Gallery drawer close button",
+                "width": 40,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "story-close-btn",
+                "desc": "Story drawer close button",
+                "width": 40,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "brush-toggle-btn",
+                "desc": "Brush panel toggle button",
+                "width": 44,
+                "height": 44,
+                "meets_target": true
+              },
+              {
+                "id": "msw-sleep-btn",
+                "desc": "Mode switcher: sleep button",
+                "width": 86.33,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "msw-scratch-btn",
+                "desc": "Mode switcher: scratch button",
+                "width": 86.33,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "help-toggle-btn",
+                "desc": "Help toggle button",
+                "width": 40,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "scratch-reveal-now-btn",
+                "desc": "Scratch reveal now button",
+                "width": 246,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "fit-auto-btn",
+                "desc": "Fit auto mode button",
+                "width": 78.66,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "toggle-loupe-btn",
+                "desc": "Loupe toggle button",
+                "width": 62,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "story-prev-btn",
+                "desc": "Story previous narrative button",
+                "width": 76.27,
+                "height": 40,
+                "meets_target": true
+              },
+              {
+                "id": "story-next-btn",
+                "desc": "Story next narrative button",
+                "width": 76.27,
+                "height": 40,
+                "meets_target": true
+              }
+            ]
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "id": "ADV-05",
+      "name": "test_adv_05_zoom_and_dpi_resilience",
+      "description": "Zoom Simulation (125%, 150%, 200%) & High-DPI Variations (1.0 to 3.0)",
+      "status": "PASSED",
+      "duration_ms": 5853.57,
+      "details": {
+        "domain": "Zoom Simulation & High-DPI Resilience",
+        "passed": true,
+        "detail": "Verified DPI scaling (DPR 1.0 to 3.0) and 12 zoom simulation conditions.",
+        "dpi_scaling": [
+          {
+            "dpr": 1.0,
+            "bgCanvas": "1280x800",
+            "revCanvas": "1280x800",
+            "passed": true
+          },
+          {
+            "dpr": 1.5,
+            "bgCanvas": "1920x1200",
+            "revCanvas": "1920x1200",
+            "passed": true
+          },
+          {
+            "dpr": 2.0,
+            "bgCanvas": "2560x1600",
+            "revCanvas": "2560x1600",
+            "passed": true
+          },
+          {
+            "dpr": 3.0,
+            "bgCanvas": "3200x2000",
+            "revCanvas": "3200x2000",
+            "passed": true
+          }
+        ],
+        "zoom_simulation": [
+          {
+            "zoom": "125%",
+            "base_resolution": "Widescreen Desktop",
+            "simulated_viewport": "1152x720",
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "zoom": "125%",
+            "base_resolution": "Tablet",
+            "simulated_viewport": "614x819",
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "zoom": "125%",
+            "base_resolution": "Mobile",
+            "simulated_viewport": "300x533",
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "zoom": "125%",
+            "base_resolution": "Compact Mobile",
+            "simulated_viewport": "256x454",
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "zoom": "150%",
+            "base_resolution": "Widescreen Desktop",
+            "simulated_viewport": "960x600",
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "zoom": "150%",
+            "base_resolution": "Tablet",
+            "simulated_viewport": "512x682",
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "zoom": "150%",
+            "base_resolution": "Mobile",
+            "simulated_viewport": "250x444",
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "zoom": "150%",
+            "base_resolution": "Compact Mobile",
+            "simulated_viewport": "213x378",
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "zoom": "200%",
+            "base_resolution": "Widescreen Desktop",
+            "simulated_viewport": "720x450",
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "zoom": "200%",
+            "base_resolution": "Tablet",
+            "simulated_viewport": "384x512",
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "zoom": "200%",
+            "base_resolution": "Mobile",
+            "simulated_viewport": "187x333",
+            "passed": true,
+            "reasons": []
+          },
+          {
+            "zoom": "200%",
+            "base_resolution": "Compact Mobile",
+            "simulated_viewport": "160x284",
+            "passed": true,
+            "reasons": []
+          }
+        ]
+      },
+      "error": null
+    }
+  ]
+}

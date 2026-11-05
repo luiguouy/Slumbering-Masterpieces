@@ -1,0 +1,22 @@
+[
+{"id": "piero_the_resurrection", "queries": ["Piero della Francesca Resurrezione Sansepolcro", "Resurrezione di Cristo Piero della Francesca", "Piero della Francesca The Resurrection"], "require_all": ["piero|resurrez|resurrect", "resurrez|resurrect"], "forbid": ["cecco", "caravaggio", "master of", "san sepolcro museum"], "min_edge": 2200},
+{"id": "hals_laughing_cavalier", "queries": ["Frans Hals The Laughing Cavalier", "Hals Laughing Cavalier Wallace Collection"], "require_all": ["laughing cavalier"], "forbid": ["copy"]},
+{"id": "hals_banquet_st_george", "queries": ["Frans Hals 013", "Banquet of the Officers of the St George Civic Guard Company 1627 Frans Hals", "Frans Hals Banquet of the Officers of the St George Civic Guard Company Haarlem"], "require_all": ["frans hals 013|banquet"], "forbid": ["detail", "regent", "meagre", "exhibition", "wlanl", "banchetto"], "min_edge": 2000},
+{"id": "elgreco_burial_count_orgaz", "queries": ["El Greco Burial of the Count of Orgaz", "El Greco Entierro del Conde de Orgaz"], "require_all": ["orgaz"], "forbid": ["copy", "santo tome interior"], "min_edge": 3000},
+{"id": "eakins_the_gross_clinic", "queries": ["Thomas Eakins The Gross Clinic", "Eakins Gross Clinic 1875"], "require_all": ["gross clinic"], "forbid": ["sketch", "study"]},
+{"id": "whistler_arrangement_grey_black", "queries": ["Whistler Arrangement in Grey and Black No 1", "Whistler's Mother Arrangement in Grey and Black"], "require_all": ["whistler"], "forbid": ["nocturne", "self portrait"], "allow_dark": true},
+{"id": "kramskoi_unknown_woman", "queries": ["Kramskoy Portrait of a Woman", "Неизвестная Крамской", "Ivan Kramskoi Unknown Woman"], "require_all": ["kramskoy|kramskoi"], "forbid": ["draft", "study", "sketch", "stamp"]},
+{"id": "degas_bellelli_family", "queries": ["Edgar Degas The Bellelli Family", "Degas La famiglia Bellelli"], "require_all": ["bellelli"], "forbid": ["detail"], "allow_dark": true},
+{"id": "hammershoi_interior_strandgade", "queries": ["Vilhelm Hammershoi Strandgade 30 interior", "Hammershoi Interior Strandgade"], "require_all": ["strandgade"], "forbid": [], "allow_dark": true},
+{"id": "seurat_bathers_at_asnieres", "queries": ["Georges Seurat Bathers at Asnieres", "Seurat Une Baignade Asnieres 1884", "Seurat Baigneurs Asnières"], "require_all": ["seurat", "bathers|baignade|baigneurs|badende"], "forbid": ["studio", "bagnanti", "study", "croquet", "grande jatte"]},
+{"id": "klimt_judith_and_holofernes", "queries": ["Gustav Klimt Judith I 1901", "Gustav Klimt Judith and Holofernes Belvedere"], "require_all": ["judith"], "forbid": ["judith ii", "judith 2", "salome"]},
+{"id": "vangogh_cafe_terrace_night", "queries": ["Vincent van Gogh Cafe Terrace at Night", "Van Gogh Terrace du Cafe le soir"], "require_all": ["terrace"], "forbid": ["panoramio", "museum", "reproduction", "copy"]},
+{"id": "munch_the_dance_of_life", "queries": ["Edvard Munch The Dance of Life", "Munch Livets dans"], "require_all": ["dance"], "forbid": ["madonna", "ashes", "vampire"]},
+{"id": "holbein_dead_christ", "queries": ["Hans Holbein The Body of the Dead Christ in the Tomb", "Holbein Der Leichnam Christi im Grabe"], "require_all": ["dead christ"], "forbid": ["copy"], "min_edge": 3000},
+{"id": "bronzino_venus_cupid_folly", "queries": ["Bronzino Venus Cupid Folly and Time National Gallery London"], "require_all": ["bronzino", "venus"], "forbid": ["det ", "bronzino 00"], "min_edge": 3000},
+{"id": "raphael_portrait_castiglione", "queries": ["Baldassare Castiglione Raffaello C2RMF"], "require_all": ["castiglione", "c2rmf"], "forbid": ["louvre-lens", "comment"], "min_edge": 3000},
+{"id": "rembrandt_bathsheba", "queries": ["Bethsabee au bain Rembrandt Louvre"], "require_all": ["bethsabee", "louvre"], "forbid": ["detail"], "min_edge": 3000},
+{"id": "ribera_the_clubfoot", "queries": ["El patizambo Ribera"], "require_all": ["patizambo"], "forbid": [], "min_edge": 2000},
+{"id": "ingres_portrait_bertin", "queries": ["il vecchio bertin ingres 1832"], "require_all": ["bertin"], "forbid": ["apres", "ppg65", "wga", "rf 1071", "louis francois bertin"], "min_edge": 2000},
+{"id": "seurat_bathers_at_asnieres", "queries": ["Baigneurs a Asnieres Seurat"], "require_all": ["baigneurs", "asnieres"], "forbid": ["study", "nude", "seated"], "min_edge": 3000}
+]

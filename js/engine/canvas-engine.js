@@ -37,6 +37,12 @@ export function initGrid() {
     appState.gridRows = Math.ceil(viewportHeight / config.cellSize);
     appState.totalCells = appState.gridCols * appState.gridRows;
 
+    // createImageData 不接受 0 尺寸，尺寸异常时直接放弃本次网格重建
+    if (appState.gridCols < 1 || appState.gridRows < 1) {
+        appState.totalCells = 0;
+        return;
+    }
+
     appState.gridAlpha = new Float32Array(appState.totalCells);
     appState.gridLastTouch = new Float64Array(appState.totalCells);
     appState.gridLastStroke = new Int32Array(appState.totalCells);
@@ -333,6 +339,20 @@ export function handleResize() {
         appState.viewportHeight = window.innerHeight;
     }
     appState.dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+
+    // 冷启动首帧的时序竞态：此时容器可能尚未布局完成，视口尺寸为 0，
+    // 网格列行数会算出 0，createImageData(0, 0) 抛出 IndexSizeError 并中断整个初始化。
+    // 这里推迟到下一帧重试，而不是带着 0 尺寸继续构建画布。
+    if (!(appState.viewportWidth >= 1) || !(appState.viewportHeight >= 1)) {
+        if (!appState.resizeRetryScheduled) {
+            appState.resizeRetryScheduled = true;
+            requestAnimationFrame(() => {
+                appState.resizeRetryScheduled = false;
+                handleResize();
+            });
+        }
+        return;
+    }
 
     const { bgCanvas, revealCanvas } = elements;
     const { bgCtx, revealCtx, maskCanvas, maskCtx } = contexts;

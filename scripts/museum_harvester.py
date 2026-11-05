@@ -217,19 +217,25 @@ class MuseumHarvester:
         return candidates
 
     # 综合多源智能采集与下载
-    def harvest(self, search_query, save_filename, max_dim=3840):
+    def harvest(self, search_query, save_filename, max_dim=3840, verify=None):
+        """按官方信源优先级采集；verify(candidate) 返回 False 的候选会被否决，
+        避免搜索泛匹配把别家画家的作品当成目标名画。"""
         print(f"\n=======================================================")
         print(f"🏛️ Starting Official Museum Harvest: '{search_query}'")
         print(f"=======================================================")
 
-        # 按官方信源优先级依次尝试
-        candidates = self.search_google_art_project(search_query)
-        if not candidates:
-            candidates = self.search_wikimedia_highres(search_query)
-        if not candidates:
-            candidates = self.search_the_met(search_query)
-        if not candidates:
-            candidates = self.search_artic(search_query)
+        # 按官方信源优先级依次尝试（每个信源先过 verify 真伪校验）
+        candidates = []
+        for searcher in (self.search_google_art_project,
+                         self.search_wikimedia_highres,
+                         self.search_the_met,
+                         self.search_artic):
+            found = searcher(search_query) or []
+            if verify:
+                found = [c for c in found if verify(c)]
+            if found:
+                candidates = found
+                break
 
         if not candidates:
             print(f"[Harvester] ❌ 未能在各大官方库中找到符合规格的超清画芯: {search_query}")

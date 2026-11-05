@@ -17,7 +17,7 @@ const GALLERY_BATCH_SIZE = 24;
 let gallerySentinelEl = null;
 let galleryObserver = null;
 
-// 搜索防抖：每次按键都会触发 315 条 × 6 字段的文本归一化与整列表 DOM 重建，
+// 搜索防抖：每次按键都会触发 420 条 × 6 字段的文本归一化与整列表 DOM 重建，
 // 中文输入法组合输入还会产生额外事件，必须节流到用户停止输入后执行
 const GALLERY_SEARCH_DEBOUNCE_MS = 180;
 let gallerySearchTimer = null;
@@ -125,7 +125,7 @@ export function createGalleryCard({ art, index }) {
 
     card.innerHTML = `
         <div class="card-thumb-box is-loading">
-            <img class="card-thumb-img" src="${safeThumb}" alt="${safeTitle}" loading="lazy" decoding="async" fetchpriority="low" width="54" height="54" data-full-src="${safeSrc}">
+            <img class="card-thumb-img" src="${safeThumb}" data-thumb-src="${safeThumb}" alt="${safeTitle}" loading="lazy" decoding="async" fetchpriority="low" width="54" height="54" data-full-src="${safeSrc}">
         </div>
         <div class="card-details">
             <div class="card-header-row">
@@ -141,20 +141,32 @@ export function createGalleryCard({ art, index }) {
         </div>
     `;
 
-    // 骨架屏：缩略图加载完成后撤掉占位动画；若缩略图缺失则回退原图，
-    // 避免旧版本部署或个别生成失败时出现空缩略图。
+    // 骨架屏：缩略图加载完成后撤掉占位动画。
+    // 三级降级：缩略图失败 → 带时间戳重试一次（缓存/服务重启旧标签页）→ 回退原图
+    // → 仍失败则显示占位符号，而不是浏览器默认的“碎图”图标。
     const thumbImg = card.querySelector('.card-thumb-img');
     const thumbBox = card.querySelector('.card-thumb-box');
     if (thumbImg && thumbBox) {
         const settle = () => thumbBox.classList.remove('is-loading');
+        let retried = false;
         thumbImg.addEventListener('load', settle);
         thumbImg.addEventListener('error', () => {
-            const full = thumbImg.getAttribute('data-full-src');
-            if (full && thumbImg.src.indexOf(full) === -1) {
-                thumbImg.src = full;
-            } else {
-                settle();
+            if (!retried) {
+                retried = true;
+                const base = thumbImg.getAttribute('data-thumb-src') || thumbImg.getAttribute('src') || '';
+                if (base) {
+                    thumbImg.src = base + (base.indexOf('?') === -1 ? '?' : '&') + 'r=' + Date.now();
+                    return;
+                }
             }
+            const full = thumbImg.getAttribute('data-full-src');
+            if (full && thumbImg.getAttribute('src') !== full) {
+                thumbImg.src = full;
+                return;
+            }
+            thumbImg.style.display = 'none';
+            thumbBox.classList.add('is-missing');
+            settle();
         });
         if (thumbImg.complete && thumbImg.naturalWidth > 0) settle();
     }
@@ -400,7 +412,7 @@ export function switchMasterpiece(index) {
     resetMacroZoom(true);
 
     const {
-        quoteTextEl, quoteAuthorEl, currentArtThumb, currentArtTitle,
+        quoteTextEl, quoteTransEl, quoteAuthorEl, currentArtThumb, currentArtTitle,
         currentArtArtist, masterpieceIndexBadge, scratchHudPercent,
         scratchHudFill, scratchRatioDisplay, scratchMiniBarFill, scratchHud
     } = elements;
@@ -433,6 +445,7 @@ export function switchMasterpiece(index) {
 
     // 2. 更新诗意名言与作者署名
     if (quoteTextEl) quoteTextEl.textContent = art.quote;
+    if (quoteTransEl) quoteTransEl.textContent = art.quoteZh || "";
     if (quoteAuthorEl) quoteAuthorEl.textContent = art.quoteAuthor;
 
     // 3. 更新画笔面板当前名画卡片展示与徽章

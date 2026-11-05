@@ -1,0 +1,426 @@
+{
+  "piero_baptism_of_christ": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "mantegna_lamentation_of_christ": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "uccello_battle_of_san_romano": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "masaccio_the_tribute_money": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "lippi_madonna_two_angels": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "parmigianino_madonna_long_neck": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "bronzino_venus_cupid_folly": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "correggio_jupiter_and_io": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "pontormo_deposition": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "piero_the_resurrection": {
+    "ok": false,
+    "msg": "not-found"
+  },
+  "veronese_feast_house_of_levi": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "titian_diana_and_actaeon": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "tintoretto_last_supper": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "giorgione_sleeping_venus": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "raphael_portrait_castiglione": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "titian_perseus_andromeda": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "michelangelo_the_last_judgment": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "davinci_ginevra_de_benci": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "davinci_saint_john_baptist": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "bellini_doge_loridan": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "anguissola_the_chess_game": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "bosch_temptation_of_saint_anthony": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "bosch_the_last_judgment": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "bosch_the_haywain": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "holbein_dead_christ": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "durer_self_portrait_1500": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "altdorfer_battle_of_alexander": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "holbein_portrait_henry_viii": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "van_der_goes_portinari_altarpiece": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "bruegel_the_harvesters": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "memling_the_last_judgment": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "rembrandt_self_portrait_two_circles": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "rembrandt_syndics_drapers": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "rembrandt_aristotle_homer": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "rembrandt_bathsheba": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "vermeer_the_art_of_painting": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "vermeer_the_love_letter": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "rubens_massacre_of_the_innocents": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "hals_laughing_cavalier": {
+    "ok": false,
+    "msg": "色彩严重寡淡褪色 (色彩分 16.1 < 18.0)"
+  },
+  "rubens_elevation_of_the_cross": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "vandyck_charles_i_at_the_hunt": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "hals_banquet_st_george": {
+    "ok": false,
+    "msg": "not-found"
+  },
+  "velazquez_surrender_of_breda": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "velazquez_rokeby_venus": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "ribera_the_clubfoot": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "latour_magdalene_smoking_flame": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "caravaggio_taking_of_christ": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "poussin_rape_of_sabine_women": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "zurbaran_agnus_dei": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "ruisdael_jewish_cemetery": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "caravaggio_beheading_john": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "hooch_courtyard_delft": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "elgreco_view_of_toledo": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "chardin_soap_bubbles": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "hogarth_marriage_settlement": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "gainsborough_blue_boy": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "gainsborough_mr_mrs_andrews": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "elgreco_burial_count_orgaz": {
+    "ok": false,
+    "msg": "not-found"
+  },
+  "stubbs_whistlejacket": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "reynolds_sarah_siddons": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "wright_experiment_air_pump": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "fuseli_the_nightmare": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "turner_rain_steam_speed": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "turner_the_slave_ship": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "friedrich_abbey_in_the_oakwood": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "turner_snow_storm_steamboat": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "friedrich_chalk_cliffs_rugen": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "goya_the_colossus": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "goya_family_of_charles_iv": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "delacroix_women_of_algiers": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "millais_ophelia": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "ingres_portrait_bertin": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "gericault_charging_chasseur": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "leighton_flaming_june": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "rossetti_beata_beatrix": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "alma_tadema_roses_heliogabalus": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "courbet_burial_at_ornans": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "daumier_third_class_carriage": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "millet_the_sower": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "repin_unexpected_return": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "bonheur_the_horse_fair": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "aivazovsky_the_ninth_wave": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "levitan_golden_autumn": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "eakins_the_gross_clinic": {
+    "ok": false,
+    "msg": "色彩严重寡淡褪色 (色彩分 12.6 < 18.0)"
+  },
+  "church_niagara": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "cole_the_oxbow": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "whistler_arrangement_grey_black": {
+    "ok": false,
+    "msg": "色彩严重寡淡褪色 (色彩分 10.3 < 18.0)"
+  },
+  "kramskoi_unknown_woman": {
+    "ok": false,
+    "msg": "not-found"
+  },
+  "sargent_madame_x": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "homer_breezing_up": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "manet_the_railway": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "degas_l_etoile": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "toulouse_lautrec_moulin_rouge": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "degas_bellelli_family": {
+    "ok": false,
+    "msg": "色彩严重寡淡褪色 (色彩分 15.8 < 18.0)"
+  },
+  "seurat_bathers_at_asnieres": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "gauguin_spirit_of_dead_watching": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "vangogh_the_yellow_house": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "vangogh_portrait_dr_gachet": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "vangogh_church_at_auvers": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "cezanne_boy_in_red_vest": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "vangogh_cafe_terrace_night": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "bocklin_isle_of_the_dead": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "munch_the_dance_of_life": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "redon_the_cyclops": {
+    "ok": true,
+    "msg": "Google Arts & Culture"
+  },
+  "klimt_judith_and_holofernes": {
+    "ok": true,
+    "msg": "Wikimedia Official Archives"
+  },
+  "hammershoi_interior_strandgade": {
+    "ok": false,
+    "msg": "not-found"
+  }
+}

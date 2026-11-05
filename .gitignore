@@ -32,4 +32,5 @@ __pycache__/
 # Agent & Browser Tooling Local State
 .workbuddy/
 .playwright-cli/
+.agents/
 

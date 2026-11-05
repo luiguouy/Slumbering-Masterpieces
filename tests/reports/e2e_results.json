@@ -1,0 +1,926 @@
+{
+  "metadata": {
+    "title": "art-web E2E Test Suite Report",
+    "version": "1.0.0",
+    "timestamp": "2026-11-05T14:08:44.239815+00:00",
+    "total_duration_seconds": 42.16,
+    "browser": "Chromium (channel: chrome)",
+    "suite_filter": "all"
+  },
+  "summary": {
+    "total_tests": 72,
+    "passed": 72,
+    "failed": 0,
+    "pass_rate_percent": 100.0,
+    "status": "PASSED"
+  },
+  "domain_summary": {
+    "Domain 1": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0
+    },
+    "Domain 2": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0
+    },
+    "Domain 3": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0
+    },
+    "Domain 4": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0
+    },
+    "Domain 5": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0
+    },
+    "Domain 6": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0
+    },
+    "Domain 7": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0
+    },
+    "Domain 8": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0
+    },
+    "Domain 9": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0
+    },
+    "Domain 10": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0
+    },
+    "Tier 4": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0
+    },
+    "Grid Design System Audit": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0
+    }
+  },
+  "audit_scorecard": [
+    {
+      "id": "Audit 01",
+      "name": "audit_01_aspect_ratio_self_consistency",
+      "domain": "Grid Design System Audit",
+      "description": "画幅比例自洽性 (Aspect Ratio Self-Consistency)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 218.83,
+      "detail": "Widescreen 1920x1080 checked. Quote max-width bounded at 496.08px.",
+      "error": null
+    },
+    {
+      "id": "Audit 02",
+      "name": "audit_02_margin_hierarchy_tension",
+      "domain": "Grid Design System Audit",
+      "description": "边距层级张力 (Margin Dynamics Tension)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 199.96,
+      "detail": "Margin hierarchy validated. Switcher bottom offset: 24px.",
+      "error": null
+    },
+    {
+      "id": "Audit 03",
+      "name": "audit_03_type_area_border_strictness",
+      "domain": "Grid Design System Audit",
+      "description": "版心边界严密性 (Type Area Border Strictness)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 722.96,
+      "detail": "Verified across 1440px, 1024px, 768px, and 375px: 0px horizontal overflow.",
+      "error": null
+    },
+    {
+      "id": "Audit 04",
+      "name": "audit_04_optical_center_correction",
+      "domain": "Grid Design System Audit",
+      "description": "视错觉光学修正 (Optical Center Correction)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 209.35,
+      "detail": "Quote visual center anchored at 45.0% of viewport height (<= 46% optical target).",
+      "error": null
+    },
+    {
+      "id": "Audit 05",
+      "name": "audit_05_column_width_arithmetic_integer_rigor",
+      "domain": "Grid Design System Audit",
+      "description": "栏宽算术无小数 (Column Width Arithmetic Rigor)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 398.23,
+      "detail": "Max column width subpixel variance: 0.344px (<= 0.5px tolerance).",
+      "error": null
+    },
+    {
+      "id": "Audit 06",
+      "name": "audit_06_optimal_reading_line_length",
+      "domain": "Grid Design System Audit",
+      "description": "最佳阅读行长限制 (Optimal Measure Reading Line Length)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 435.88,
+      "detail": "Narrative text column width bounded at 483px (comfortable reading measure).",
+      "error": null
+    },
+    {
+      "id": "Audit 07",
+      "name": "audit_07_proximity_hierarchy",
+      "domain": "Grid Design System Audit",
+      "description": "间距层级临近法则 (Proximity Hierarchy)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 199.56,
+      "detail": "Tracking (0px) < Leading (36px) verified.",
+      "error": null
+    },
+    {
+      "id": "Audit 08",
+      "name": "audit_08_responsive_folding_cascade",
+      "domain": "Grid Design System Audit",
+      "description": "响应式折叠逻辑 (Responsive Folding Cascade)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 839.68,
+      "detail": "Verified 5 canonical breakpoints (1440px, 1024px, 768px, 480px, 375px) without layout degradation.",
+      "error": null
+    },
+    {
+      "id": "Audit 09",
+      "name": "audit_09_cross_column_baseline_continuity",
+      "domain": "Grid Design System Audit",
+      "description": "跨栏基线绝对贯穿 (Cross-Column Baseline Continuity)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 477.52,
+      "detail": "Cross-column shortcuts tops: [497, 497], Mode switcher tops: [731, 731] (100% co-linear horizontal baseline).",
+      "error": null
+    },
+    {
+      "id": "Audit 10",
+      "name": "audit_10_heading_and_margin_baseline_closure",
+      "domain": "Grid Design System Audit",
+      "description": "行高与外边距整倍数闭合 (Heading Height & Margin Closure)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 209.81,
+      "detail": "Quote line-height (36.0px) and margin-bottom (12.0px) structured.",
+      "error": null
+    },
+    {
+      "id": "Audit 11",
+      "name": "audit_11_image_height_modularity",
+      "domain": "Grid Design System Audit",
+      "description": "图像高度模数整数化 (Image Height Modularity)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 431.34,
+      "detail": "Card thumbnail containers uniform modular height: 208px.",
+      "error": null
+    },
+    {
+      "id": "Audit 12",
+      "name": "audit_12_gutter_absorption_axiom",
+      "domain": "Grid Design System Audit",
+      "description": "间隙吞没法则 (Gutter Absorption Axiom)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 479.38,
+      "detail": "Gutter width defined at 16px with clean edge containment.",
+      "error": null
+    },
+    {
+      "id": "Audit 13",
+      "name": "audit_13_structural_negative_space",
+      "domain": "Grid Design System Audit",
+      "description": "留白结构化度量 (Structural Negative Space)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 196.93,
+      "detail": "Negative space between central quote and controls exceeds 100px of uninterrupted visual field.",
+      "error": null
+    },
+    {
+      "id": "Audit 14",
+      "name": "audit_14_asymmetric_lever_balance",
+      "domain": "Grid Design System Audit",
+      "description": "视觉重量非对称杠杆 (Asymmetric Lever Balance)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 192.26,
+      "detail": "Immense visual stage balanced with refined peripheral anchor controls.",
+      "error": null
+    },
+    {
+      "id": "Audit 15",
+      "name": "audit_15_zero_useless_decoration",
+      "domain": "Grid Design System Audit",
+      "description": "无用装饰清零 (Zero Useless Decoration)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 190.92,
+      "detail": "Clean classical serif font stack verified. Pure functional typography without decorative clutter.",
+      "error": null
+    }
+  ],
+  "test_results": [
+    {
+      "id": "C1.1",
+      "name": "test_c1_1_dual_canvas_pixel_alignment",
+      "domain": "Domain 1",
+      "description": "Dual canvas pixel alignment",
+      "status": "PASSED",
+      "duration_ms": 657.7,
+      "error": null
+    },
+    {
+      "id": "C1.2",
+      "name": "test_c1_2_viewport_adaptation",
+      "domain": "Domain 1",
+      "description": "Viewport adaptation across resolutions",
+      "status": "PASSED",
+      "duration_ms": 901.5,
+      "error": null
+    },
+    {
+      "id": "C1.3",
+      "name": "test_c1_3_viewport_dynamic_height",
+      "domain": "Domain 1",
+      "description": "Visual viewport & dynamic height",
+      "status": "PASSED",
+      "duration_ms": 374.04,
+      "error": null
+    },
+    {
+      "id": "C1.4",
+      "name": "test_c1_4_quote_linkage_and_subtle",
+      "domain": "Domain 1",
+      "description": "Art quote linkage and subtle dimming",
+      "status": "PASSED",
+      "duration_ms": 508.23,
+      "error": null
+    },
+    {
+      "id": "C1.5",
+      "name": "test_c1_5_custom_cursor_and_ring",
+      "domain": "Domain 1",
+      "description": "Custom cursor ring size tracking",
+      "status": "PASSED",
+      "duration_ms": 324.19,
+      "error": null
+    },
+    {
+      "id": "C2.1",
+      "name": "test_c2_1_grayscale_initial_state",
+      "domain": "Domain 2",
+      "description": "Grayscale initial state",
+      "status": "PASSED",
+      "duration_ms": 262.26,
+      "error": null
+    },
+    {
+      "id": "C2.2",
+      "name": "test_c2_2_progressive_stroke_revealing",
+      "domain": "Domain 2",
+      "description": "Progressive stroke revealing",
+      "status": "PASSED",
+      "duration_ms": 357.63,
+      "error": null
+    },
+    {
+      "id": "C2.3",
+      "name": "test_c2_3_hover_charge",
+      "domain": "Domain 2",
+      "description": "Hover charge capability",
+      "status": "PASSED",
+      "duration_ms": 330.81,
+      "error": null
+    },
+    {
+      "id": "C2.4",
+      "name": "test_c2_4_morning_mist_decay",
+      "domain": "Domain 2",
+      "description": "Morning mist decay settings",
+      "status": "PASSED",
+      "duration_ms": 261.56,
+      "error": null
+    },
+    {
+      "id": "C2.5",
+      "name": "test_c2_5_toggle_full_color",
+      "domain": "Domain 2",
+      "description": "One-click full color bloom",
+      "status": "PASSED",
+      "duration_ms": 249.88,
+      "error": null
+    },
+    {
+      "id": "C3.1",
+      "name": "test_c3_1_mode_switch_to_scratch",
+      "domain": "Domain 3",
+      "description": "Mode switch to scratch",
+      "status": "PASSED",
+      "duration_ms": 746.22,
+      "error": null
+    },
+    {
+      "id": "C3.2",
+      "name": "test_c3_2_scratch_true_color_render",
+      "domain": "Domain 3",
+      "description": "Scratch true color layers & preload",
+      "status": "PASSED",
+      "duration_ms": 521.89,
+      "error": null
+    },
+    {
+      "id": "C3.3",
+      "name": "test_c3_3_scratch_erasing",
+      "domain": "Domain 3",
+      "description": "Scratch erasing calculation",
+      "status": "PASSED",
+      "duration_ms": 522.84,
+      "error": null
+    },
+    {
+      "id": "C3.4",
+      "name": "test_c3_4_scratch_hud_realtime_progress",
+      "domain": "Domain 3",
+      "description": "Scratch HUD realtime progress",
+      "status": "PASSED",
+      "duration_ms": 416.47,
+      "error": null
+    },
+    {
+      "id": "C3.5",
+      "name": "test_c3_5_threshold_smooth_reveal",
+      "domain": "Domain 3",
+      "description": "Scratch threshold configuration",
+      "status": "PASSED",
+      "duration_ms": 166.99,
+      "error": null
+    },
+    {
+      "id": "C3.6",
+      "name": "test_c3_6_scratch_state_machine_lock",
+      "domain": "Domain 3",
+      "description": "State machine transition lock",
+      "status": "PASSED",
+      "duration_ms": 157.54,
+      "error": null
+    },
+    {
+      "id": "C3.7",
+      "name": "test_c3_7_reveal_now_button",
+      "domain": "Domain 3",
+      "description": "Reveal now button action",
+      "status": "PASSED",
+      "duration_ms": 596.58,
+      "error": null
+    },
+    {
+      "id": "C3.8",
+      "name": "test_c3_8_anti_leak_contain_guard",
+      "domain": "Domain 3",
+      "description": "Anti-leak background color guard",
+      "status": "PASSED",
+      "duration_ms": 206.4,
+      "error": null
+    },
+    {
+      "id": "C4.1",
+      "name": "test_c4_1_macro_zoom_levels",
+      "domain": "Domain 4",
+      "description": "Macro zoom levels (1.0x - 4.5x)",
+      "status": "PASSED",
+      "duration_ms": 270.69,
+      "error": null
+    },
+    {
+      "id": "C4.2",
+      "name": "test_c4_2_macro_pan_offset",
+      "domain": "Domain 4",
+      "description": "Macro pan offset getter/setter",
+      "status": "PASSED",
+      "duration_ms": 176.73,
+      "error": null
+    },
+    {
+      "id": "C4.3",
+      "name": "test_c4_3_macro_zoom_reset",
+      "domain": "Domain 4",
+      "description": "Macro zoom reset method",
+      "status": "PASSED",
+      "duration_ms": 175.32,
+      "error": null
+    },
+    {
+      "id": "C4.4",
+      "name": "test_c4_4_macro_zoom_hud",
+      "domain": "Domain 4",
+      "description": "Macro zoom HUD & reset button",
+      "status": "PASSED",
+      "duration_ms": 854.19,
+      "error": null
+    },
+    {
+      "id": "C4.5",
+      "name": "test_c4_5_artisan_brass_loupe",
+      "domain": "Domain 4",
+      "description": "Artisan brass loupe toggle & zoom cycle",
+      "status": "PASSED",
+      "duration_ms": 188.72,
+      "error": null
+    },
+    {
+      "id": "C4.6",
+      "name": "test_c4_6_loupe_edge_hysteresis",
+      "domain": "Domain 4",
+      "description": "Loupe canvas element dimensions",
+      "status": "PASSED",
+      "duration_ms": 182.5,
+      "error": null
+    },
+    {
+      "id": "C5.1",
+      "name": "test_c5_1_brush_toggle_and_drag_distinction",
+      "domain": "Domain 5",
+      "description": "Brush toggle button popup open/close",
+      "status": "PASSED",
+      "duration_ms": 812.18,
+      "error": null
+    },
+    {
+      "id": "C5.2",
+      "name": "test_c5_2_brush_position_persistence",
+      "domain": "Domain 5",
+      "description": "Brush position persistence & reset",
+      "status": "PASSED",
+      "duration_ms": 387.17,
+      "error": null
+    },
+    {
+      "id": "C5.3",
+      "name": "test_c5_3_brush_adaptive_flip_and_overflow",
+      "domain": "Domain 5",
+      "description": "Brush popup adaptive bounds",
+      "status": "PASSED",
+      "duration_ms": 513.71,
+      "error": null
+    },
+    {
+      "id": "C5.4",
+      "name": "test_c5_4_brush_sliders_sync",
+      "domain": "Domain 5",
+      "description": "Brush sliders synchronization",
+      "status": "PASSED",
+      "duration_ms": 178.27,
+      "error": null
+    },
+    {
+      "id": "C5.5",
+      "name": "test_c5_5_fit_mode_and_scale",
+      "domain": "Domain 5",
+      "description": "Fit mode & scale adjustment",
+      "status": "PASSED",
+      "duration_ms": 245.12,
+      "error": null
+    },
+    {
+      "id": "C5.6",
+      "name": "test_c5_6_click_outside_closes_brush_popup",
+      "domain": "Domain 5",
+      "description": "Click outside dismisses brush popup",
+      "status": "PASSED",
+      "duration_ms": 653.82,
+      "error": null
+    },
+    {
+      "id": "C6.1",
+      "name": "test_c6_1_gallery_open_close",
+      "domain": "Domain 6",
+      "description": "Gallery drawer open & close",
+      "status": "PASSED",
+      "duration_ms": 965.68,
+      "error": null
+    },
+    {
+      "id": "C6.2",
+      "name": "test_c6_2_gallery_fuzzy_search",
+      "domain": "Domain 6",
+      "description": "Gallery fuzzy search & clear",
+      "status": "PASSED",
+      "duration_ms": 1090.32,
+      "error": null
+    },
+    {
+      "id": "C6.3",
+      "name": "test_c6_3_genre_pills_filter",
+      "domain": "Domain 6",
+      "description": "7 genre pills filter",
+      "status": "PASSED",
+      "duration_ms": 1262.49,
+      "error": null
+    },
+    {
+      "id": "C6.4",
+      "name": "test_c6_4_artist_and_category_selects",
+      "domain": "Domain 6",
+      "description": "Artist and category dropdowns",
+      "status": "PASSED",
+      "duration_ms": 413.36,
+      "error": null
+    },
+    {
+      "id": "C6.5",
+      "name": "test_c6_5_multi_filter_intersection",
+      "domain": "Domain 6",
+      "description": "Multi-filter AND intersection",
+      "status": "PASSED",
+      "duration_ms": 1219.84,
+      "error": null
+    },
+    {
+      "id": "C6.6",
+      "name": "test_c6_6_virtual_scrolling_batch_load",
+      "domain": "Domain 6",
+      "description": "Virtual scrolling 24 card batch",
+      "status": "PASSED",
+      "duration_ms": 398.51,
+      "error": null
+    },
+    {
+      "id": "C6.7",
+      "name": "test_c6_7_card_click_switches_masterpiece",
+      "domain": "Domain 6",
+      "description": "Card click switches masterpiece",
+      "status": "PASSED",
+      "duration_ms": 1504.9,
+      "error": null
+    },
+    {
+      "id": "C7.1",
+      "name": "test_c7_1_story_open_close",
+      "domain": "Domain 7",
+      "description": "Story drawer open & close",
+      "status": "PASSED",
+      "duration_ms": 973.54,
+      "error": null
+    },
+    {
+      "id": "C7.2",
+      "name": "test_c7_2_story_three_section_dossier",
+      "domain": "Domain 7",
+      "description": "Three-section narrative dossier",
+      "status": "PASSED",
+      "duration_ms": 405.52,
+      "error": null
+    },
+    {
+      "id": "C7.3",
+      "name": "test_c7_3_story_mobile_bottom_sheet",
+      "domain": "Domain 7",
+      "description": "Mobile bottom sheet handle toggle",
+      "status": "PASSED",
+      "duration_ms": 933.84,
+      "error": null
+    },
+    {
+      "id": "C7.4",
+      "name": "test_c7_4_story_prev_next_navigation",
+      "domain": "Domain 7",
+      "description": "Story previous/next navigation",
+      "status": "PASSED",
+      "duration_ms": 1392.91,
+      "error": null
+    },
+    {
+      "id": "C8.1",
+      "name": "test_c8_1_gesture_interlocking",
+      "domain": "Domain 8",
+      "description": "Gesture interlocking presence",
+      "status": "PASSED",
+      "duration_ms": 263.97,
+      "error": null
+    },
+    {
+      "id": "C8.2",
+      "name": "test_c8_2_swipe_navigation_handling",
+      "domain": "Domain 8",
+      "description": "Swipe navigation event handling",
+      "status": "PASSED",
+      "duration_ms": 185.7,
+      "error": null
+    },
+    {
+      "id": "C8.3",
+      "name": "test_c8_3_touch_action_prevention",
+      "domain": "Domain 8",
+      "description": "Canvas touch-action: none",
+      "status": "PASSED",
+      "duration_ms": 169.79,
+      "error": null
+    },
+    {
+      "id": "C8.4",
+      "name": "test_c8_4_touch_cancel_recovery",
+      "domain": "Domain 8",
+      "description": "Touchcancel event recovery",
+      "status": "PASSED",
+      "duration_ms": 197.29,
+      "error": null
+    },
+    {
+      "id": "C9.1",
+      "name": "test_c9_1_keyboard_shortcuts",
+      "domain": "Domain 9",
+      "description": "Global blind keyboard shortcuts",
+      "status": "PASSED",
+      "duration_ms": 2235.93,
+      "error": null
+    },
+    {
+      "id": "C9.2",
+      "name": "test_c9_2_keyboard_focus_immunity",
+      "domain": "Domain 9",
+      "description": "Input focus shortcut immunity",
+      "status": "PASSED",
+      "duration_ms": 918.09,
+      "error": null
+    },
+    {
+      "id": "C9.3",
+      "name": "test_c9_3_esc_emergency_exit",
+      "domain": "Domain 9",
+      "description": "Escape key emergency exit",
+      "status": "PASSED",
+      "duration_ms": 654.23,
+      "error": null
+    },
+    {
+      "id": "C10.1",
+      "name": "test_c10_1_zero_console_errors",
+      "domain": "Domain 10",
+      "description": "Zero console script exceptions",
+      "status": "PASSED",
+      "duration_ms": 517.61,
+      "error": null
+    },
+    {
+      "id": "C10.2",
+      "name": "test_c10_2_broken_image_circuit_breaker",
+      "domain": "Domain 10",
+      "description": "Image failure circuit breaker",
+      "status": "PASSED",
+      "duration_ms": 235.79,
+      "error": null
+    },
+    {
+      "id": "C10.3",
+      "name": "test_c10_3_render_loop_dormancy",
+      "domain": "Domain 10",
+      "description": "Render loop dormancy",
+      "status": "PASSED",
+      "duration_ms": 418.63,
+      "error": null
+    },
+    {
+      "id": "C10.4",
+      "name": "test_c10_4_webp_thumbnail_optimization",
+      "domain": "Domain 10",
+      "description": "WebP thumbnail optimization",
+      "status": "PASSED",
+      "duration_ms": 498.41,
+      "error": null
+    },
+    {
+      "id": "W1",
+      "name": "test_t4_scenario_1_onboarding",
+      "domain": "Tier 4",
+      "description": "Workflow: Onboarding & Help discovery",
+      "status": "PASSED",
+      "duration_ms": 974.7,
+      "error": null
+    },
+    {
+      "id": "W2",
+      "name": "test_t4_scenario_2_sleep_awakening_and_story",
+      "domain": "Tier 4",
+      "description": "Workflow: Sleep awakening & Story",
+      "status": "PASSED",
+      "duration_ms": 1316.06,
+      "error": null
+    },
+    {
+      "id": "W3",
+      "name": "test_t4_scenario_3_gallery_search_filter_switch",
+      "domain": "Tier 4",
+      "description": "Workflow: Gallery search, filter & switch",
+      "status": "PASSED",
+      "duration_ms": 1245.89,
+      "error": null
+    },
+    {
+      "id": "W4",
+      "name": "test_t4_scenario_4_micro_loupe_pan_inspection",
+      "domain": "Tier 4",
+      "description": "Workflow: Loupe & Pan inspection",
+      "status": "PASSED",
+      "duration_ms": 1032.73,
+      "error": null
+    },
+    {
+      "id": "W5",
+      "name": "test_t4_scenario_5_responsive_cascade_transition",
+      "domain": "Tier 4",
+      "description": "Workflow: Responsive cascade transition",
+      "status": "PASSED",
+      "duration_ms": 980.96,
+      "error": null
+    },
+    {
+      "id": "Audit 01",
+      "name": "audit_01_aspect_ratio_self_consistency",
+      "domain": "Grid Design System Audit",
+      "description": "画幅比例自洽性 (Aspect Ratio Self-Consistency)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 218.83,
+      "detail": "Widescreen 1920x1080 checked. Quote max-width bounded at 496.08px.",
+      "error": null
+    },
+    {
+      "id": "Audit 02",
+      "name": "audit_02_margin_hierarchy_tension",
+      "domain": "Grid Design System Audit",
+      "description": "边距层级张力 (Margin Dynamics Tension)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 199.96,
+      "detail": "Margin hierarchy validated. Switcher bottom offset: 24px.",
+      "error": null
+    },
+    {
+      "id": "Audit 03",
+      "name": "audit_03_type_area_border_strictness",
+      "domain": "Grid Design System Audit",
+      "description": "版心边界严密性 (Type Area Border Strictness)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 722.96,
+      "detail": "Verified across 1440px, 1024px, 768px, and 375px: 0px horizontal overflow.",
+      "error": null
+    },
+    {
+      "id": "Audit 04",
+      "name": "audit_04_optical_center_correction",
+      "domain": "Grid Design System Audit",
+      "description": "视错觉光学修正 (Optical Center Correction)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 209.35,
+      "detail": "Quote visual center anchored at 45.0% of viewport height (<= 46% optical target).",
+      "error": null
+    },
+    {
+      "id": "Audit 05",
+      "name": "audit_05_column_width_arithmetic_integer_rigor",
+      "domain": "Grid Design System Audit",
+      "description": "栏宽算术无小数 (Column Width Arithmetic Rigor)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 398.23,
+      "detail": "Max column width subpixel variance: 0.344px (<= 0.5px tolerance).",
+      "error": null
+    },
+    {
+      "id": "Audit 06",
+      "name": "audit_06_optimal_reading_line_length",
+      "domain": "Grid Design System Audit",
+      "description": "最佳阅读行长限制 (Optimal Measure Reading Line Length)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 435.88,
+      "detail": "Narrative text column width bounded at 483px (comfortable reading measure).",
+      "error": null
+    },
+    {
+      "id": "Audit 07",
+      "name": "audit_07_proximity_hierarchy",
+      "domain": "Grid Design System Audit",
+      "description": "间距层级临近法则 (Proximity Hierarchy)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 199.56,
+      "detail": "Tracking (0px) < Leading (36px) verified.",
+      "error": null
+    },
+    {
+      "id": "Audit 08",
+      "name": "audit_08_responsive_folding_cascade",
+      "domain": "Grid Design System Audit",
+      "description": "响应式折叠逻辑 (Responsive Folding Cascade)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 839.68,
+      "detail": "Verified 5 canonical breakpoints (1440px, 1024px, 768px, 480px, 375px) without layout degradation.",
+      "error": null
+    },
+    {
+      "id": "Audit 09",
+      "name": "audit_09_cross_column_baseline_continuity",
+      "domain": "Grid Design System Audit",
+      "description": "跨栏基线绝对贯穿 (Cross-Column Baseline Continuity)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 477.52,
+      "detail": "Cross-column shortcuts tops: [497, 497], Mode switcher tops: [731, 731] (100% co-linear horizontal baseline).",
+      "error": null
+    },
+    {
+      "id": "Audit 10",
+      "name": "audit_10_heading_and_margin_baseline_closure",
+      "domain": "Grid Design System Audit",
+      "description": "行高与外边距整倍数闭合 (Heading Height & Margin Closure)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 209.81,
+      "detail": "Quote line-height (36.0px) and margin-bottom (12.0px) structured.",
+      "error": null
+    },
+    {
+      "id": "Audit 11",
+      "name": "audit_11_image_height_modularity",
+      "domain": "Grid Design System Audit",
+      "description": "图像高度模数整数化 (Image Height Modularity)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 431.34,
+      "detail": "Card thumbnail containers uniform modular height: 208px.",
+      "error": null
+    },
+    {
+      "id": "Audit 12",
+      "name": "audit_12_gutter_absorption_axiom",
+      "domain": "Grid Design System Audit",
+      "description": "间隙吞没法则 (Gutter Absorption Axiom)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 479.38,
+      "detail": "Gutter width defined at 16px with clean edge containment.",
+      "error": null
+    },
+    {
+      "id": "Audit 13",
+      "name": "audit_13_structural_negative_space",
+      "domain": "Grid Design System Audit",
+      "description": "留白结构化度量 (Structural Negative Space)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 196.93,
+      "detail": "Negative space between central quote and controls exceeds 100px of uninterrupted visual field.",
+      "error": null
+    },
+    {
+      "id": "Audit 14",
+      "name": "audit_14_asymmetric_lever_balance",
+      "domain": "Grid Design System Audit",
+      "description": "视觉重量非对称杠杆 (Asymmetric Lever Balance)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 192.26,
+      "detail": "Immense visual stage balanced with refined peripheral anchor controls.",
+      "error": null
+    },
+    {
+      "id": "Audit 15",
+      "name": "audit_15_zero_useless_decoration",
+      "domain": "Grid Design System Audit",
+      "description": "无用装饰清零 (Zero Useless Decoration)",
+      "status": "PASSED",
+      "score": 100,
+      "duration_ms": 190.92,
+      "detail": "Clean classical serif font stack verified. Pure functional typography without decorative clutter.",
+      "error": null
+    }
+  ]
+}

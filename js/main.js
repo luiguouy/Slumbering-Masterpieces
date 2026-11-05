@@ -79,8 +79,9 @@ function initEngineInterconnect() {
         },
         renderScratchBg: renderScratchBackground,
         onArtworkChange: (art, index) => {
-            const { quoteTextEl, quoteAuthorEl, currentArtThumb, currentArtTitle, currentArtArtist, masterpieceIndexBadge } = elements;
+            const { quoteTextEl, quoteTransEl, quoteAuthorEl, currentArtThumb, currentArtTitle, currentArtArtist, masterpieceIndexBadge } = elements;
             if (quoteTextEl) quoteTextEl.textContent = art.quote;
+            if (quoteTransEl) quoteTransEl.textContent = art.quoteZh || "";
             if (quoteAuthorEl) quoteAuthorEl.textContent = art.quoteAuthor;
 
             if (currentArtThumb) {
@@ -140,7 +141,7 @@ function start() {
     };
 
     // 名画载入失败降级：跳过损坏资源并自动切至下一幅。
-    // 315 幅资源中任一 404 若不处理，isImageLoaded 将永久停留在 false，导致静默白屏且无任何反馈。
+    // 420 幅资源中任一 404 若不处理，isImageLoaded 将永久停留在 false，导致静默白屏且无任何反馈。
     appState.gardenImage.onerror = () => {
         const failedArt = appState.masterpieces[appState.currentMasterpieceIndex];
         console.error('[GardenEngine] 载入名画资源失败:', failedArt && failedArt.src);
